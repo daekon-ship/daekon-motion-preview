@@ -30,8 +30,10 @@ Előnézet: https://daekon-ship.github.io/daekon-motion-preview/
   - **DAEKON OS:** forgó 3D csomópont-gömb, az 5 modulból (a kártyán felsorolt nevek) a DAEKON-mag felé áramló jelek; csak dekoráció, nincs benne rendszerállapot.
   - **Footer:** mozgó fénypadló, görgetésre emelkedő látóhatár.
   A vásznak csak láthatóan rajzolnak, háttérfülön állnak, DPR ≤ 1,5; csökkentett mozgásnál nem indulnak.
+- **Tulajdonosi döntések (2026-10-26):** a főoldalon csak a showreel mutatja a projekteket – a showreel a `#work` szekcióba kerül, a „Munkák” menüpont oda visz, a régi projektlista rejtve; kompakt tipográfia és térközök (`layer/compact.css`; az élő CSS `#dc-root .sc-interp{font-size:clamp(17px,1.45vw,23px)!important}` szabálya fújta fel a szövegeket).
+- **Indítás:** modulonként – minden effekt csak a saját szekciójára vár (`layer/dkm.js` MODULES), egy hiányzó szekció nem állítja meg a többit. Csökkentett mozgásnál (pl. Windows „Animációk megjelenítése” KI) szándékosan csak az álló showreel jelenik meg.
 - `evidence/` – vizuális bizonyíték (KI/BE képpárok, összehasonlító videók): https://daekon-ship.github.io/daekon-motion-preview/evidence/
-- `preview/shim.js` – **csak előnézet**: noindex, az ajánlatkérő nem küld semmit (a `send.php` helyben elutasítva), sarokjelzés BE/KI kapcsolóval.
+- `preview/shim.js` – **csak előnézet**: noindex, az ajánlatkérő nem küld semmit (a `send.php` helyben elutasítva), BE/KI kapcsoló, diagnosztikai panel (megtalált szekciók, elindult és ténylegesen rajzoló effektek, hibák), **IDEIGLENES** „DAEKON V6 TESZT — <commit>” jelzés (`testBanner`, a tulajdonosi ellenőrzés után törlendő), csökkentett mozgásnál figyelmeztetés + kérésre megtekintés (`?dkmmotion=1`).
 - `scripts/build.mjs` – összerakja az `out/daekon-motion-preview/` mappát, és az előnézeti alútvonalhoz igazítja a gyökér-útvonalakat.
 
 ```

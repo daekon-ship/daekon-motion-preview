@@ -91,7 +91,7 @@ figcaption{{font-size:12.5px;color:#A9A8A2;margin-top:4px}}.vids{{display:grid;g
 </style></head><body><main>
 <h1>DAEKON V6 – vizuális bizonyíték</h1>
 <p>Commit: <b>{html.escape(commit)}</b> · Előnézet: <a href="../">daekon-motion-preview</a> · Ugyanez animációk nélkül: <a href="../?dkm=0">?dkm=0</a>.
-Minden felvétel a nyilvános GitHub Pages oldalról készült Playwright (Chromium) böngészővel, ugyanazzal a nézetmérettel és görgetési útvonallal. Az éles daekon.hu nem változott.</p>
+Minden felvétel a nyilvános GitHub Pages oldalról készült Playwright (Chromium) böngészővel, ugyanazzal a nézetmérettel és görgetési útvonallal. Az éles daekon.hu nem változott. A felvételeken látható sárga „DAEKON V6 TESZT” sáv az ideiglenes verziójelzés.</p>
 <h2>Összehasonlító videók</h2><div class="vids">{''.join(videos) or '<p>(nincs videó)</p>'}</div>
 <h2>Mennyi változik szemmel láthatóan?</h2>
 <p>Ugyanaz a görgetési pozíció animációkkal és nélkülük; a szám a képernyő azon pixeleinek aránya, amelyek legalább ~10%-kal eltérnek.
