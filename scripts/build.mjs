@@ -37,7 +37,7 @@ await build({
   legalComments: 'none',
 })
 // a réteg stílusai egy fájlban (kevesebb kérés): alap + szekciónkénti effektek
-writeFileSync(join(OUT, 'dkm.css'), ['layer/dkm.css', 'layer/sections.css', 'layer/v5.css'].map((f) => readFileSync(f, 'utf-8')).join('\n'))
+writeFileSync(join(OUT, 'dkm.css'), ['layer/dkm.css', 'layer/sections.css', 'layer/v5.css', 'layer/v6.css'].map((f) => readFileSync(f, 'utf-8')).join('\n'))
 
 const shim = readFileSync('preview/shim.js', 'utf-8')
 

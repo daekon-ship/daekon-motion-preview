@@ -241,8 +241,7 @@ export function storyDepth() {
   return true
 }
 
-// DAEKON OS – technológiai réteg: pásztázó vonal + pontmátrix a kártyán; széles kijelzőn áramkör-hálózat,
-// amelyen adatcsomagok futnak a központi DAEKON-mag felé (dekoráció, nem valós adat)
+// DAEKON OS – pásztázó vonal + pontmátrix a kártyán (a V6-ban a 3D hálózatot a world.js osNetwork rajzolja)
 export function osTech() {
   const sec = $('#daekon-os')
   const card = sec && sec.querySelector('.os8-in')
@@ -251,39 +250,10 @@ export function osTech() {
   scan.setAttribute('aria-hidden', 'true')
   card.append(scan)
 
-  const net = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  net.setAttribute('class', 'dkm-net')
-  net.setAttribute('viewBox', '0 0 400 400')
-  net.setAttribute('aria-hidden', 'true')
-  const paths = [
-    'M0 70 H120 Q140 70 150 90 L190 170 Q200 190 222 190 H300',
-    'M0 150 H90 Q110 150 125 165 L150 190 H300',
-    'M0 230 H110 Q130 230 145 215 L170 190 H300',
-    'M0 310 H120 Q140 310 150 290 L190 210 Q200 190 222 190 H300',
-    'M0 390 H160 Q180 390 190 370 L240 250 Q250 220 270 205 L300 190',
-  ]
-  let svg = ''
-  paths.forEach((d, i) => {
-    svg += `<path class="dkm-net-base" d="${d}"/><path class="dkm-net-pulse" style="--i:${i}" d="${d}" pathLength="100"/>`
-  })
-  svg +=
-    '<circle class="dkm-core-ring" cx="320" cy="190" r="44"/><circle class="dkm-core-ring dkm-core-ring2" cx="320" cy="190" r="62"/>' +
-    '<rect class="dkm-core" x="300" y="170" width="40" height="40" rx="9"/><rect class="dkm-core-pix" x="324" y="194" width="9" height="9"/>'
-  net.innerHTML = svg // statikus, saját jelölés – nincs külső vagy felhasználói adat
   sec.classList.add('dkm-os5')
-  sec.append(net)
   whileVisible(sec, 'is-live')
 
-  const place = () => {
-    const sr = sec.getBoundingClientRect()
-    const cr = card.getBoundingClientRect()
-    scan.style.setProperty('--scan-h', `${Math.round(cr.height)}px`)
-    const free = sr.right - cr.right
-    net.style.display = free > 300 ? '' : 'none'
-    net.style.left = `${cr.right - sr.left - 2}px`
-    net.style.top = `${cr.top - sr.top + cr.height / 2 - 200}px`
-    net.style.width = `${Math.min(free - 24, 420)}px`
-  }
+  const place = () => scan.style.setProperty('--scan-h', `${Math.round(card.getBoundingClientRect().height)}px`)
   place()
   window.addEventListener('resize', place)
   setTimeout(place, 1200)
@@ -298,7 +268,6 @@ export function footerStage() {
   stage.setAttribute('aria-hidden', 'true')
   el('span', 'dkm-ft-horizon', stage)
   el('span', 'dkm-ft-cone', stage)
-  el('span', 'dkm-ft-floor', stage)
   ft.prepend(stage)
   ft.classList.add('dkm-ft5')
   whileVisible(ft, 'is-live')

@@ -12,6 +12,8 @@ import { peek } from './peek.js'
 import { reel } from './reel.js'
 import { contact, footer, heroLight, os, reviews, separators, services, story } from './sections.js'
 import { footerStage, heroField, osTech, processSignal, reviewsDepth, servicesDepth, storyDepth } from './v5.js'
+import { processBeam, reviewsEnter, servicesDeck, storyYears } from './v6.js'
+import { footerFloor, heroWorld, osNetwork } from './world.js'
 
 // Gyenge eszköz felismerése csak hardveres jelekből (kevés mag/memória, adattakarékos mód) → „lite” mód:
 // a folyamatos effektek kimaradnak, a belépők megmaradnak. Képkocka-mérést szándékosan NEM használunk:
@@ -25,7 +27,7 @@ function isLowEnd() {
 
 function start() {
   // Állapot a diagnosztikához (az előnézeti panel olvassa; élesben csak egy ártalmatlan objektum)
-  const status = (window.__DKM = { version: 5, active: false, reduced: false, lite: false, effects: [], failed: [], errors: 0 })
+  const status = (window.__DKM = { version: 6, active: false, reduced: false, lite: false, effects: [], failed: [], errors: 0 })
   if (window.__DKM_OFF) return
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
   const lite = !reduced && isLowEnd()
@@ -36,6 +38,7 @@ function start() {
   const all = {
     reel: () => reel({ still: false }),
     heroField,
+    heroWorld,
     heroLight,
     navPill,
     separators,
@@ -43,17 +46,23 @@ function start() {
     peek,
     services,
     servicesDepth,
+    servicesDeck,
     processSignal,
+    processBeam,
     story,
     storyDepth,
+    storyYears,
     reviews,
     reviewsDepth,
+    reviewsEnter,
     osCard,
     os,
     osTech,
+    osNetwork,
     contact,
     footer,
     footerStage,
+    footerFloor,
     magnetic,
   }
   // hibakereséshez: ?dkmskip=reel,heroLight – az adott részek kihagyása
