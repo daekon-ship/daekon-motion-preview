@@ -45,7 +45,9 @@ function pointerVars(area, target = area) {
 export function heroField() {
   const stage = $('#top > div')
   if (!stage) return false
-  const bg = [...stage.children].find((c) => getComputedStyle(c).backgroundColor === 'rgb(5, 5, 5)')
+  // a meglévő lila fényrétegek (.h6-env) fölé, de a monitor és a szöveg alá kerül – screen keveréssel csak fényt ad hozzá
+  const env = stage.querySelector(':scope > .h6-env')
+  const bg = env || [...stage.children].find((c) => getComputedStyle(c).backgroundColor === 'rgb(5, 5, 5)')
   const field = el('div', 'dkm-field')
   field.setAttribute('aria-hidden', 'true')
 
@@ -57,12 +59,12 @@ export function heroField() {
   for (let i = 0; i < 3; i++) el('span', `dkm-ring dkm-ring-${i + 1}`, mid)
   // 3. réteg: lebegő fénypontmező (közel – erősebb parallaxis)
   const near = el('div', 'dkm-fl dkm-fl-near', field)
-  const count = matchMedia('(max-width: 699px)').matches ? 22 : 46
+  const count = matchMedia('(max-width: 699px)').matches ? 34 : 56
   let seed = 7
   const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280)
   for (let i = 0; i < count; i++) {
     const d = el('i', 'dkm-mote', near)
-    const size = 2 + rnd() * 4
+    const size = 2.5 + rnd() * 4.5
     d.style.cssText = `left:${(rnd() * 100).toFixed(1)}%;top:${(rnd() * 100).toFixed(1)}%;width:${size.toFixed(1)}px;height:${size.toFixed(1)}px;--t:${(9 + rnd() * 14).toFixed(1)}s;--o:${(-rnd() * 20).toFixed(1)}s;--a:${(0.35 + rnd() * 0.6).toFixed(2)}`
     if (rnd() > 0.82) d.classList.add('is-lime')
   }

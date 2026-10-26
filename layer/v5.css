@@ -9,6 +9,7 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  mix-blend-mode: screen;
 }
 
 .dkm-fl {
@@ -97,10 +98,12 @@
   left: 62%;
   top: 48%;
   border-radius: 50%;
-  border: 1px solid rgba(185, 162, 255, 0.14);
-  border-top-color: rgba(212, 255, 58, 0.55);
-  border-right-color: rgba(185, 162, 255, 0.4);
-  box-shadow: 0 0 60px -20px rgba(108, 72, 255, 0.6) inset;
+  border: 1.5px solid rgba(185, 162, 255, 0.22);
+  border-top-color: rgba(212, 255, 58, 0.85);
+  border-right-color: rgba(185, 162, 255, 0.6);
+  box-shadow:
+    0 0 60px -20px rgba(108, 72, 255, 0.7) inset,
+    0 0 30px -12px rgba(185, 162, 255, 0.6);
 }
 
 .dkm-ring-1 {
@@ -113,16 +116,16 @@
   width: 74vmin;
   height: 74vmin;
   margin: -37vmin 0 0 -37vmin;
-  border-top-color: rgba(185, 162, 255, 0.5);
-  border-left-color: rgba(212, 255, 58, 0.25);
+  border-top-color: rgba(185, 162, 255, 0.75);
+  border-left-color: rgba(212, 255, 58, 0.45);
 }
 
 .dkm-ring-3 {
   width: 108vmin;
   height: 108vmin;
   margin: -54vmin 0 0 -54vmin;
-  border-color: rgba(185, 162, 255, 0.08);
-  border-bottom-color: rgba(185, 162, 255, 0.35);
+  border-color: rgba(185, 162, 255, 0.12);
+  border-bottom-color: rgba(185, 162, 255, 0.55);
 }
 
 .dkm-field.is-live .dkm-ring-1 {
@@ -484,6 +487,29 @@
 }
 
 @media (max-width: 699px) {
+  .dkm-ring {
+    left: 50%;
+    top: 31%;
+    border-width: 2px;
+  }
+  .dkm-ring-1 {
+    width: 92vw;
+    height: 92vw;
+    margin: -46vw 0 0 -46vw;
+  }
+  .dkm-ring-2 {
+    width: 128vw;
+    height: 128vw;
+    margin: -64vw 0 0 -64vw;
+  }
+  .dkm-ring-3 {
+    width: 170vw;
+    height: 170vw;
+    margin: -85vw 0 0 -85vw;
+  }
+  .dkm-mote {
+    box-shadow: 0 0 12px 3px rgba(185, 162, 255, 0.85);
+  }
   .dkm-yr {
     font-size: 96px;
     -webkit-text-stroke-width: 1px;
