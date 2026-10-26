@@ -20,7 +20,7 @@ function canvasEl(cls) {
 }
 
 /** Rajzciklus: méretezés, láthatóság, háttérfül, képkocka-korlát. draw(ctx, w, h, t, dt) */
-function run(canvas, host, draw, { dpr = 1.5, name = canvas.className } = {}) {
+function run(canvas, host, draw, { dpr = 1.5, name = canvas.className.split(' ')[0] } = {}) {
   const frames = (window.__DKM && window.__DKM.frames) || {}
   frames[name] = 0
   const ctx = canvas.getContext('2d')
