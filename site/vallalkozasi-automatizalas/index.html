@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Üzleti folyamatok automatizálása – DAEKON</title>
+<meta name="description" content="Ismétlődő kézi munka automatizálása: automatikus e-mailek, valós idejű riasztások, összesítők és adatátvitel a rendszereid között.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://daekon.hu/vallalkozasi-automatizalas/">
+<meta name="theme-color" content="#050505">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:site_name" content="DAEKON">
+<meta property="og:url" content="https://daekon.hu/vallalkozasi-automatizalas/">
+<meta property="og:title" content="Üzleti folyamatok automatizálása – DAEKON">
+<meta property="og:description" content="Ismétlődő kézi munka automatizálása: automatikus e-mailek, valós idejű riasztások, összesítők és adatátvitel a rendszereid között.">
+<meta property="og:image" content="https://daekon.hu/assets/img/og-v6.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/r/f6523765-3441-4caa-b402-ba68098fc648.woff2" as="font" type="font/woff2" crossorigin>
+<script src="/m2.js" defer></script>
+<style>@font-face{font-family:'Manrope';font-style:normal;font-weight:200 800;font-display:swap;src:url(/r/b131c888-5c17-4b80-b87f-d7362dde24a3.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:'Manrope';font-style:normal;font-weight:200 800;font-display:swap;src:url(/r/f6523765-3441-4caa-b402-ba68098fc648.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+.hgrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(28px,4vw,72px);align-items:center}
+.hshot{margin:0;border-radius:14px;overflow:hidden;border:1px solid #26232F;background:#0C0B10;box-shadow:0 40px 80px -40px rgba(108,72,255,.55)}
+.hshot .bar{display:flex;align-items:center;gap:6px;height:28px;padding:0 12px;background:#121118;border-bottom:1px solid #1F1D29}
+.hshot .bar i{width:8px;height:8px;border-radius:50%;background:#2B2836}
+.hshot .bar b{margin-left:10px;font:600 11px/1 monospace;color:#8E8D88}
+.hshot img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top}
+.hshot figcaption{padding:10px 14px;font-size:12.5px;color:#9E9D97;border-top:1px solid #1F1D29}
+@media (max-width:999px){.hgrid{grid-template-columns:1fr}}
+.rvs-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.rvs-l li{display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:14px;border:1px solid rgba(185,162,255,.16);background:#0A090E}
+.rvs-l blockquote{margin:0;flex:1}.rvs-l p{margin:0;font-size:15px;line-height:1.55;color:#E8E7E2}
+.rvs-l .who{font-size:12.5px;color:#9E9D97}.rvs-l .who b{color:#F5F5F2}
+.rvs .rvs-more{margin:16px 0 0 !important;font-size:14px !important;line-height:1.5 !important;color:#9E9D97 !important}.rvs .rvs-more a{color:#CBB9FF}.rvs .rvs-l p{font-size:15px !important;margin:0 !important}
+@media (max-width:899px){.rvs-l{grid-template-columns:1fr}}
+*{box-sizing:border-box}
+:root{--ink:#050507;--ink2:#0B0B10;--text:#F5F5F2;--muted:#B4B3AD;--faint:#8E8D88;--lilac:#B9A2FF;--line:#1E1E25;--g:max(clamp(16px,3vw,40px),calc((100vw - 1520px) / 2))}
+html{background:var(--ink);color:var(--text);font-family:Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-size-adjust:100%}
+body{margin:0;overflow-x:clip;background:radial-gradient(60% 50% at 80% 0%,rgba(108,72,255,.16),transparent 70%),var(--ink)}
+a{color:inherit;text-decoration:none}
+.hd{position:fixed;top:0;left:0;right:0;z-index:20;background:linear-gradient(180deg,rgba(5,5,7,.92),rgba(5,5,7,.7));-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(245,245,242,.06)}
+.hd-in{display:flex;align-items:center;gap:clamp(18px,2.6vw,40px);height:64px;padding:0 var(--g)}
+.mark{font-weight:700;letter-spacing:.32em;font-size:15px;min-height:44px;display:inline-flex;align-items:center}
+.mark b{color:#D4FF3A;font-weight:700}
+.nav{display:flex;gap:clamp(16px,2.2vw,34px);font-weight:600;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
+.nav a{display:inline-flex;align-items:center;min-height:44px;color:#C9C8C2}
+.nav a:hover,.nav a[aria-current]{color:var(--text)}
+.cta{margin-left:auto;display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:8px;background:var(--text);color:var(--ink);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.cta:hover{background:var(--lilac)}
+a:focus-visible{outline:2px solid var(--lilac);outline-offset:3px;border-radius:4px}
+@media (max-width:1023px){.hd-in{height:52px}.cta,.nav .dt{display:none}.nav{flex:1;justify-content:space-between;font-size:12px;letter-spacing:.07em;gap:12px}}
+@media (min-width:600px) and (max-width:1023px){.nav{flex:0 1 auto;margin-left:auto;gap:28px}}
+@media (max-width:599px){.mark{display:none}}
+@media (max-width:359px){.nav{font-size:11px;letter-spacing:.05em;gap:8px}}
+main{padding:clamp(96px,14vh,150px) var(--g) clamp(48px,8vh,96px);max-width:1520px;margin:0 auto}
+.crumb{font-size:12px;letter-spacing:.06em;color:var(--faint);margin:0 0 18px}
+.crumb a{color:var(--muted)}.crumb a:hover{color:var(--lilac)}
+.lbl{display:block;font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+h1{margin:12px 0 0;font-weight:700;font-size:clamp(32px,4.4vw,72px);line-height:1.02;letter-spacing:-.045em;max-width:16ch}
+h1 span{color:var(--lilac)}
+.lead{margin:22px 0 0;max-width:46ch;font-size:clamp(17px,1.4vw,21px);line-height:1.55;color:#D6D5CF}
+.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 20px;border-radius:10px;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.btn.p{background:var(--lilac);color:var(--ink)}.btn.p:hover{background:var(--text)}
+.btn.s{border:1px solid rgba(245,245,242,.22)}.btn.s:hover{border-color:var(--lilac)}
+section{margin-top:clamp(56px,9vh,104px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(20px,4vw,72px);padding-top:22px;border-top:1px solid var(--line)}
+section > header h2{margin:8px 0 0;font-size:clamp(22px,2.1vw,32px);line-height:1.1;letter-spacing:-.03em}
+.body p{margin:0 0 14px;font-size:16px;line-height:1.65;color:var(--muted);max-width:64ch}
+.body p strong{color:var(--text);font-weight:600}
+ul.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+ul.list li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.55}
+ul.list li b{color:var(--text);font-weight:700}
+ul.list li span{color:var(--muted)}
+ul.refs{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+ul.refs li a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
+ul.refs li a b{font-size:clamp(17px,1.4vw,21px);letter-spacing:-.02em}
+ul.refs li a > span:last-child{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;color:var(--faint);white-space:nowrap}
+ul.refs li a:hover b{color:var(--lilac)}
+ul.refs li em{display:block;font-style:normal;font-size:14px;color:var(--muted);margin-top:4px}
+ol.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:2.6em 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.55;color:var(--muted)}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--lilac);padding-top:.25em}
+ol.steps li b{color:var(--text)}
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{cursor:pointer;list-style:none;padding:16px 28px 16px 0;position:relative;font-weight:700;font-size:16px;line-height:1.4}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:4px;top:14px;color:var(--lilac);font-size:20px;transition:transform .3s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin:0 0 16px;font-size:15px;line-height:1.65;color:var(--muted);max-width:68ch}
+.rel{display:flex;flex-wrap:wrap;gap:8px 22px}
+.rel a{font-weight:600;font-size:15px;color:var(--muted);border-bottom:1px solid rgba(185,162,255,.35);padding:6px 0}
+.rel a:hover{color:var(--lilac)}
+.shot{margin:0;border-radius:12px;overflow:hidden;border:1px solid rgba(185,162,255,.18);background:var(--ink2)}
+.shot img{display:block;width:100%;height:auto}
+.shots{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(0,1fr);gap:16px;align-items:start}.shot-wide{margin:16px 0 0}.shot img{width:100%;height:auto;display:block}
+.note{font-size:13px;color:var(--faint);line-height:1.6;margin-top:10px}
+.end{margin-top:clamp(64px,10vh,120px);padding:clamp(28px,4vw,48px);border-radius:16px;border:1px solid rgba(185,162,255,.2);background:linear-gradient(135deg,rgba(108,72,255,.14),rgba(5,5,7,0) 60%)}
+.end h2{margin:0;font-size:clamp(26px,3vw,46px);letter-spacing:-.04em;line-height:1.05}
+.end h2 span{color:var(--lilac)}
+.end p{margin:14px 0 0;color:var(--muted);font-size:16px;line-height:1.6;max-width:56ch}
+.end .row a.t{font-weight:700;font-size:18px;padding:12px 0}
+footer{border-top:1px solid #1A1A20;padding:28px var(--g) 22px;display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;font-size:13.5px;color:var(--muted)}
+footer a{color:#C9C8C2;min-height:44px;display:inline-flex;align-items:center}
+footer a:hover{color:var(--lilac)}
+footer .sp{margin-left:auto}
+@media (max-width:899px){section{grid-template-columns:1fr}ul.list li{grid-template-columns:1fr;gap:4px}.shots{grid-template-columns:1fr}footer .sp{margin-left:0}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://daekon.hu/vallalkozasi-automatizalas/#webpage","url":"https://daekon.hu/vallalkozasi-automatizalas/","name":"Üzleti folyamatok automatizálása – DAEKON","description":"Ismétlődő kézi munka automatizálása: automatikus e-mailek, valós idejű riasztások, összesítők és adatátvitel a rendszereid között.","inLanguage":"hu-HU","isPartOf":{"@id":"https://daekon.hu/#website"},"breadcrumb":{"@id":"https://daekon.hu/vallalkozasi-automatizalas/#breadcrumb"}},{"@type":"Service","@id":"https://daekon.hu/vallalkozasi-automatizalas/#service","name":"Ami ismétlődik, az menjen magától.","serviceType":"Üzleti automatizálás","description":"Ismétlődő kézi munka automatizálása: automatikus e-mailek, valós idejű riasztások, összesítők és adatátvitel a rendszereid között.","url":"https://daekon.hu/vallalkozasi-automatizalas/","areaServed":{"@type":"Country","name":"Magyarország"},"provider":{"@id":"https://daekon.hu/#org"}},{"@type":"BreadcrumbList","@id":"https://daekon.hu/vallalkozasi-automatizalas/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Főoldal","item":"https://daekon.hu/"},{"@type":"ListItem","position":2,"name":"Szolgáltatások","item":"https://daekon.hu/#szolgaltatasok"},{"@type":"ListItem","position":3,"name":"Üzleti automatizálás","item":"https://daekon.hu/vallalkozasi-automatizalas/"}]},{"@type":"FAQPage","@id":"https://daekon.hu/vallalkozasi-automatizalas/#faq","mainEntity":[{"@type":"Question","name":"Mennyibe kerül?","acceptedAnswer":{"@type":"Answer","text":"Fix árlistám nincs, mert az ár a funkcióktól, az oldalak és az integrációk számától függ. A díjmentes egyeztetés után írásban kapsz pontos ajánlatot, amely nem kötelez semmire. Az oldal alján lévő ajánlatkérő segít összeszedni, mire van szükséged."}},{"@type":"Question","name":"Össze tudod kötni a már használt programjaimmal?","acceptedAnswer":{"@type":"Answer","text":"Ha a program biztosít hozzáférést (API-t vagy exportot), általában igen. Az egyeztetésen megnézem, mely rendszerek között érdemes adatot mozgatni, és mi a legegyszerűbb, megbízható megoldás."}},{"@type":"Question","name":"Kivel fogok egyeztetni?","acceptedAnswer":{"@type":"Answer","text":"Velem, a fejlesztővel. A DAEKON egyszemélyes stúdió: nincs projektmenedzser és nincs közvetítő, az első hívástól az élesítésig és utána is azzal beszélsz, aki a kódot írja."}}]}]}</script>
+</head>
+<body>
+<header class="hd"><div class="hd-in"><a class="mark" href="/" aria-label="DAEKON – főoldal">DAE<b>K</b>ON</a><nav class="nav" aria-label="Fő navigáció"><a href="/#work">Munkák</a><a href="/#szolgaltatasok">Szolgáltatások</a><a href="/#folyamat" class="dt">Folyamat</a><a href="/#rolam" class="dt">Rólam</a><a href="/#ai">Kapcsolat</a></nav><a class="cta" href="/#ai">Kérj ajánlatot →</a></div></header>
+<main>
+<p class="crumb"><a href="/">Főoldal</a> / <a href="/#szolgaltatasok">Szolgáltatások</a> / <span aria-current="page">Üzleti automatizálás</span></p>
+<span class="lbl">Üzleti automatizálás</span>
+<h1>Ami ismétlődik, <span>az menjen magától.</span></h1>
+<p class="lead">Automatikus értesítések, visszaigazolások, összesítők és adatátvitel: a rutinfeladatokat a rendszer végzi, te pedig arra figyelsz, ami valóban rád tartozik.</p>
+<div class="row"><a class="btn p" href="/#ai">Kérj ajánlatot →</a><a class="btn s" href="/#work">Referenciák</a></div>
+<section><header><span class="lbl">A probléma</span><h2>Mit érdemes automatizálni?</h2></header><div class="body"><p>Minden olyan lépést, amelyet naponta többször, ugyanúgy végzel el: visszaigazoló e-mail küldése, új megrendelés jelzése a kollégáknak, adatok átmásolása egyik rendszerből a másikba, napi vagy heti összesítő készítése. Ezek egyenként kevésnek tűnnek, együtt viszont <strong>órákat visznek el minden héten</strong>.</p></div></section>
+<section><header><span class="lbl">Megoldások</span><h2>Példák</h2></header><div class="body"><ul class="list"><li><b>Automatikus e-mailek</b><span>Visszaigazolás az ügyfélnek, belső értesítés a csapatnak, sikertelen küldésnél újrapróbálható kimenő levelekkel.</span></li><li><b>Valós idejű riasztás</b><span>Új rendelés vagy foglalás azonnali jelzése képernyőn és hanggal.</span></li><li><b>Állapotok és határidők</b><span>A rendszer követi, mi hol tart, és jelez, ha teendő van.</span></li><li><b>Adatátvitel</b><span>Űrlapok, rendelések és ügyféladatok átvitele a rendszereid között kézi másolás nélkül.</span></li></ul></div></section>
+<section><header><span class="lbl">Referencia</span><h2>Élesben</h2></header><div class="body"><p>A KIOSZ Pizza rendszerében minden új rendelésről automatikus e-mail megy a vendégnek és a csapatnak, a konyhai tableten pedig valós idejű, hangjelzéses riasztás jelenik meg. Ha a levélküldés átmenetileg nem érhető el, a levél nem vész el: újraküldhető marad.</p><ul class="refs"><li><a href="https://kioszpizza.hu/" target="_blank" rel="noopener"><span style="display:block"><b>KIOSZ Pizza Napoletana</b><em>Automatikus e-mailek és valós idejű rendelési riasztás</em></span><span>kioszpizza.hu ↗</span></a></li></ul></div></section>
+<section><header><span class="lbl">Példák</span><h2>Tipikus automatizálások ágazatonként</h2></header><div class="body"><ul class="list"><li><b>Étterem, rendelés</b><span>Új rendelésnél azonnali jelzés a konyhán, visszaigazoló e-mail a vendégnek, napi összesítő a lezárt rendelésekről.</span></li><li><b>Szolgáltató, időpontfoglalás</b><span>Foglalás-visszaigazolás és emlékeztető, lemondáskor a felszabadult időpont azonnal újra foglalható.</span></li><li><b>Építőipar, kivitelezés</b><span>A weboldalon beérkező ajánlatkérések egységes formában, a szükséges adatokkal (méret, helyszín, fotók) érkeznek, így kevesebb a visszakérdezés.</span></li><li><b>Iroda, ügyvitel</b><span>Ügyféladatok és dokumentumok egy helyen, határidő-figyelés, és a táblázatok közötti kézi másolás helyett automatikus adatátvitel.</span></li><li><b>Mitől függ az ár?</b><span>Az összekötendő rendszerektől és azok hozzáférhetőségétől (API, export), az automatizált lépések számától és attól, kell-e hozzá felület vagy elég a háttérben futó folyamat.</span></li></ul></div></section>
+<section class="rvs"><header><span class="lbl">Vélemények</span><h2>Akik már engem választottak</h2></header><div class="body"><ul class="rvs-l"><li><blockquote><p>A DAEKON munkáin látszik, hogy komolyan veszi, amit csinál. Igényes, modern és egyedi weboldalakat készít, nem csak összedob egy sablont. Az apró részletekre is odafigyel, és törekszik arra, hogy a végeredmény tényleg minőségi legyen. Aki profi weboldalt szeretne, annak bátran ajánlom!</p></blockquote><span class="who"><b>Dénes Karner</b> · Facebook-ajánlás</span></li><li><blockquote><p>Nagyon jó munkát végzett és tényleg odafigyel minden apróságra. Látom, mennyi időt és energiát fektet bele, hogy minden a lehető legjobban sikerüljön.</p></blockquote><span class="who"><b>Liszkai Rebeka</b> · Facebook-ajánlás</span></li><li><blockquote><p>100%-os elégedettség, tökéletesre csiszolta minden elvárásomat a honlapommal kapcsolatban.
+Csak ajánlani tudom!</p></blockquote><span class="who"><b>András Vilimszky</b> · Facebook-ajánlás</span></li></ul><p class="rvs-more"><a href="/#velemenyek">Összes vélemény a főoldalon →</a> · <a href="https://www.facebook.com/profile.php?id=61593734641713&amp;sk=reviews" target="_blank" rel="noopener">Ajánlások a Facebookon ↗</a></p></div></section>
+<section><header><span class="lbl">Folyamat</span><h2>Így dolgozom</h2></header><div class="body"><ol class="steps"><li><span><b>Megismerem az elképzelésedet.</b> Átbeszélem veled, mire van szüksége a vállalkozásodnak, hol vész el most idő vagy ügyfél, és mit érdemes fejleszteni.</span></li><li><span><b>Megtervezem.</b> Elkészítem a látványtervet és a működési tervet, így fejlesztés előtt pontosan látod, mi és hogyan fog működni.</span></li><li><span><b>Kifejlesztem.</b> Az elfogadott terv alapján, mérföldkövekre bontva építem meg a weboldalt vagy a rendszert. A haladást menet közben is láthatod.</span></li><li><span><b>Tesztelem.</b> Indulás előtt végigtesztelem a kritikus folyamatokat (rendelés, foglalás, űrlapok, adminfelület) mobilon és asztali gépen.</span></li><li><span><b>Élesítem.</b> Élesítem, felügyelem és frissítem a rendszert. A további fejlesztések ugyanarra a kódbázisra épülnek.</span></li></ol></div></section>
+<section><header><span class="lbl">Gyakori kérdések</span><h2>Kérdések és válaszok</h2></header><div class="body"><details><summary>Mennyibe kerül?</summary><p>Fix árlistám nincs, mert az ár a funkcióktól, az oldalak és az integrációk számától függ. A díjmentes egyeztetés után írásban kapsz pontos ajánlatot, amely nem kötelez semmire. Az oldal alján lévő ajánlatkérő segít összeszedni, mire van szükséged.</p></details><details><summary>Össze tudod kötni a már használt programjaimmal?</summary><p>Ha a program biztosít hozzáférést (API-t vagy exportot), általában igen. Az egyeztetésen megnézem, mely rendszerek között érdemes adatot mozgatni, és mi a legegyszerűbb, megbízható megoldás.</p></details><details><summary>Kivel fogok egyeztetni?</summary><p>Velem, a fejlesztővel. A DAEKON egyszemélyes stúdió: nincs projektmenedzser és nincs közvetítő, az első hívástól az élesítésig és utána is azzal beszélsz, aki a kódot írja.</p></details></div></section>
+<section><header><span class="lbl">Kapcsolódó</span><h2>További szolgáltatások</h2></header><div class="body"><div class="rel"><a href="/weboldalkeszites/">Weboldalkészítés</a><a href="/ettermi-rendelesi-rendszer/">Éttermi rendelési rendszer</a><a href="/idopontfoglalo-rendszer/">Időpontfoglaló rendszer</a><a href="/webshop-keszites/">Webáruház</a><a href="/egyedi-webalkalmazas/">Egyedi webalkalmazás</a><a href="/weboldal-karbantartas/">Karbantartás és továbbfejlesztés</a></div></div></section>
+<div class="end"><h2>Mesélj <span>a projektedről.</span></h2><p>Írd le pár mondatban, mit szeretnél megoldani. Általában egy munkanapon belül válaszolok, és egy rövid egyeztetés után írásos javaslatot kapsz a megoldásról, a költségekről és az ütemezésről.</p><div class="row"><a class="btn p" href="/#ai">Kérj ajánlatot →</a><a class="t" href="mailto:hello@daekon.hu">hello@daekon.hu</a><a class="t" href="tel:+36304539346">+36 30 453 9346</a></div></div>
+
+</main>
+<footer><a href="/">DAEKON – egyedi szoftverfejlesztés</a><a href="mailto:hello@daekon.hu">hello@daekon.hu</a><a href="tel:+36304539346">+36 30 453 9346</a><a href="/adatkezeles.html">Adatkezelés</a><a href="/impresszum.html">Impresszum</a><a href="/felhasznalasi-feltetelek.html">Felhasználási feltételek</a><span class="sp">© 2026 DAEKON · Csévharaszt</span></footer>
+</body>
+</html>

@@ -1,0 +1,85 @@
+{
+  "_leiras": "Csak valódi vélemény kerülhet ide, szó szerint, a tényleges forrással. Mezők: name (az értékelő neve, ahogy közzétehető), text (eredeti szöveg), date (ÉÉÉÉ-HH-NN), source (facebook | kozvetlen | google), recommends (csak Facebook: true/false), rating (csak Google: 1-5), url (link az eredeti értékeléshez, ha van), company (opcionális). Közvetlen (e-mailben/írásban kapott) véleménynél KÖTELEZŐ: consent: true és consent_date (ÉÉÉÉ-HH-NN), és az ügyfél hozzájárulását tartalmazó e-mailt meg kell őrizni; consent nélkül a weboldal nem jeleníti meg. Google-cégprofil jelenleg nincs (tulajdonosi döntés, 2026-10-12): google_write üresen marad, a Google-gomb ilyenkor nem jelenik meg. Negatív véleményt is fel kell venni, ha jóváhagyták; a lista nem válogatás. facebook_summary: a Facebook-oldal nyilvános összesítője szó szerint (text) és az ellenőrzés dátuma (checked); frissítendő, ha változik. date_approx: true, ha a forrás csak relatív időt mutatott (pl. „egy napja”); ilyenkor csak év és hónap jelenik meg. featured: true – a rács fölött teljes szélességben kiemelt vélemény (legfeljebb egy). grid: false – a vélemény valódi és megmarad az adatokban, de a főoldalon nem jelenik meg. Roland Kovács és Dénes Karner is ügyfél (tulajdonosi megerősítés, 2026-10-20), ezért mindkét ajánlás megjelenik. url: az egyes ajánlások saját Facebook-bejegyzése (az ajánlás dátumára mutató link), ellenőrizve 2026-10-20; ahol nincs ellenőrzött egyedi link, a Facebook-oldal értékelései fülére mutat.",
+  "updated": "2026-10-20",
+  "links": {
+    "google_write": "",
+    "facebook_reviews": "https://www.facebook.com/profile.php?id=61593734641713&sk=reviews"
+  },
+  "items": [
+    {
+      "name": "Dénes Karner",
+      "text": "A DAEKON munkáin látszik, hogy komolyan veszi, amit csinál. Igényes, modern és egyedi weboldalakat készít, nem csak összedob egy sablont. Az apró részletekre is odafigyel, és törekszik arra, hogy a végeredmény tényleg minőségi legyen. Aki profi weboldalt szeretne, annak bátran ajánlom!",
+      "date": "2026-10-16",
+      "source": "facebook",
+      "recommends": true,
+      "url": "https://www.facebook.com/denes.karner/posts/pfbid0HjyDqWW4JNU4o8f34tZGQmbRNfK1P5tX4htTmwfZUprrJnK8DANRFbFFxP3R4pDJl",
+      "date_approx": true
+    },
+    {
+      "name": "Liszkai Rebeka",
+      "text": "Nagyon jó munkát végzett és tényleg odafigyel minden apróságra. Látom, mennyi időt és energiát fektet bele, hogy minden a lehető legjobban sikerüljön.",
+      "date": "2026-10-15",
+      "source": "facebook",
+      "recommends": true,
+      "url": "https://www.facebook.com/rebeka.liszkai/posts/pfbid03wnfToCTyYkwNSo3pehRyC651TDqGT2GZqTU5RrhT7Hyfbz86LpxAgHrMFNNf4qkl",
+      "date_approx": true
+    },
+    {
+      "name": "András Vilimszky",
+      "text": "100%-os elégedettség, tökéletesre csiszolta minden elvárásomat a honlapommal kapcsolatban.\nCsak ajánlani tudom!",
+      "date": "2026-10-15",
+      "source": "facebook",
+      "recommends": true,
+      "url": "https://www.facebook.com/andras.vilimszky/posts/pfbid02NBbWQP2Ethd8AymTNdaWvpmCyBNcSqqQVkLb4Z6TiDLWToZW6cGo1i8N3aAFXcVYl",
+      "date_approx": true
+    },
+    {
+      "name": "Roland Kovács",
+      "text": "Nagyon igényes, modern és látványos weboldal! Különösen tetszik a letisztult megjelenés és az apró részletekre fordított figyelem. Az egész oldal profi, átgondolt benyomást kelt. Szerintem érdemes megnézni a munkáikat, szép referenciákat mutatnak be!",
+      "date": "2026-10-15",
+      "source": "facebook",
+      "recommends": true,
+      "url": "https://www.facebook.com/roland.kovacs.7965/posts/pfbid0PGB4DjPGH6zVHrR3XoQAvKwbigQBdgFZ58K3EYzSP2oecJcxuPMgvi1PXXRSfBRCl",
+      "date_approx": true
+    },
+    {
+      "name": "Jenőné Kocsis",
+      "text": "Roland nagyon kedves, segítőkész volt. A honlapot nagyon hamar elkészítette, és a szükséges változtatásokat is gyorsan megcsinálta. Ajánlom mindenkinek, ha gyorsan igényes honlapot szeretne.",
+      "date": "2026-10-15",
+      "source": "facebook",
+      "recommends": true,
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0eaNza2eJi1ePXokT1PgKoVBB1y9TLywgjDiTRi5GhoG9QxRmMd4qVwcQtuc9YHhol&id=61567334190570",
+      "date_approx": true
+    },
+    {
+      "name": "Bense Boglárka",
+      "text": "Roland nagyon kedves és türelmes volt, minden kérést maximalistán megoldott.",
+      "date": "2026-10-14",
+      "source": "facebook",
+      "recommends": true,
+      "url": "https://www.facebook.com/boglarka.bense/posts/pfbid034bgUvSeqR4BKmFWDM5vQGaYsHNuFcBz9WyxfFnj72rRLNVZwcoqNHsWLfqpVP4C5l",
+      "date_approx": true
+    },
+    {
+      "name": "Róbert Selyem",
+      "text": "Nagyon korrekt, meg bízható és kommunikatív!\nCsak ajánlani tudom mindenkinek!",
+      "date": "2026-10-13",
+      "source": "facebook",
+      "recommends": true,
+      "url": "https://www.facebook.com/robert.selyem.37/posts/pfbid0xgQYx4udkJX8t7mWvDj1np4YTFWfkKgo5eZbaVcB9EhWmsPKHExmDBNtZazipAdl",
+      "date_approx": true
+    },
+    {
+      "name": "András Halász",
+      "text": "Nagyon elégedett vagyok az elkészült weboldallal. Gyorsan elkészült, minden úgy lett megcsinálva, ahogy kértem, sőt még jobb is lett, mint amire számítottam. A módosításokkal sem volt semmi probléma. Csak ajánlani tudom!",
+      "date": "2026-10-08",
+      "source": "facebook",
+      "recommends": true,
+      "url": "https://www.facebook.com/halassz.andras/posts/pfbid02qcEvxEjgbLxJ1yPCyGEnNgEuKuj9F21VZKtpWYRKXobdSNVBomZPnzkRDC7FT5hTl"
+    }
+  ],
+  "facebook_summary": {
+    "text": "100% ajánlja · 8 ajánlás a Facebookon",
+    "checked": "2026-10-20"
+  }
+}

@@ -1,0 +1,120 @@
+/* DAEKON motion layer (dkm) – a dkm.js kiegészítő stílusai. Csak a .dkm osztály alatt hat (amit a szkript tesz ki). */
+
+/* 1) Munkák: elválasztó vonal kirajzolása + egérkövető fény a soron */
+.dkm .rl-row {
+  position: relative;
+}
+
+.dkm .rl-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, #b9a2ff, rgba(108, 72, 255, 0.55) 55%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dkm .rl-row.dkm-line::before {
+  animation: dkm-line 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes dkm-line {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  55% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dkm .rl-a:hover {
+    background:
+      radial-gradient(260px circle at var(--dkm-x, 50%) 50%, rgba(185, 162, 255, 0.13), transparent 70%),
+      rgba(185, 162, 255, 0.05);
+  }
+}
+
+/* 2) Így dolgozom: a lista felső vonala végigfut */
+.dkm .pc-list {
+  position: relative;
+}
+
+.dkm .pc-list::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, #d4ff3a, #b9a2ff 30%, rgba(108, 72, 255, 0.5) 70%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+.dkm .pc-list.dkm-run::before {
+  animation: dkm-run 1.8s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes dkm-run {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  70% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0.35;
+  }
+}
+
+/* 3) DAEKON OS: egyszeri fénycsík a kártyán */
+.dkm .os8-in {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.dkm .os8-in::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 35%, rgba(185, 162, 255, 0.16) 48%, rgba(212, 255, 58, 0.06) 52%, transparent 65%);
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.dkm .os8-in.dkm-sweep::after {
+  animation: dkm-sweep 1.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes dkm-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dkm .rl-row::before,
+  .dkm .pc-list::before,
+  .dkm .os8-in::after {
+    animation: none !important;
+    display: none;
+  }
+}

@@ -1,4 +1,4 @@
-name: GitHub Pages (látványterv)
+name: GitHub Pages (előnézet)
 
 on:
   push:
@@ -24,12 +24,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run typecheck
-      - run: npm run lint
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: out/daekon-motion-preview
   deploy:
     needs: build
     runs-on: ubuntu-latest

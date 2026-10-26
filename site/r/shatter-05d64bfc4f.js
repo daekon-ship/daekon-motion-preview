@@ -1,0 +1,62 @@
+/* DAEKON V8.2 computer disintegration – raw WebGL, no third-party code */
+var Ee=`
+precision highp float;
+attribute vec2 aUV;      // grain position inside the monitor box (0..1)
+attribute vec4 aSeed;    // x: dissolve order (0 first .. 1 last), y/z: random, w: source luminance
+uniform vec4 uRect;      // the (zooming) monitor box in CSS px: x, y, w, h
+uniform vec2 uView;      // viewport in CSS px
+uniform float uP, uT, uPx, uCell, uS0, uDot, uZ;   // uZ: zoom of the box since the hand-over
+uniform vec2 uMouse;
+varying vec2 vUV; varying float vT, vFree, vGlow, vA, vLum, vRatio;
+float ease(float t){ return t * t * (3.0 - 2.0 * t); }
+void main(){
+  vec2 px = uRect.xy + aUV * uRect.zw;
+  vec2 mc = uRect.xy + vec2(0.5, 0.42) * uRect.zw;     // centre of the screen part
+  vec2 vc = uView * 0.5;
+  // dissolve front
+  float start = uS0 + 0.004 + aSeed.x * 0.44 + aSeed.y * 0.04;              // the outline crumbles from the very first scroll, the code screen last (~50-90 %)
+  float t = clamp((uP - start) / 0.36, 0.0, 1.0);
+  float T = t * 1.7;
+  vec2 rel = px - mc; vec2 dir = rel / (length(rel) + 1.0);
+  float a1 = aSeed.y * 6.2831, a2 = aSeed.z * 6.2831;
+  vec3 v0 = vec3(dir * (50.0 + aSeed.z * 170.0) + vec2(cos(a1), sin(a1)) * (25.0 + aSeed.y * 85.0), (aSeed.z - 0.3) * 560.0);
+  vec3 off = v0 * T * mix(1.0, uZ, 0.7);                                      // the cloud grows with the fly-in
+  off.y -= 75.0 * T * T * (0.35 + aSeed.y);                                   // buoyancy: sparks rise like embers
+  vec2 q = px * 0.0085;
+  off.xy += vec2(sin(q.y * 1.7 + T * 2.2 + a2), cos(q.x * 1.9 - T * 1.8 + a1)) * 46.0 * T;   // turbulent field
+  float live = ease(min(t * 4.0, 1.0));
+  off.xy += vec2(sin(uT * 0.9 + a1), cos(uT * 0.7 + a2)) * 6.0 * live;           // keeps breathing while scrolling stops
+  vec3 p = vec3(px - vc + uMouse * (4.0 + aSeed.z * 14.0) * live, 0.0) + off;
+  float F = 1000.0, den = F - p.z - 180.0 * ease(clamp(uP, 0.0, 1.0)), s = F / max(den, 1.0);
+  vec2 sp = mix(px, p.xy * s + vc, smoothstep(0.0, 0.08, t));
+  gl_Position = vec4(sp.x / uView.x * 2.0 - 1.0, 1.0 - sp.y / uView.y * 2.0, 0.0, 1.0);
+  float free = smoothstep(0.0, 0.16, t);
+  float rest = uCell;
+  float dotSz = (2.4 + aSeed.w * 2.6 + aSeed.z * 1.6) * uPx * s * 2.6 * uDot * min(sqrt(uZ), 1.6);       // sprite incl. halo
+  float sz = mix(rest * 1.02, dotSz, free);
+  gl_PointSize = den < 30.0 ? 0.0 : min(sz, 96.0 * uPx);                   // cap the fill cost deep in the fly-in
+  vRatio = sz / max(rest, 0.001);
+  vUV = aUV; vT = t; vFree = free; vLum = aSeed.w;
+  vGlow = smoothstep(0.0, 0.05, t) * (1.0 - smoothstep(0.05, 0.35, t));
+  vA = (1.0 - smoothstep(0.45, 1.0, t)) * smoothstep(30.0, 240.0, den);
+}`,Te=`
+precision mediump float;
+varying vec2 vUV; varying float vT, vFree, vGlow, vA, vLum, vRatio;
+uniform sampler2D uTex;
+uniform vec2 uCellUV;
+uniform float uFade;
+void main(){
+  vec2 c = gl_PointCoord - 0.5;
+  vec4 src = texture2D(uTex, vUV + c * uCellUV * vRatio);                    // at rest: exactly its own piece of the snapshot
+  vec4 own = texture2D(uTex, vUV);
+  float r = length(c) * 2.0;
+  float core = exp(-r * r * 16.0), halo = exp(-r * r * 4.5) * 0.5;
+  vec3 vio = mix(vec3(0.60, 0.38, 1.0), vec3(0.88, 0.80, 1.0), vLum);
+  vec3 tint = mix(own.rgb * 1.5 + vio * 0.3, vio, smoothstep(0.04, 0.4, vT));   // the grain keeps its own colour for a moment
+  float bright = (0.55 + vLum * 0.65 + vGlow * 1.3) * (0.25 + 0.75 * own.a);     // grains from faint glow pixels stay dim
+  vec3 spark = tint * (core * 1.4 + halo) * bright;
+  float sparkA = clamp(core + halo, 0.0, 1.0) * 0.22;                        // low alpha: loose sparks add light
+  vec3 col = mix(src.rgb * src.a, spark, vFree);
+  float a = mix(src.a, sparkA, vFree);
+  gl_FragColor = vec4(col, a) * (vA * uFade);
+}`;async function Se(d){let n="";for(let s of document.styleSheets){let T;try{T=s.cssRules}catch{continue}for(let v of T){if(!(v instanceof CSSFontFaceRule))continue;let e=v.style.getPropertyValue("font-family").replace(/['"]/g,"").trim();if(!d.has(e))continue;let c=v.style.getPropertyValue("unicode-range");if(c&&!/U\+0000-00FF|U\+0100-/i.test(c))continue;let r=/url\(["']?([^"')]+)/.exec(v.style.getPropertyValue("src"));if(r)try{let p=await(await fetch(r[1])).blob(),R=await new Promise((M,m)=>{let y=new FileReader;y.onload=()=>M(y.result),y.onerror=m,y.readAsDataURL(p)});n+="@font-face{font-family:'"+e+"';font-weight:"+(v.style.getPropertyValue("font-weight")||400)+";src:url("+R+") format('woff2');"+(c?"unicode-range:"+c+";":"")+"}"}catch{}}}return n}function Re(d,n){let s=null,T="http://www.w3.org/2000/svg";return async(v,e)=>{let c=d.cloneNode(!0),r=new Set,p=[...d.querySelectorAll("*")],R=[...c.querySelectorAll("*")];p.forEach((w,h)=>{if(!n.some(A=>A===w||A.contains(w)))return;let u=getComputedStyle(w),x=R[h];/^(text|tspan)$/i.test(w.tagName)&&(x.style.fontFamily=u.fontFamily,x.style.fontSize=u.fontSize,x.style.fontWeight=u.fontWeight,x.style.letterSpacing=u.letterSpacing,x.style.fill=u.fill,r.add(u.fontFamily.split(",")[0].replace(/['"]/g,"").trim())),u.opacity!=="1"&&(x.style.opacity=u.opacity),u.visibility!=="visible"&&(x.style.visibility=u.visibility),u.display==="none"&&(x.style.display="none")});let M=[...d.children],m=[...c.children];M.forEach((w,h)=>{w.tagName.toLowerCase()!=="defs"&&(n.includes(w)?m[h].style.opacity="":m[h].remove())}),c.removeAttribute("style"),c.removeAttribute("class"),c.setAttribute("xmlns",T),c.setAttribute("width",v),c.setAttribute("height",e),s===null&&(s=await Se(r));let y=document.createElementNS(T,"style");y.textContent=s,c.insertBefore(y,c.firstChild);let S=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(c)],{type:"image/svg+xml"}));try{let w=new Image;w.src=S,await w.decode();let h=document.createElement("canvas");return h.width=v,h.height=e,h.getContext("2d").drawImage(w,0,0,v,e),h}finally{URL.revokeObjectURL(S)}}}function Me(d,n,s){let T=document.createElement("canvas");T.width=n,T.height=s;let v=T.getContext("2d",{willReadFrequently:!0});v.drawImage(d,0,0,n,s);let e=v.getImageData(0,0,n,s).data,c=n*s,r=new Float32Array(c),p=1e6;for(let t=0;t<c;t++)r[t]=e[t*4+3]>24?p:0;for(let t=0;t<s;t++)for(let i=0;i<n;i++){let a=t*n+i;if(!r[a])continue;let l=r[a];i>0&&(l=Math.min(l,r[a-1]+1)),t>0&&(l=Math.min(l,r[a-n]+1)),i>0&&t>0&&(l=Math.min(l,r[a-n-1]+1.41)),i<n-1&&t>0&&(l=Math.min(l,r[a-n+1]+1.41)),r[a]=l}for(let t=s-1;t>=0;t--)for(let i=n-1;i>=0;i--){let a=t*n+i;if(!r[a])continue;let l=r[a];i<n-1&&(l=Math.min(l,r[a+1]+1)),t<s-1&&(l=Math.min(l,r[a+n]+1)),i<n-1&&t<s-1&&(l=Math.min(l,r[a+n+1]+1.41)),i>0&&t<s-1&&(l=Math.min(l,r[a+n-1]+1.41)),r[a]=l}let R=1;for(let t=0;t<c;t++)r[t]<p&&r[t]>R&&(R=r[t]);let M=Math.max(3,Math.round(n/40)),m=Math.ceil(n/M)+1,y=new Float32Array(m*(Math.ceil(s/M)+1)).map(Math.random),S=[],w=[];for(let t=0;t<s;t++)for(let i=0;i<n;i++){let a=t*n+i,l=e[a*4+3];if(l<=24||l<110&&Math.random()>.35)continue;S.push((i+.5)/n,(t+.5)/s);let B=(e[a*4]+e[a*4+1]+e[a*4+2])/765,k=y[Math.floor(t/M)*m+Math.floor(i/M)];w.push(Math.min(1,Math.pow(r[a]/R,.7)*.55+k*.3+t/s*.15),Math.random(),Math.random(),Math.min(1,B*1.6))}let h=S.length/2,u=new Float32Array(h*2),x=new Float32Array(h*4),A=Array.from({length:h},(t,i)=>i);for(let t=h-1;t>0;t--){let i=Math.random()*(t+1)|0,a=A[t];A[t]=A[i],A[i]=a}return A.forEach((t,i)=>{u[i*2]=S[t*2],u[i*2+1]=S[t*2+1];for(let a=0;a<4;a++)x[i*4+a]=w[t*4+a]}),{uv:u,seed:x,n:h}}var oe=()=>new Promise(d=>setTimeout(d,0));async function Ae(d,n={}){let s=!!n.mobile,T=n.slot,v=n.hero;if(n.reduced||!T||!v||!n.svg||!n.mon||!n.mon.length)return null;let e=d.getContext("webgl",{alpha:!0,antialias:!1,premultipliedAlpha:!0,powerPreference:"high-performance"});if(!e)return null;let c=(o,f)=>{let E=e.createShader(o);if(e.shaderSource(E,f),e.compileShader(E),!e.getShaderParameter(E,e.COMPILE_STATUS))throw new Error(e.getShaderInfoLog(E));return E},r=e.createProgram();try{if(e.attachShader(r,c(e.VERTEX_SHADER,Ee)),e.attachShader(r,c(e.FRAGMENT_SHADER,Te)),e.linkProgram(r),!e.getProgramParameter(r,e.LINK_STATUS))throw new Error("link")}catch{return null}await oe();let p=Math.min(window.devicePixelRatio||1,s?1.25:1.5),R=n.box||T,M=Re(n.svg,n.mon),m=R.getBoundingClientRect(),y=o=>Math.min(4,2600/o.width);if(m.width<40)return null;let S=Math.round(m.width/(s?3:3.2)),w=Math.round(S*m.height/m.width),h;try{h=await M(Math.round(m.width*y(m)),Math.round(m.height*y(m)))}catch{return null}await oe();let u=Me(h,S,w);if(await oe(),!u.n)return null;e.useProgram(r);let x=[],A=(o,f,E)=>{let L=e.getAttribLocation(r,o);if(L<0)return;let V=e.createBuffer();x.push(V),e.bindBuffer(e.ARRAY_BUFFER,V),e.bufferData(e.ARRAY_BUFFER,f,e.STATIC_DRAW),e.enableVertexAttribArray(L),e.vertexAttribPointer(L,E,e.FLOAT,!1,0,0)};A("aUV",u.uv,2),A("aSeed",u.seed,4);let t=o=>e.getUniformLocation(r,o),i=t("uZ"),a=t("uRect"),l=t("uView"),B=t("uP"),k=t("uT"),ge=t("uPx"),pe=t("uCell"),ye=t("uMouse"),xe=t("uFade"),_=.03,O=.92;e.uniform2f(t("uCellUV"),1/S,1/w),e.uniform1i(t("uTex"),0),e.uniform1f(t("uS0"),_),e.uniform1f(t("uDot"),s?.78:1);let G=e.createTexture();e.bindTexture(e.TEXTURE_2D,G),[[e.TEXTURE_MIN_FILTER,e.LINEAR],[e.TEXTURE_MAG_FILTER,e.LINEAR],[e.TEXTURE_WRAP_S,e.CLAMP_TO_EDGE],[e.TEXTURE_WRAP_T,e.CLAMP_TO_EDGE]].forEach(([o,f])=>e.texParameteri(e.TEXTURE_2D,o,f));let ne=o=>{e.bindTexture(e.TEXTURE_2D,G),e.pixelStorei(e.UNPACK_PREMULTIPLY_ALPHA_WEBGL,!1),e.texImage2D(e.TEXTURE_2D,0,e.RGBA,e.RGBA,e.UNSIGNED_BYTE,o)};ne(h),e.enable(e.BLEND),e.blendFunc(e.ONE,e.ONE_MINUS_SRC_ALPHA),e.disable(e.DEPTH_TEST),e.clearColor(0,0,0,0);let D=performance.now(),z=!1,g=0,P=!1,b=m,re=m.width,ie=()=>{if(z||P)return;z=!0;let o=R.getBoundingClientRect(),f=performance.now();M(Math.max(2,Math.round(o.width*y(o))),Math.max(2,Math.round(o.height*y(o)))).then(E=>{P||(ne(E),D=f,b=o,re=o.width,U())}).catch(()=>{}).finally(()=>{z=!1})},X=()=>{let o=innerWidth,f=innerHeight;d.width=Math.round(o*p),d.height=Math.round(f*p),e.viewport(0,0,d.width,d.height),e.uniform2f(l,o,f),e.uniform1f(ge,p)};X();let q=0,Z=0,ae=0,se=0,le=o=>{ae=o.clientX/innerWidth-.5,se=o.clientY/innerHeight-.5};s||window.addEventListener("pointermove",le,{passive:!0});let Y=()=>{let o=v.getBoundingClientRect();return o.height<=innerHeight+2?0:Math.min(1,Math.max(0,-o.top/Math.max(innerHeight*.6,o.height-innerHeight)))},j=1,K=!1,C=Y()<.5,F=0,ce=performance.now(),$=!0,I=0,J=0,Q=ce,H=-1,W=0,ee=o=>{let f=Y(),E=Math.min(64,o-(ee.t||o));ee.t=o,f<_+.02?(C=!0,K=!1):g<=0&&C&&(K=!0),C&&f>=_&&g<=0&&o-D>=450&&ie();let L=C&&f>=_&&(o-D<450||g>0),V=K?260:90;return g=L?Math.min(1,g+E/V):Math.max(0,g-E/V),n.onProgress&&n.onProgress(f,L&&g>=1,C),g>0&&(b=R.getBoundingClientRect()),q+=(ae-q)*.06,Z+=(se-Z)*.06,e.uniform1f(i,Math.max(1,b.width/re)),e.uniform4f(a,b.left,b.top,b.width,b.height),e.uniform1f(pe,b.width/S*p),e.uniform1f(B,f),e.uniform1f(k,(o-ce)/1e3),e.uniform2f(ye,q*2,Z*2),e.uniform1f(xe,g*g*(3-2*g)),e.clear(e.COLOR_BUFFER_BIT),g>0&&f<O&&e.drawArrays(e.POINTS,0,Math.max(1,Math.round(u.n*j))),H=f,L},ue=o=>{if(P)return;F=requestAnimationFrame(ue);let f=o-Q;Q=o,g>0&&H<O&&++I>20&&I<100&&(f>30&&J++,I===99&&J>50&&(p>1?(p=1,X()):j>.25&&(j/=2),I=0,J=0)),!ee(o)&&g<=0&&!z||H>=O?++W>2&&N():W=0},U=()=>{!F&&$&&!document.hidden&&!P&&(Q=performance.now(),W=0,F=requestAnimationFrame(ue))},N=()=>{F&&cancelAnimationFrame(F),F=0},te=()=>{g<=0&&Y()<_+.02&&performance.now()-D>250&&ie()},fe=new IntersectionObserver(o=>{$=o[0].isIntersecting,$?U():N()});fe.observe(v);let de=()=>document.hidden?N():U();document.addEventListener("visibilitychange",de);let he=()=>{X(),U()};window.addEventListener("resize",he,{passive:!0});let me=()=>{te(),U()};window.addEventListener("scroll",me,{passive:!0}),["wheel","touchstart","keydown"].forEach(o=>window.addEventListener(o,te,{passive:!0}));let ve=o=>{o.preventDefault(),we()};d.addEventListener("webglcontextlost",ve),U(),d.dataset.live="1";function we(){P||(P=!0,N(),fe.disconnect(),["wheel","touchstart","keydown"].forEach(o=>window.removeEventListener(o,te)),document.removeEventListener("visibilitychange",de),window.removeEventListener("resize",he),window.removeEventListener("scroll",me),window.removeEventListener("pointermove",le),d.removeEventListener("webglcontextlost",ve),e.isContextLost()||(e.clear(e.COLOR_BUFFER_BIT),x.forEach(o=>e.deleteBuffer(o)),e.deleteTexture(G),e.deleteProgram(r)),delete d.dataset.live,n.onEnd&&n.onEnd())}return{destroy:we,count:u.n}}export{Ae as start};
