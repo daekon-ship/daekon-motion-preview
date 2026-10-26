@@ -488,6 +488,11 @@
   }
 }
 
+/* ================= VÉLEMÉNYEK: térbeli belépő ================= */
+.dkm .dkm-rv3d {
+  perspective: 1000px;
+}
+
 /* ================= DAEKON OS: 3D hálózat ================= */
 .dkm-osnet {
   position: absolute;

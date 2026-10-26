@@ -223,18 +223,20 @@ export function reviewsEnter() {
     if (!cards.length) return void (++n < 40 && setTimeout(tick, 250))
     cards.forEach((c, i) => {
       if (c.getBoundingClientRect().top < innerHeight * 0.95) return
+      // az oldal a kártya transform-ját rögzíti, ezért az egyedi transzformációs tulajdonságokat animáljuk
       c.style.opacity = '0'
-      c.style.transform = 'perspective(900px) rotateX(-28deg) translateY(80px) scale(0.92)'
+      c.style.translate = '0 80px'
+      c.style.rotate = 'x -28deg'
+      c.style.scale = '0.92'
       inView(
         c,
         () => {
           animate(
             c,
-            { opacity: 1, transform: 'perspective(900px) rotateX(0deg) translateY(0px) scale(1)' },
+            { opacity: 1, translate: '0px 0px', rotate: 'x 0deg', scale: '1' },
             { type: spring, stiffness: 110, damping: 17, delay: (i % 2) * 0.12 },
           ).then(() => {
-            c.style.opacity = ''
-            c.style.transform = ''
+            for (const k of ['opacity', 'translate', 'rotate', 'scale']) c.style[k] = ''
           })
         },
         { amount: 0.15 },
