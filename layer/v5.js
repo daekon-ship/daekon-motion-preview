@@ -128,7 +128,7 @@ export function servicesDepth() {
     }
     const stack = $('#szolgaltatasok .sv8-stack')
     const area = $('#szolgaltatasok .sv7')
-    if (stack && area) tilt(stack, { max: 16, area })
+    if (stack && area) tilt(stack, { max: 6, area })
   }
   return true
 }

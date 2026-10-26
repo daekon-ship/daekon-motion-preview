@@ -29,19 +29,19 @@ const CODE = {
   maint2: ['v1.0 → v1.1', '+ új modul', '~ frissítés', '✓ tesztelve'],
   maint3: ['npm update', 'npm audit'],
 }
+// asztalon két kártya a rétegköteg jobb oldalán: A = álló (telefon), B = fekvő; mobilon csak fekvő kép, kódkártya nélkül
 const DECKS = [
-  [['img', 'kiosz-huseg-d-sm'], ['img', 'kiosz-m'], ['code', 'custom']],
-  [['img', 'nefelejcs-d-sm'], ['img', 'gt-m'], ['img', 'mesegombolyag-d-sm']],
-  [['img', 'kiosz-d-sm'], ['img', 'kiosz-m2'], ['img', 'kiosz-fiok']],
-  [['code', 'booking'], ['img', 'kiosz-admin-m'], ['code', 'notify']],
-  [['code', 'auto1'], ['code', 'auto2'], ['code', 'auto3']],
-  [['code', 'maint1'], ['code', 'maint2'], ['code', 'maint3']],
+  [['img', 'kiosz-m'], ['img', 'kiosz-huseg-d-sm']],
+  [['img', 'gt-m'], ['img', 'nefelejcs-d-sm']],
+  [['img', 'kiosz-m2'], ['img', 'kiosz-d-sm']],
+  [['img', 'kiosz-admin-m'], ['code', 'booking']],
+  [['code', 'auto2'], ['code', 'auto1']],
+  [['code', 'maint2'], ['code', 'maint1']],
 ]
-// a három hely: 0 = hátsó fekvő (a rétegköteg mögött), 1 = elülső álló, 2 = elülső fekvő
+const PEEKS = ['kiosz-huseg-d-sm', 'nefelejcs-d-sm', 'kiosz-d-sm', 'kiosz-fiok', null, null]
 const SLOTS = [
-  { rz: -7, ry: 16, d: 0.55 },
-  { rz: 6, ry: -14, d: 1 },
-  { rz: 3, ry: 10, d: 0.8 },
+  { rz: 5, ry: -12, d: 1 },
+  { rz: -3, ry: -8, d: 0.8 },
 ]
 
 function cardContent([kind, key], slot) {
@@ -64,7 +64,7 @@ function cardContent([kind, key], slot) {
   return c
 }
 
-const away = (s, dir) => `translate3d(${dir * 60}px, 50px, -220px) rotateY(${s.ry + dir * 55}deg) rotateZ(${s.rz}deg) scale(0.75)`
+const away = (s) => `translate3d(40px, 30px, -160px) rotateY(${s.ry - 30}deg) rotateZ(${s.rz}deg) scale(0.85)`
 const home = (s) => `translate3d(0, 0, 0) rotateY(${s.ry}deg) rotateZ(${s.rz}deg) scale(1)`
 
 export function servicesDeck() {
@@ -75,23 +75,17 @@ export function servicesDeck() {
   const activeIndex = () => Math.max(0, rows.findIndex((r) => r.classList.contains('is-on')))
   let cur = -1
 
-  // ---- asztali nézet: lebegő kártyapakli a rétegköteg körül ----
-  let layers = null
+  // ---- asztali nézet: két lebegő kártya a rétegköteg jobb oldalán (a felirat fölött, a köteggel együtt marad) ----
+  let layer = null
   const setupDesk = () => {
-    if (layers || !side || !side.getClientRects().length) return
+    if (layer || !side || !side.getClientRects().length) return
     side.classList.add('dkm-deck6')
-    const back = el('div', 'dkm-sc-layer dkm-sc-back')
-    const front = el('div', 'dkm-sc-layer dkm-sc-front')
-    back.setAttribute('aria-hidden', 'true')
-    front.setAttribute('aria-hidden', 'true')
-    side.prepend(back)
-    side.append(front)
-    layers = [back, front, front]
+    layer = el('div', 'dkm-sc-layer dkm-sc-front')
+    layer.setAttribute('aria-hidden', 'true')
+    side.append(layer)
     if (finePointer() && !lite()) {
       const area = $('#szolgaltatasok .sv7') || side
-      tilt(back, { max: 7, area })
-      tilt(front, { max: 10, area })
-      // parallaxis: a kártyák mélységük szerint mozdulnak az egérrel
+      tilt(layer, { max: 6, area })
       area.addEventListener(
         'pointermove',
         (e) => {
@@ -102,25 +96,23 @@ export function servicesDeck() {
         { passive: true },
       )
     }
-    scroll((p) => side.style.setProperty('--sp', p.toFixed(4)), { target: list, offset: ['start end', 'end start'] })
   }
 
-  const swapDesk = (i, dir) => {
-    if (!layers) return
+  const swapDesk = (i) => {
+    if (!layer) return
+    for (const old of layer.querySelectorAll('.dkm-sc:not(.is-out)')) {
+      old.classList.add('is-out')
+      animate(old, { opacity: 0, transform: away(SLOTS[+old.dataset.slot]) }, { duration: 0.3, ease: [0.4, 0, 1, 1] }).then(() => old.remove())
+    }
     DECKS[i].forEach((item, slot) => {
       const s = SLOTS[slot]
-      const layer = layers[slot]
-      const old = layer.querySelector(`.dkm-sc-${slot}:not(.is-out)`)
-      if (old) {
-        old.classList.add('is-out')
-        animate(old, { opacity: 0, transform: away(s, -dir) }, { duration: 0.45, ease: [0.4, 0, 1, 1] }).then(() => old.remove())
-      }
       const c = cardContent(item, slot)
+      c.dataset.slot = slot
       c.style.setProperty('--d', s.d)
       c.style.opacity = '0'
-      c.style.transform = away(s, dir)
+      c.style.transform = away(s)
       layer.append(c)
-      animate(c, { opacity: 1, transform: home(s) }, { type: spring, stiffness: 140, damping: 15, mass: 0.9, delay: 0.12 + slot * 0.09 })
+      animate(c, { opacity: 1, transform: home(s) }, { type: spring, stiffness: 120, damping: 20, delay: 0.15 + slot * 0.08 })
     })
   }
 
@@ -129,29 +121,32 @@ export function servicesDeck() {
   const setupPeek = () => {
     if (peeks) return
     peeks = rows.map((r, i) => {
-      // mobilon fekvő kép (vagy kódkártya) a sor jobb alsó, üres sarkában – a linkek sora mellett
-      const item = DECKS[i].find(([k, key]) => k === 'img' && !/-m\d?$/.test(key)) || DECKS[i][0]
+      if (!PEEKS[i]) return null
+      // mobilon fekvő kép a sor jobb alsó, üres sarkában – a linkek sora mellett
       const p = el('div', 'dkm-peek6')
       p.setAttribute('aria-hidden', 'true')
-      p.append(cardContent(item, 'p'))
+      p.append(cardContent(['img', PEEKS[i]], 'p'))
       r.classList.add('dkm-peek-host')
       r.prepend(p)
       return p
     })
   }
 
-  const update = () => {
+  // gyors görgetésnél nem cserélgetjük a kártyákat minden soron: csak ha az aktív sor ~0,3 mp-ig változatlan
+  let timer = 0
+  const apply = () => {
     const i = activeIndex()
     if (i === cur) return
-    const dir = i > cur ? 1 : -1
     cur = i
     if (side && side.getClientRects().length) {
       setupDesk()
-      swapDesk(i, dir)
-    } else {
-      setupPeek()
-    }
-    if (peeks) peeks.forEach((p, k) => p.classList.toggle('is-on', k === i))
+      swapDesk(i)
+    } else setupPeek()
+    if (peeks) peeks.forEach((p, k) => p && p.classList.toggle('is-on', k === i))
+  }
+  const update = () => {
+    clearTimeout(timer)
+    timer = setTimeout(apply, cur < 0 ? 0 : 280)
   }
 
   // a képek csak a szekció közelében töltődnek be
@@ -165,7 +160,7 @@ export function servicesDeck() {
   )
   window.addEventListener('resize', () => {
     const desk = side && side.getClientRects().length
-    if ((desk && !layers) || (!desk && !peeks)) {
+    if ((desk && !layer) || (!desk && !peeks)) {
       cur = -1
       update()
     }
@@ -187,7 +182,7 @@ export function processBeam() {
 export function storyYears() {
   const card = $('#rolam .st8')
   const yr = card && card.querySelector('.dkm-yr-a')
-  if (!yr) return false
+  if (!yr || !yr.getClientRects().length) return false // mobilon nincs pörgő évszám
   yr.textContent = ''
   yr.classList.add('dkm-odo')
   el('span', 'dkm-odo-s', yr).textContent = '20'
@@ -210,7 +205,7 @@ export function storyYears() {
     },
     { target: card, offset: ['start 75%', 'end 45%'] },
   )
-  if (finePointer() && !lite()) tilt(yr, { max: 26, area: card })
+  if (finePointer() && !lite()) tilt(yr, { max: 10, area: card })
   return true
 }
 

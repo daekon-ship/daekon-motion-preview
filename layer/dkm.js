@@ -40,7 +40,7 @@ const MODULES = [
   ['processBeam', processBeam, '#folyamat .dkm-rail'],
   ['story', story, '#rolam .st8'],
   ['storyDepth', storyDepth, '#rolam .st8'],
-  ['storyYears', storyYears, '#rolam .dkm-yr-a'],
+  ['storyYears', storyYears, '#rolam .st8'],
   ['reviews', reviews, '#velemenyek', 'pointer'],
   ['reviewsDepth', reviewsDepth, '#velemenyek'],
   ['reviewsEnter', reviewsEnter, '#velemenyek'],
