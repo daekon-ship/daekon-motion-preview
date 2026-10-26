@@ -6,9 +6,22 @@
 import { build } from 'esbuild'
 import { cpSync, readFileSync, writeFileSync, rmSync, readdirSync, statSync, mkdirSync } from 'node:fs'
 import { join, extname } from 'node:path'
+import { execSync } from 'node:child_process'
 
 const BASE = process.env.BASE ?? '/daekon-motion-preview'
 const OUT = join('out', BASE.replace(/^\//, '') || '.')
+// verzió: a GitHub Actionsben a pusholt commit, helyben a HEAD (+local, ha van nem commitolt változás)
+const COMMIT = (() => {
+  if (process.env.GITHUB_SHA) return process.env.GITHUB_SHA.slice(0, 7)
+  try {
+    const head = execSync('git rev-parse --short=7 HEAD').toString().trim()
+    const dirty = execSync('git status --porcelain').toString().trim()
+    return dirty ? `${head}+local` : head
+  } catch {
+    return 'dev'
+  }
+})()
+const V = encodeURIComponent(COMMIT)
 
 rmSync('out', { recursive: true, force: true })
 mkdirSync(OUT, { recursive: true })
@@ -24,7 +37,7 @@ await build({
   legalComments: 'none',
 })
 // a réteg stílusai egy fájlban (kevesebb kérés): alap + szekciónkénti effektek
-writeFileSync(join(OUT, 'dkm.css'), ['layer/dkm.css', 'layer/sections.css'].map((f) => readFileSync(f, 'utf-8')).join('\n'))
+writeFileSync(join(OUT, 'dkm.css'), ['layer/dkm.css', 'layer/sections.css', 'layer/v5.css'].map((f) => readFileSync(f, 'utf-8')).join('\n'))
 
 const shim = readFileSync('preview/shim.js', 'utf-8')
 
@@ -62,8 +75,9 @@ for (const file of walk(OUT)) {
     text = text.replace(/<meta name="robots"[^>]*>\s*/gi, '')
     const head =
       '<meta name="robots" content="noindex, nofollow, noarchive">\n' +
-      `<script>${shim}</script>\n` +
-      (isHome ? '<link rel="stylesheet" href="/dkm.css">\n<script defer src="/dkm.js"></script>\n' : '')
+      `<script>window.__DKM_COMMIT=${JSON.stringify(COMMIT)};${shim}</script>\n` +
+      // ?v=<commit>: új verziónál a böngésző nem a gyorsítótárban lévő régi fájlt használja
+      (isHome ? `<link rel="stylesheet" href="/dkm.css?v=${V}">\n<script defer src="/dkm.js?v=${V}"></script>\n` : '')
     text = text.replace(/<head>/i, (m) => `${m}\n${head}`)
   }
   text = rewrite(text)
@@ -73,7 +87,14 @@ for (const file of walk(OUT)) {
   }
 }
 
+// vizuális bizonyítékok (képernyőképek, felvételek) – az előnézeten: /evidence/
+try {
+  cpSync('evidence', join(OUT, 'evidence'), { recursive: true })
+} catch {
+  /* nincs evidence mappa */
+}
+
 writeFileSync(join(OUT, 'robots.txt'), '# Előnézet – nem indexelendő. Az éles oldal: https://daekon.hu\nUser-agent: *\nDisallow: /\n')
 writeFileSync(join(OUT, '.nojekyll'), '')
 const kb = (statSync(join(OUT, 'dkm.js')).size / 1024).toFixed(1)
-console.log(`build: ${OUT} · ${changed} fájl módosítva · dkm.js ${kb} kB`)
+console.log(`build: ${OUT} · ${COMMIT} · ${changed} fájl módosítva · dkm.js ${kb} kB`)

@@ -196,7 +196,6 @@
 
 .dkm .dkm-proc .pc-s:not(.dkm-on) {
   opacity: 0.4;
-  translate: 0 8px;
 }
 
 .dkm .dkm-proc .pc-s.dkm-on .pc-n {

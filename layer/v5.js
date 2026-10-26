@@ -1,0 +1,349 @@
+// V5 – szemmel látható, térhatású effektek a meglévő elemeken (a dizájn, színek, betűk, elrendezés változatlan).
+// A V4 mérés szerint a korábbi effektek a képernyő 0,1–2%-át változtatták meg, mobilon szinte semmit:
+// ezek a modulok mobilon is látható, görgetéshez kötött mozgást adnak, asztalon egérre is reagálnak.
+import { inView, scroll, stagger } from 'motion'
+import { animate } from 'motion/mini'
+import { tilt, whileVisible } from './fx.js'
+import { $, finePointer } from './util.js'
+
+const all = (sel) => [...document.querySelectorAll(sel)].filter((el) => el.getClientRects().length)
+const lite = () => document.documentElement.classList.contains('dkm-lite')
+const el = (tag, cls, parent) => {
+  const n = document.createElement(tag)
+  if (cls) n.className = cls
+  if (parent) parent.append(n)
+  return n
+}
+
+// Egér-parallaxis: egyetlen rugalmas mutató, amit a rétegek mélységük szerint használnak (CSS-változók: --mx, --my)
+function pointerVars(area, target = area) {
+  if (!finePointer()) return
+  const tgt = { x: 0, y: 0 }
+  const cur = { x: 0, y: 0 }
+  let raf = 0
+  const frame = () => {
+    raf = 0
+    cur.x += (tgt.x - cur.x) * 0.06
+    cur.y += (tgt.y - cur.y) * 0.06
+    target.style.setProperty('--mx', cur.x.toFixed(4))
+    target.style.setProperty('--my', cur.y.toFixed(4))
+    if (Math.abs(tgt.x - cur.x) > 0.0005 || Math.abs(tgt.y - cur.y) > 0.0005) raf = requestAnimationFrame(frame)
+  }
+  area.addEventListener(
+    'pointermove',
+    (e) => {
+      const r = area.getBoundingClientRect()
+      tgt.x = (e.clientX - r.left) / r.width - 0.5
+      tgt.y = (e.clientY - r.top) / r.height - 0.5
+      if (!raf) raf = requestAnimationFrame(frame)
+    },
+    { passive: true },
+  )
+}
+
+// HERO – többrétegű, lassan mozgó háttérrendszer a meglévő háttér és a lila fények közé (a szöveg és a monitor előtte marad)
+export function heroField() {
+  const stage = $('#top > div')
+  if (!stage) return false
+  const bg = [...stage.children].find((c) => getComputedStyle(c).backgroundColor === 'rgb(5, 5, 5)')
+  const field = el('div', 'dkm-field')
+  field.setAttribute('aria-hidden', 'true')
+
+  // 1. réteg: széles fényszalagok (lassan úszó „aurora”)
+  const far = el('div', 'dkm-fl dkm-fl-far', field)
+  for (let i = 0; i < 3; i++) el('span', `dkm-ribbon dkm-ribbon-${i + 1}`, far)
+  // 2. réteg: nagy, lassan forgó fénygyűrűk (mélység)
+  const mid = el('div', 'dkm-fl dkm-fl-mid', field)
+  for (let i = 0; i < 3; i++) el('span', `dkm-ring dkm-ring-${i + 1}`, mid)
+  // 3. réteg: lebegő fénypontmező (közel – erősebb parallaxis)
+  const near = el('div', 'dkm-fl dkm-fl-near', field)
+  const count = matchMedia('(max-width: 699px)').matches ? 22 : 46
+  let seed = 7
+  const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280)
+  for (let i = 0; i < count; i++) {
+    const d = el('i', 'dkm-mote', near)
+    const size = 2 + rnd() * 4
+    d.style.cssText = `left:${(rnd() * 100).toFixed(1)}%;top:${(rnd() * 100).toFixed(1)}%;width:${size.toFixed(1)}px;height:${size.toFixed(1)}px;--t:${(9 + rnd() * 14).toFixed(1)}s;--o:${(-rnd() * 20).toFixed(1)}s;--a:${(0.35 + rnd() * 0.6).toFixed(2)}`
+    if (rnd() > 0.82) d.classList.add('is-lime')
+  }
+
+  if (bg) bg.after(field)
+  else stage.prepend(field)
+  whileVisible(field, 'is-live')
+  pointerVars(stage, field)
+  // görgetés: a rétegek mélység szerint eltérő sebességgel csúsznak (a hero 175vh hosszú, ragadós)
+  const hero = $('#top')
+  scroll((p) => field.style.setProperty('--sp', p.toFixed(4)), { target: hero, offset: ['start start', 'end start'] })
+  return true
+}
+
+// SZOLGÁLTATÁSOK – a sorok térben felbillenve érkeznek; asztalon a sor a kurzor felé dől és kiemelkedik,
+// a nagy sorszám ellentétesen mozdul (mélység), a bal oldali 3D rétegköteg erősebben dől
+export function servicesDepth() {
+  const list = $('#szolgaltatasok .sv7-list')
+  const rows = list ? [...list.querySelectorAll('.sv7-a')] : []
+  if (!rows.length) return false
+  list.classList.add('dkm-sv3d')
+  for (const r of rows) {
+    if (r.getBoundingClientRect().top > innerHeight) r.classList.add('dkm-flip')
+  }
+  inView(
+    list,
+    () => {
+      rows.forEach((r, i) => setTimeout(() => r.classList.remove('dkm-flip'), i * 110))
+    },
+    { amount: 0.05 },
+  )
+  // ha a lista már részben látszik, a többi sor egyenként, a nézetbe érve billen fel
+  for (const r of rows)
+    inView(
+      r,
+      () => {
+        r.classList.remove('dkm-flip')
+      },
+      { amount: 0.3 },
+    )
+
+  if (finePointer() && !lite()) {
+    for (const r of rows) {
+      const num = r.querySelector('.sv7-num')
+      let raf = 0
+      let last = null
+      r.addEventListener('pointermove', (e) => {
+        last = e
+        if (raf) return
+        raf = requestAnimationFrame(() => {
+          raf = 0
+          const b = r.getBoundingClientRect()
+          const nx = (last.clientX - b.left) / b.width - 0.5
+          const ny = (last.clientY - b.top) / b.height - 0.5
+          r.style.rotate = `${(-ny).toFixed(3)} ${(nx * 0.5).toFixed(3)} 0 ${(Math.hypot(ny, nx * 0.5) * 9).toFixed(2)}deg`
+          if (num) num.style.translate = `${(-nx * 46).toFixed(1)}px ${(-ny * 18).toFixed(1)}px`
+        })
+      })
+      r.addEventListener('pointerleave', () => {
+        r.style.rotate = ''
+        if (num) num.style.translate = ''
+      })
+    }
+    const stack = $('#szolgaltatasok .sv8-stack')
+    const area = $('#szolgaltatasok .sv7')
+    if (stack && area) tilt(stack, { max: 16, area })
+  }
+  return true
+}
+
+// ÍGY DOLGOZOM – izzó összekötő vonal, rajta futó jelcsomag; a lépések csomópontjai sorban kigyúlnak (görgetéshez kötve)
+export function processSignal() {
+  const list = $('#folyamat .pc-list')
+  const steps = list ? [...list.querySelectorAll('.pc-s')] : []
+  if (!steps.length) return false
+  const rail = el('div', 'dkm-rail')
+  rail.setAttribute('aria-hidden', 'true')
+  el('span', 'dkm-rail-fill', rail)
+  el('span', 'dkm-rail-packet', rail)
+  for (let i = 0; i < steps.length; i++) el('span', 'dkm-node', rail).style.setProperty('--k', i / (steps.length - 1))
+  list.before(rail)
+  list.parentElement.classList.add('dkm-proc-host')
+  list.classList.add('dkm-proc') // a lépések halványítás/kiemelés szabályai (sections.css)
+
+  const nodes = [...rail.querySelectorAll('.dkm-node')]
+  // a csomópontok pontosan a lépések fölé kerülnek (asztalon vízszintesen, mobilon függőlegesen)
+  const place = () => {
+    const vertical = matchMedia('(max-width: 899px)').matches
+    rail.classList.toggle('is-v', vertical)
+    const lr = list.getBoundingClientRect()
+    rail.style.top = `${list.offsetTop}px`
+    rail.style.left = `${list.offsetLeft}px`
+    rail.style.width = `${lr.width}px`
+    rail.style.height = `${lr.height}px`
+    // minden pozíció a sín saját téglalapjához képest (így a szülők eltolása nem csúsztatja el)
+    const rr = rail.getBoundingClientRect()
+    steps.forEach((s, i) => {
+      const sr = s.getBoundingClientRect()
+      const n = s.querySelector('.pc-n')
+      // a sorszám tényleges betűinek doboza (a .pc-n mobilon két sor magas rácscella)
+      let nr = sr
+      if (n) {
+        const range = document.createRange()
+        range.selectNodeContents(n)
+        nr = range.getBoundingClientRect()
+      }
+      nodes[i].style.setProperty('--pos', vertical ? `${(nr.top + nr.height / 2 - rr.top).toFixed(1)}px` : `${(sr.left - rr.left).toFixed(1)}px`)
+    })
+    const first = parseFloat(nodes[0].style.getPropertyValue('--pos'))
+    const lastPos = parseFloat(nodes[nodes.length - 1].style.getPropertyValue('--pos'))
+    rail.style.setProperty('--a', `${first}px`)
+    rail.style.setProperty('--b', `${lastPos}px`)
+    // mobilon a vonal a sorszám-oszlop és a szöveg közötti résben fut
+    const n0 = steps[0].querySelector('.pc-n')
+    const t0 = steps[0].querySelector('.pc-t')
+    if (vertical && n0) {
+      const right = n0.getBoundingClientRect().right
+      const textLeft = t0 ? t0.getBoundingClientRect().left : right + 12
+      rail.style.setProperty('--x', `${((right + textLeft) / 2 - rr.left - 1).toFixed(1)}px`)
+    }
+  }
+  place()
+  window.addEventListener('resize', place)
+  setTimeout(place, 1200) // betűtípus-betöltés utáni végleges méretek
+
+  scroll(
+    (p) => {
+      rail.style.setProperty('--p', p.toFixed(4))
+      nodes.forEach((n, i) => {
+        const on = p >= i / (nodes.length - 1) - 0.001
+        if (on && !n.classList.contains('is-on')) {
+          n.classList.add('is-on')
+          steps[i].classList.add('dkm-hit', 'dkm-on')
+        } else if (!on && n.classList.contains('is-on')) {
+          n.classList.remove('is-on')
+          steps[i].classList.remove('dkm-hit', 'dkm-on')
+        }
+      })
+    },
+    { target: list, offset: ['start 80%', 'end 50%'] },
+  )
+  return true
+}
+
+// A DAEKON TÖRTÉNETE – a kártya térben a helyére billen, mögötte mélységben úszó évszámok (2011 · 2026),
+// a jobb oldali szöveg mellett idővonal, amelynek csomópontjai olvasás közben kigyúlnak
+export function storyDepth() {
+  const card = $('#rolam .st8')
+  if (!card) return false
+  card.classList.add('dkm-st5')
+  card.parentElement.classList.add('dkm-persp-st')
+  const depth = el('div', 'dkm-st-depth')
+  depth.setAttribute('aria-hidden', 'true')
+  for (const [y, cls] of [
+    ['2011', 'dkm-yr dkm-yr-a'],
+    ['2026', 'dkm-yr dkm-yr-b'],
+  ])
+    el('span', cls, depth).textContent = y
+  card.prepend(depth)
+
+  const body = card.querySelector('.st8-body')
+  if (body) {
+    body.classList.add('dkm-thread')
+    const line = el('span', 'dkm-thread-line')
+    line.setAttribute('aria-hidden', 'true')
+    body.prepend(line)
+  }
+  scroll(
+    (p) => {
+      card.style.setProperty('--sp', p.toFixed(4))
+    },
+    { target: card, offset: ['start end', 'end start'] },
+  )
+  return true
+}
+
+// DAEKON OS – technológiai réteg: pásztázó vonal + pontmátrix a kártyán; széles kijelzőn áramkör-hálózat,
+// amelyen adatcsomagok futnak a központi DAEKON-mag felé (dekoráció, nem valós adat)
+export function osTech() {
+  const sec = $('#daekon-os')
+  const card = sec && sec.querySelector('.os8-in')
+  if (!card) return false
+  const scan = el('div', 'dkm-scan')
+  scan.setAttribute('aria-hidden', 'true')
+  card.append(scan)
+
+  const net = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  net.setAttribute('class', 'dkm-net')
+  net.setAttribute('viewBox', '0 0 400 400')
+  net.setAttribute('aria-hidden', 'true')
+  const paths = [
+    'M0 70 H120 Q140 70 150 90 L190 170 Q200 190 222 190 H300',
+    'M0 150 H90 Q110 150 125 165 L150 190 H300',
+    'M0 230 H110 Q130 230 145 215 L170 190 H300',
+    'M0 310 H120 Q140 310 150 290 L190 210 Q200 190 222 190 H300',
+    'M0 390 H160 Q180 390 190 370 L240 250 Q250 220 270 205 L300 190',
+  ]
+  let svg = ''
+  paths.forEach((d, i) => {
+    svg += `<path class="dkm-net-base" d="${d}"/><path class="dkm-net-pulse" style="--i:${i}" d="${d}" pathLength="100"/>`
+  })
+  svg +=
+    '<circle class="dkm-core-ring" cx="320" cy="190" r="44"/><circle class="dkm-core-ring dkm-core-ring2" cx="320" cy="190" r="62"/>' +
+    '<rect class="dkm-core" x="300" y="170" width="40" height="40" rx="9"/><rect class="dkm-core-pix" x="324" y="194" width="9" height="9"/>'
+  net.innerHTML = svg // statikus, saját jelölés – nincs külső vagy felhasználói adat
+  sec.classList.add('dkm-os5')
+  sec.append(net)
+  whileVisible(sec, 'is-live')
+
+  const place = () => {
+    const sr = sec.getBoundingClientRect()
+    const cr = card.getBoundingClientRect()
+    scan.style.setProperty('--scan-h', `${Math.round(cr.height)}px`)
+    const free = sr.right - cr.right
+    net.style.display = free > 300 ? '' : 'none'
+    net.style.left = `${cr.right - sr.left - 2}px`
+    net.style.top = `${cr.top - sr.top + cr.height / 2 - 200}px`
+    net.style.width = `${Math.min(free - 24, 420)}px`
+  }
+  place()
+  window.addEventListener('resize', place)
+  setTimeout(place, 1200)
+  return true
+}
+
+// FOOTER – görgetésre kinyíló fényhorizont, felkelő fénykúp, perspektivikus rácspadló; a zárómondat a görgetéssel gyullad ki
+export function footerStage() {
+  const ft = $('footer.ft')
+  if (!ft) return false
+  const stage = el('div', 'dkm-ft-stage')
+  stage.setAttribute('aria-hidden', 'true')
+  el('span', 'dkm-ft-horizon', stage)
+  el('span', 'dkm-ft-cone', stage)
+  el('span', 'dkm-ft-floor', stage)
+  ft.prepend(stage)
+  ft.classList.add('dkm-ft5')
+  whileVisible(ft, 'is-live')
+  const t = ft.querySelector('.ft-close-t')
+  if (t) {
+    t.classList.add('dkm-ignite') // a görgetéssel kigyulladó zárómondat váltja a V4-es egyszeri felragyogást
+    t.querySelector('.dkm-shine')?.classList.remove('dkm-shine')
+  }
+  scroll(
+    (p) => {
+      ft.style.setProperty('--f', p.toFixed(4))
+    },
+    { target: ft, offset: ['start end', 'end end'] },
+  )
+  return true
+}
+
+// VÉLEMÉNYEK – asztalon a kártya a kurzor felé dől (a meglévő emelkedés és fény mellé); mobilon görgetésre
+// a rács kártyái enyhe mélységből érkeznek (a meglévő belépő mellé, a szöveg mindig olvasható)
+export function reviewsDepth() {
+  let n = 0
+  const tick = () => {
+    const cards = all('#velemenyek .rv-card')
+    if (!cards.length) return void (++n < 40 && setTimeout(tick, 250))
+    const list = cards[0].parentElement
+    list.classList.add('dkm-rv3d')
+    if (finePointer() && !lite())
+      for (const c of cards) {
+        c.addEventListener('pointermove', (e) => {
+          const b = c.getBoundingClientRect()
+          const nx = (e.clientX - b.left) / b.width - 0.5
+          const ny = (e.clientY - b.top) / b.height - 0.5
+          c.style.rotate = `${(-ny).toFixed(3)} ${nx.toFixed(3)} 0 ${(Math.hypot(nx, ny) * 7).toFixed(2)}deg`
+        })
+        c.addEventListener('pointerleave', () => (c.style.rotate = ''))
+      }
+  }
+  tick()
+  return true
+}
+
+// Belépő a DAEKON OS modulokra és a hálózatra: a csomagok a modulok felvillanása után indulnak
+export function osIntro() {
+  const mods = all('.dkm-os-mods li')
+  if (!mods.length) return false
+  inView(mods[0].parentElement, () => {
+    animate(mods, { opacity: [0, 1], transform: ['translateY(10px) scale(0.92)', 'none'] }, { duration: 0.6, delay: stagger(0.09), ease: [0.16, 1, 0.3, 1] })
+  })
+  return true
+}

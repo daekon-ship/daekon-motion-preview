@@ -3,9 +3,9 @@ import { animate } from 'motion/mini'
 import { $, finePointer, shotFor } from './util.js'
 
 export function peek() {
-  if (!finePointer() || !matchMedia('(min-width: 900px)').matches) return
+  if (!finePointer() || !matchMedia('(min-width: 900px)').matches) return false
   const list = $('#work .rl-list')
-  if (!list) return
+  if (!list) return false
 
   const box = document.createElement('div')
   box.className = 'dkm-peek'

@@ -8,9 +8,9 @@ const all = (sel) => [...document.querySelectorAll(sel)].filter((el) => el.getCl
 
 // HERO – a meglévő lila fények mellé egy egérkövető fényfolt (screen keveréssel, a kompozíció változatlan)
 export function heroLight() {
-  if (!finePointer()) return
+  if (!finePointer()) return false
   const stage = $('#top > div')
-  if (!stage) return
+  if (!stage) return false
   const glow = document.createElement('div')
   glow.className = 'dkm-hero-glow'
   glow.setAttribute('aria-hidden', 'true')
@@ -52,33 +52,13 @@ export function services() {
   const rows = all('#szolgaltatasok .sv7-a')
   spotlight(rows)
   const stack = $('#szolgaltatasok .sv8-stack')
-  const area = $('#szolgaltatasok .sv7')
-  if (stack && area) {
-    stack.parentElement.classList.add('dkm-persp')
-    tilt(stack, { max: 7, area })
-  }
-}
-
-// ÍGY DOLGOZOM – görgetéshez kötve: a vonal a görgetéssel együtt rajzolódik, a lépések sorban kigyúlnak
-export function processScroll() {
-  const list = $('#folyamat .pc-list')
-  const steps = list ? [...list.querySelectorAll('.pc-s')] : []
-  if (!steps.length) return
-  list.classList.add('dkm-proc')
-  const n = steps.length
-  scroll(
-    (p) => {
-      list.style.setProperty('--dkm-p', p.toFixed(4))
-      steps.forEach((s, i) => s.classList.toggle('dkm-on', p >= (i + 0.35) / n))
-    },
-    { target: list, offset: ['start 85%', 'end 55%'] },
-  )
+  if (stack) stack.parentElement.classList.add('dkm-persp')
 }
 
 // A DAEKON TÖRTÉNETE – fénypont fut végig a 2011–2026 vonalon; a bekezdések olvasás közben egymás után kerülnek előtérbe
 export function story() {
   const card = $('#rolam .st8')
-  if (!card) return
+  if (!card) return false
   card.classList.add('dkm-st')
   spotlight([card])
   // a fénypont pontosan a vonal végpontjainak magasságában fusson
@@ -114,7 +94,7 @@ export function story() {
 
 // VÉLEMÉNYEK – asztalon finom emelkedés és egérkövető fény (mobilon a rács statikus marad)
 export function reviews() {
-  if (!finePointer()) return
+  if (!finePointer()) return false
   // a véleményeket az oldal később tölti be (reviews.json): megvárjuk, amíg a kártyák megjelennek
   let n = 0
   const tick = () => {
@@ -133,7 +113,7 @@ export function reviews() {
 // (a modulnevek szó szerint a meglévő leírásból; nem valós idejű adat, csak egyszeri felvillanás)
 export function os() {
   const card = $('#daekon-os .os8-in')
-  if (!card) return
+  if (!card) return false
   card.classList.add('dkm-os')
   whileVisible(card, 'is-live')
   const sec = $('#daekon-os')
@@ -163,7 +143,7 @@ export function os() {
 // KAPCSOLAT – az ajánlatkérő sáv: egérkövető fény és belépéskor egyszeri fénycsík
 export function contact() {
   const bar = $('#ai .ct-in > button')
-  if (!bar) return
+  if (!bar) return false
   bar.classList.add('dkm-bar')
   spotlight([bar])
   onEnter(bar, 'dkm-sweep-on', 0.6)
@@ -172,7 +152,7 @@ export function contact() {
 // FOOTER – görgetésre felkelő fény, a DAEKON-felirat vonalai kirajzolódnak, az „itt kezdődik.” egyszer felragyog
 export function footer() {
   const ft = $('footer.ft')
-  if (!ft) return
+  if (!ft) return false
   ft.classList.add('dkm-ft')
   scroll(
     (p) => {

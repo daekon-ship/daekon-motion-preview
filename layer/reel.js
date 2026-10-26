@@ -29,7 +29,7 @@ const SPRING_BACK = { type: spring, stiffness: 260, damping: 15 }
 export function reel({ still }) {
   const work = $('#work')
   const rows = work ? [...work.querySelectorAll('.rl-a')] : []
-  if (!work || !rows.length || document.querySelector('.dkm-reel')) return
+  if (!work || !rows.length || document.querySelector('.dkm-reel')) return false
 
   const sec = document.createElement('section')
   sec.className = 'dkm-reel'
@@ -108,7 +108,7 @@ export function reel({ still }) {
     deck.append(card)
     cards.push({ card, inner, d: L.d, r: L.r })
   }
-  if (!cards.length) return
+  if (!cards.length) return false
 
   const copy = document.createElement('div')
   copy.className = 'dkm-reel-copy'
@@ -136,7 +136,7 @@ export function reel({ still }) {
   stage.append(copy)
 
   work.parentNode.insertBefore(sec, work)
-  if (still) return
+  if (still) return true
   whileVisible(sec, 'is-live') // a lebegés csak akkor fut, amikor a szekció látszik
 
   // 1) belépés: mélység szerint, a közeliek előbb, rugóval

@@ -6,7 +6,7 @@ import { $ } from './util.js'
 
 export function navPill() {
   const nav = $('.v5-nav')
-  if (!nav) return
+  if (!nav) return false
   const pill = document.createElement('span')
   pill.className = 'dkm-pill'
   pill.setAttribute('aria-hidden', 'true')

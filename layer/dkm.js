@@ -10,49 +10,67 @@ import { magnetic } from './magnetic.js'
 import { navPill } from './nav.js'
 import { peek } from './peek.js'
 import { reel } from './reel.js'
-import { contact, footer, heroLight, os, processScroll, reviews, separators, services, story } from './sections.js'
+import { contact, footer, heroLight, os, reviews, separators, services, story } from './sections.js'
+import { footerStage, heroField, osTech, processSignal, reviewsDepth, servicesDepth, storyDepth } from './v5.js'
 
-// Gyenge eszköz felismerése: kevés mag/memória, vagy indításkor lassú képkockák → „lite” mód
-// (a folyamatos effektek – lebegés, vándorló fény, egérkövető hero-fény – kimaradnak, a belépők megmaradnak)
-function measureFrames(n = 30) {
-  return new Promise((resolve) => {
-    const t = []
-    let last = performance.now()
-    const loop = (now) => {
-      t.push(now - last)
-      last = now
-      if (t.length < n) requestAnimationFrame(loop)
-      else resolve(t.slice(3).reduce((a, b) => a + b, 0) / (t.length - 3))
-    }
-    requestAnimationFrame(loop)
-  })
-}
-
-async function isLowEnd() {
+// Gyenge eszköz felismerése csak hardveres jelekből (kevés mag/memória, adattakarékos mód) → „lite” mód:
+// a folyamatos effektek kimaradnak, a belépők megmaradnak. Képkocka-mérést szándékosan NEM használunk:
+// betöltéskor a hero WebGL-jelenete és a háttérlapok rajzolás-visszafogása miatt tévesen gyengének mérne.
+function isLowEnd() {
   const cores = navigator.hardwareConcurrency || 8
   const mem = navigator.deviceMemory || 8
-  if (cores <= 2 || mem <= 2 || (cores <= 4 && mem <= 4)) return true
-  return (await measureFrames()) > 40
+  const saveData = !!(navigator.connection && navigator.connection.saveData)
+  return saveData || cores <= 2 || mem <= 2 || (cores <= 4 && mem <= 4)
 }
 
-async function start() {
+function start() {
+  // Állapot a diagnosztikához (az előnézeti panel olvassa; élesben csak egy ártalmatlan objektum)
+  const status = (window.__DKM = { version: 5, active: false, reduced: false, lite: false, effects: [], failed: [], errors: 0 })
   if (window.__DKM_OFF) return
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
-  const lite = !reduced && (await isLowEnd())
+  const lite = !reduced && isLowEnd()
+  status.reduced = reduced
+  status.lite = lite
   document.documentElement.classList.add('dkm')
   if (lite) document.documentElement.classList.add('dkm-lite')
-  const all = { reel: () => reel({ still: false }), heroLight, navPill, separators, projects, peek, services, processScroll, story, reviews, osCard, os, contact, footer, magnetic }
+  const all = {
+    reel: () => reel({ still: false }),
+    heroField,
+    heroLight,
+    navPill,
+    separators,
+    projects,
+    peek,
+    services,
+    servicesDepth,
+    processSignal,
+    story,
+    storyDepth,
+    reviews,
+    reviewsDepth,
+    osCard,
+    os,
+    osTech,
+    contact,
+    footer,
+    footerStage,
+    magnetic,
+  }
   // hibakereséshez: ?dkmskip=reel,heroLight – az adott részek kihagyása
   const skip = new URLSearchParams(location.search).get('dkmskip')?.split(',') ?? []
   if (lite) skip.push('heroLight')
-  const parts = reduced ? [() => reel({ still: true })] : Object.entries(all).filter(([k]) => !skip.includes(k)).map(([, fn]) => fn)
-  for (const fn of parts) {
+  const parts = reduced ? [['reel', () => reel({ still: true })]] : Object.entries(all).filter(([k]) => !skip.includes(k))
+  for (const [name, fn] of parts) {
     try {
-      fn()
+      if (fn() !== false) status.effects.push(name)
+      else status.failed.push(name)
     } catch (e) {
-      console.warn('[dkm]', e)
+      status.failed.push(name)
+      status.errors++
+      console.warn('[dkm]', name, e)
     }
   }
+  status.active = !reduced
 }
 
 // Az oldalt a dc-runtime rajzolja ki a betöltés után: rövid időközönként megnézzük, megjelentek-e a célszekciók

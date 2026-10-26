@@ -11,7 +11,7 @@ const TARGETS = [
 const RADIUS = 90
 
 export function magnetic() {
-  if (!finePointer()) return
+  if (!finePointer()) return false
   for (const [sel, pull] of TARGETS) {
     for (const el of document.querySelectorAll(sel)) if (el.getClientRects().length) attach(el, pull)
   }

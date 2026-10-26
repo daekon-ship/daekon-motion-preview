@@ -7,7 +7,7 @@ import { $, EASE, belowFold, clear, hide } from './util.js'
 export function projects() {
   const list = $('#work .rl-list')
   const rows = list ? [...list.querySelectorAll('.rl-row')] : []
-  if (!rows.length) return
+  if (!rows.length) return false
 
   // egérkövető fény a sorokon (csak egérrel)
   if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -27,7 +27,7 @@ export function projects() {
     )
   }
 
-  if (!belowFold(list)) return
+  if (!belowFold(list)) return false
   hide(rows, 16)
   inView(
     list,
@@ -43,7 +43,7 @@ export function projects() {
 // 3) DAEKON OS: a kártya finoman felemelkedik, és egyetlen fénycsík fut végig rajta
 export function osCard() {
   const card = $('#daekon-os .os8-in')
-  if (!card || !belowFold(card)) return
+  if (!card || !belowFold(card)) return false
   hide([card], 24)
   inView(
     card,
