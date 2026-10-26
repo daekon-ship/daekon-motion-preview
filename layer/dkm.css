@@ -118,3 +118,297 @@
     display: none;
   }
 }
+
+/* ============ Projekt-showreel (sitereel-szerű lebegő kártyák + motion.dev rugós gesztusok) ============ */
+.dkm-reel {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid #1c1c1e;
+  background:
+    radial-gradient(60% 50% at 50% 55%, rgba(108, 72, 255, 0.14), transparent 70%),
+    #050505;
+}
+
+.dkm-reel-stage {
+  position: relative;
+  height: clamp(620px, 92vh, 860px);
+  perspective: 1200px;
+}
+
+.dkm-beam {
+  --bp: 0;
+  position: absolute;
+  left: 50%;
+  top: -10%;
+  bottom: -10%;
+  width: clamp(120px, 14vw, 220px);
+  transform: translateX(-50%) translateY(calc(var(--bp) * 60px));
+  background: linear-gradient(180deg, transparent, rgba(185, 162, 255, 0.16) 30%, rgba(212, 255, 58, 0.08) 60%, transparent);
+  filter: blur(28px);
+  pointer-events: none;
+}
+
+.dkm-deck {
+  position: absolute;
+  inset: 0;
+}
+
+.dkm-card {
+  --px: 0px;
+  --py: 0px;
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: var(--w);
+  transform: translate(-50%, -50%) translate3d(var(--px), var(--py), 0) rotate(var(--r));
+  filter: brightness(calc(0.55 + var(--d) * 0.45));
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform;
+}
+
+.dkm-card.is-grab {
+  cursor: grabbing;
+  filter: none;
+}
+
+.dkm-card-in {
+  display: block;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(245, 245, 242, 0.14);
+  background: #0b0b10;
+  box-shadow:
+    0 30px 60px -24px rgba(0, 0, 0, 0.9),
+    0 0 0 6px rgba(20, 19, 26, 0.85),
+    0 0 40px -10px rgba(108, 72, 255, 0.35);
+  transition:
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.dkm-card-in img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  pointer-events: none;
+}
+
+.dkm-card-name {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  max-width: calc(100% - 20px);
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(5, 5, 5, 0.78);
+  backdrop-filter: blur(6px);
+  font: 600 12px/1.2 'Manrope', system-ui, sans-serif;
+  color: #f5f5f2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+@media (hover: hover) {
+  .dkm-card:hover {
+    filter: none;
+    z-index: 25 !important;
+  }
+  .dkm-card:hover .dkm-card-in {
+    border-color: rgba(185, 162, 255, 0.55);
+    box-shadow:
+      0 40px 80px -24px rgba(0, 0, 0, 0.95),
+      0 0 0 6px rgba(28, 26, 38, 0.9),
+      0 0 60px -6px rgba(185, 162, 255, 0.55);
+  }
+  .dkm-card:hover .dkm-card-name {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.dkm-reel-copy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 20;
+  width: min(92vw, 820px);
+  transform: translate(-50%, -50%);
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.dkm-reel-copy > * {
+  pointer-events: auto;
+}
+
+.dkm-reel-k {
+  margin: 0;
+  font: 500 11px/1.4 'Geist Mono', ui-monospace, monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #b9a2ff;
+}
+
+.dkm-reel-h {
+  margin: 0;
+  display: grid;
+  font: 700 clamp(26px, 2.9vw, 44px) / 1.08 'Manrope', sans-serif;
+  letter-spacing: -0.045em;
+  color: #f5f5f2;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.85);
+}
+
+.dkm-reel-h2 {
+  color: #b9a2ff;
+}
+
+.dkm-reel-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 52px;
+  padding: 6px 6px 6px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 242, 0.2);
+  background: rgba(9, 8, 13, 0.75);
+  backdrop-filter: blur(8px);
+  font: 600 15px/1 'Manrope', sans-serif;
+  color: #f5f5f2;
+  text-decoration: none;
+  transition: border-color 0.3s ease;
+}
+
+.dkm-reel-cta:hover {
+  border-color: #b9a2ff;
+}
+
+.dkm-reel-cta:focus-visible {
+  outline: 2px solid #b9a2ff;
+  outline-offset: 3px;
+}
+
+.dkm-circ {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f5f5f2;
+  color: #050505;
+  font-size: 16px;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dkm-reel-cta:hover .dkm-circ {
+  transform: translateY(3px);
+}
+
+/* a felirat belépése (a kártyák a JS-ben, rugóval) */
+.dkm .dkm-reel-k,
+.dkm .dkm-reel-h,
+.dkm .dkm-reel-cta {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+}
+
+.dkm .dkm-reel-h {
+  transition-delay: 0.12s;
+}
+
+.dkm .dkm-reel-cta {
+  transition-delay: 0.24s;
+}
+
+.dkm .dkm-reel-k.is-in,
+.dkm .dkm-reel-h.is-in,
+.dkm .dkm-reel-cta.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 699px) {
+  .dkm-reel-stage {
+    height: 600px;
+  }
+  .dkm-card {
+    left: calc(var(--xm) * 1%);
+    top: calc(var(--ym) * 1%);
+    width: var(--wm);
+    transform: translate(-50%, -50%) translate3d(0, var(--py), 0) rotate(var(--rm));
+  }
+  .dkm-card[data-m='0'] {
+    display: none;
+  }
+  .dkm-card-name {
+    opacity: 1;
+    transform: none;
+    font-size: 11px;
+  }
+  .dkm-reel-h {
+    font-size: clamp(24px, 7vw, 30px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dkm .dkm-reel-k,
+  .dkm .dkm-reel-h,
+  .dkm .dkm-reel-cta {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ============ Lebegő előnézet a projektlistán ============ */
+.dkm-peek {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 90;
+  width: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(185, 162, 255, 0.45);
+  background: #0b0b10;
+  box-shadow:
+    0 30px 60px -20px rgba(0, 0, 0, 0.95),
+    0 0 50px -12px rgba(108, 72, 255, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.dkm-peek img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+}
+
+@media (min-width: 700px) and (max-width: 1099px) {
+  .dkm-card {
+    width: calc(var(--w) * 1.4);
+  }
+}
