@@ -119,12 +119,10 @@ export function servicesDepth() {
           const b = r.getBoundingClientRect()
           const nx = (last.clientX - b.left) / b.width - 0.5
           const ny = (last.clientY - b.top) / b.height - 0.5
-          r.style.rotate = `${(-ny).toFixed(3)} ${(nx * 0.5).toFixed(3)} 0 ${(Math.hypot(ny, nx * 0.5) * 9).toFixed(2)}deg`
           if (num) num.style.translate = `${(-nx * 46).toFixed(1)}px ${(-ny * 18).toFixed(1)}px`
         })
       })
       r.addEventListener('pointerleave', () => {
-        r.style.rotate = ''
         if (num) num.style.translate = ''
       })
     }

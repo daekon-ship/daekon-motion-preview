@@ -125,17 +125,20 @@ export function reel({ still }) {
   h.append(h1, h2)
   const cta = document.createElement('a')
   cta.className = 'dkm-reel-cta'
-  cta.href = '#work'
-  cta.textContent = 'Az összes projekt '
+  cta.href = '#ai'
+  cta.textContent = 'Hasonló rendszert szeretnél? Kérj ajánlatot '
   const circ = document.createElement('span')
   circ.className = 'dkm-circ'
   circ.setAttribute('aria-hidden', 'true')
-  circ.textContent = '↓'
+  circ.textContent = '→'
   cta.append(circ)
   copy.append(k, h, cta)
   stage.append(copy)
 
-  work.parentNode.insertBefore(sec, work)
+  // a tulajdonos kérésére (2026-10-26) a főoldalon csak a showreel mutatja a projekteket: a showreel a #work szekcióba
+  // kerül (így a „Munkák” menüpont és a „Munkáim megtekintése” gomb ide visz), a régi projektlistát a CSS elrejti
+  work.prepend(sec)
+  work.classList.add('dkm-work-reel')
   if (still) return true
   whileVisible(sec, 'is-live') // a lebegés csak akkor fut, amikor a szekció látszik
 

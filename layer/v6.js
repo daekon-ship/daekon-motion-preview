@@ -89,8 +89,8 @@ export function servicesDeck() {
     layers = [back, front, front]
     if (finePointer() && !lite()) {
       const area = $('#szolgaltatasok .sv7') || side
-      tilt(back, { max: 14, area })
-      tilt(front, { max: 22, area })
+      tilt(back, { max: 7, area })
+      tilt(front, { max: 10, area })
       // parallaxis: a kártyák mélységük szerint mozdulnak az egérrel
       area.addEventListener(
         'pointermove',
@@ -129,12 +129,11 @@ export function servicesDeck() {
   const setupPeek = () => {
     if (peeks) return
     peeks = rows.map((r, i) => {
-      const item = DECKS[i].find(([k, key]) => k === 'img' && /-m\d?$/.test(key)) || DECKS[i][0]
+      // mobilon fekvő kép (vagy kódkártya) a sor jobb alsó, üres sarkában – a linkek sora mellett
+      const item = DECKS[i].find(([k, key]) => k === 'img' && !/-m\d?$/.test(key)) || DECKS[i][0]
       const p = el('div', 'dkm-peek6')
       p.setAttribute('aria-hidden', 'true')
-      const c = cardContent(item, 'p')
-      if (item[0] === 'img' && /-m\d?$/.test(item[1])) p.classList.add('is-tall')
-      p.append(c)
+      p.append(cardContent(item, 'p'))
       r.classList.add('dkm-peek-host')
       r.prepend(p)
       return p

@@ -5,10 +5,9 @@
 // - ha valamelyik rész hibázik, a többi és az oldal eredeti tartalma érintetlen marad;
 // - az animációk végén nem marad inline stílus az oldal saját elemein.
 import { $, finePointer } from './util.js'
-import { osCard, projects } from './enter.js'
+import { osCard } from './enter.js'
 import { magnetic } from './magnetic.js'
 import { navPill } from './nav.js'
-import { peek } from './peek.js'
 import { reel } from './reel.js'
 import { contact, footer, heroLight, os, reviews, separators, services, story } from './sections.js'
 import { footerStage, heroField, osTech, processSignal, reviewsDepth, servicesDepth, storyDepth } from './v5.js'
@@ -34,8 +33,6 @@ const MODULES = [
   ['heroLight', heroLight, '#top > div', 'pointer'],
   ['navPill', navPill, '.v5-nav'],
   ['separators', separators, 'footer.ft'],
-  ['projects', projects, '#work .rl-row'],
-  ['peek', peek, '#work .rl-row', 'pointer'],
   ['services', services, '#szolgaltatasok .sv7-a'],
   ['servicesDepth', servicesDepth, '#szolgaltatasok .sv7-a'],
   ['servicesDeck', servicesDeck, '#szolgaltatasok .sv7-a'],

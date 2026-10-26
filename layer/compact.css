@@ -1,0 +1,124 @@
+/* Kompakt tipográfia és térközök – a tulajdonos kérésére (2026-10-26: „minden betű túl nagy, sokkal kompaktabb”).
+   Csak a betűméreteket, sormagasságot és függőleges térközöket szűkíti; színek, betűtípusok, szövegek, elrendezés változatlan.
+   A `.dkm` osztályhoz kötött, így a ?dkm=0 összehasonlítás az eredeti éles állapotot mutatja. */
+
+/* „Munkáim” lista: a főoldalon csak a showreel mutatja a projekteket (a #work szekció a showreelt tartalmazza) */
+.dkm .dkm-work-reel {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.dkm .dkm-work-reel > :not(.dkm-reel) {
+  display: none !important;
+}
+
+/* ---------- címsorok ---------- */
+.dkm h1.h7 {
+  font-size: clamp(24px, 1.5vw + 9px, 31px) !important;
+}
+
+.dkm .v4-h,
+.dkm .ct-h,
+.dkm .os8-h,
+.dkm .pc-h,
+.dkm .fq6-h,
+.dkm .dkm-reel-h {
+  font-size: clamp(21px, 1.3vw + 8px, 28px) !important;
+  line-height: 1.12 !important;
+}
+
+.dkm .dkm-reel-h2 {
+  font-size: clamp(14px, 0.4vw + 9px, 15px) !important;
+}
+
+.dkm .sv7-t {
+  font-size: clamp(16.5px, 0.5vw + 11px, 19px) !important;
+}
+
+.dkm .sv7-num {
+  font-size: clamp(22px, 1.4vw + 10px, 32px) !important;
+}
+
+.dkm .sv8-cap-t {
+  font-size: 16px !important;
+}
+
+.dkm .pc-t,
+.dkm .pc-t * {
+  font-size: clamp(15px, 0.3vw + 11px, 16px) !important;
+}
+
+.dkm .st8-year {
+  font-size: clamp(26px, 1.6vw + 14px, 38px) !important;
+}
+
+.dkm .st8-h {
+  font-size: clamp(16.5px, 0.4vw + 12px, 19px) !important;
+}
+
+.dkm .st8-key {
+  font-size: clamp(15px, 0.3vw + 11px, 16.5px) !important;
+}
+
+.dkm .st8-tag {
+  font-size: clamp(14px, 0.3vw + 10px, 15.5px) !important;
+}
+
+.dkm .ct-v {
+  font-size: clamp(16.5px, 0.4vw + 12px, 19px) !important;
+}
+
+.dkm .ft-close-t {
+  font-size: clamp(19px, 0.9vw + 10px, 24px) !important;
+}
+
+.dkm #gyik summary {
+  font-size: clamp(14.5px, 0.2vw + 12px, 15.5px) !important;
+}
+
+/* ---------- folyószöveg ---------- */
+.dkm .sw-lead,
+.dkm .sv7-d,
+.dkm .os8-p,
+.dkm .me-p,
+.dkm .st8-lead,
+.dkm .st8-body p:not(.st8-key),
+.dkm .rv-card p,
+.dkm #gyik p,
+.dkm #ai p,
+.dkm .pc-d,
+.dkm .pc-d * {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+
+/* Az oldal a sablon-kitöltött szövegeket (.sc-interp – pl. a folyamat lépései, címkék) egységesen 17–23 px-re állítja
+   (#dc-root .sc-interp … !important): ettől lett „minden betű túl nagy”. Itt a szülő elem méretét öröklik. */
+html.dkm #dc-root .sc-interp {
+  font-size: inherit !important;
+}
+
+/* a sablon-szövegek közül néhány cím a szülője méreténél nagyobbat kér */
+html.dkm #dc-root .pc-n {
+  font-size: 13px !important;
+}
+
+html.dkm #dc-root .ct-sub {
+  font-size: 15px !important;
+}
+
+html.dkm #dc-root .ai-mode {
+  font-size: clamp(15px, 0.3vw + 11px, 16.5px) !important;
+}
+
+/* ---------- függőleges térközök: szorosabb ritmus ---------- */
+html.dkm #ai .ct-in {
+  padding-top: 44px !important;
+}
+
+@media (min-width: 900px) {
+  html.dkm #velemenyek {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+}

@@ -204,9 +204,6 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .dkm .dkm-sv3d .sv7-a:hover {
-    translate: 0 0 34px;
-  }
   .dkm .dkm-sv3d .sv7-a:hover .sv7-num {
     color: rgba(185, 162, 255, 0.55);
   }
