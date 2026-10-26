@@ -20,7 +20,9 @@ function canvasEl(cls) {
 }
 
 /** Rajzciklus: méretezés, láthatóság, háttérfül, képkocka-korlát. draw(ctx, w, h, t, dt) */
-function run(canvas, host, draw, { dpr = 1.5 } = {}) {
+function run(canvas, host, draw, { dpr = 1.5, name = canvas.className } = {}) {
+  const frames = (window.__DKM && window.__DKM.frames) || {}
+  frames[name] = 0
   const ctx = canvas.getContext('2d')
   const fps = lite() ? 30 : 60
   let w = 0
@@ -50,6 +52,7 @@ function run(canvas, host, draw, { dpr = 1.5 } = {}) {
     last = now
     ctx.clearRect(0, 0, w, h)
     draw(ctx, w, h, (now - t0) / 1000, dt)
+    frames[name]++ // a diagnosztika ebből látja, hogy a jelenet ténylegesen rajzol
   }
   const kick = () => {
     if (!raf && visible && !document.hidden) {

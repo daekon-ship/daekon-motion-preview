@@ -4,7 +4,7 @@
 // - csökkentett mozgás beállításnál nem animál (a showreel ilyenkor álló képként jelenik meg);
 // - ha valamelyik rész hibázik, a többi és az oldal eredeti tartalma érintetlen marad;
 // - az animációk végén nem marad inline stílus az oldal saját elemein.
-import { $ } from './util.js'
+import { $, finePointer } from './util.js'
 import { osCard, projects } from './enter.js'
 import { magnetic } from './magnetic.js'
 import { navPill } from './nav.js'
@@ -25,73 +25,122 @@ function isLowEnd() {
   return saveData || cores <= 2 || mem <= 2 || (cores <= 4 && mem <= 4)
 }
 
+// Modulonként: [futtató, a cél-szekció szelektora]. Minden modul csak a SAJÁT szekciójára vár, így egy hiányzó
+// vagy késve megjelenő szekció nem akadályozza a többi indulását. A sorrend számít (pl. processBeam a processSignal után).
+const MODULES = [
+  ['reel', () => reel({ still: false }), '#work .rl-a'],
+  ['heroField', heroField, '#top > div'],
+  ['heroWorld', heroWorld, '#top > div'],
+  ['heroLight', heroLight, '#top > div', 'pointer'],
+  ['navPill', navPill, '.v5-nav'],
+  ['separators', separators, 'footer.ft'],
+  ['projects', projects, '#work .rl-row'],
+  ['peek', peek, '#work .rl-row', 'pointer'],
+  ['services', services, '#szolgaltatasok .sv7-a'],
+  ['servicesDepth', servicesDepth, '#szolgaltatasok .sv7-a'],
+  ['servicesDeck', servicesDeck, '#szolgaltatasok .sv7-a'],
+  ['processSignal', processSignal, '#folyamat .pc-s'],
+  ['processBeam', processBeam, '#folyamat .dkm-rail'],
+  ['story', story, '#rolam .st8'],
+  ['storyDepth', storyDepth, '#rolam .st8'],
+  ['storyYears', storyYears, '#rolam .dkm-yr-a'],
+  ['reviews', reviews, '#velemenyek', 'pointer'],
+  ['reviewsDepth', reviewsDepth, '#velemenyek'],
+  ['reviewsEnter', reviewsEnter, '#velemenyek'],
+  ['osCard', osCard, '#daekon-os .os8-in'],
+  ['os', os, '#daekon-os .os8-in'],
+  ['osTech', osTech, '#daekon-os .os8-in'],
+  ['osNetwork', osNetwork, '#daekon-os .os8-in'],
+  ['contact', contact, '#ai'],
+  ['footer', footer, 'footer.ft'],
+  ['footerStage', footerStage, 'footer.ft'],
+  ['footerFloor', footerFloor, 'footer.ft .dkm-ft-stage'],
+  ['magnetic', magnetic, 'body', 'pointer'],
+]
+
 function start() {
-  // Állapot a diagnosztikához (az előnézeti panel olvassa; élesben csak egy ártalmatlan objektum)
-  const status = (window.__DKM = { version: 6, active: false, reduced: false, lite: false, effects: [], failed: [], errors: 0 })
+  // Állapot a diagnosztikához (az előnézeti panel olvassa; élesben csak egy ártalmatlan objektum).
+  // started: elindult · noop: lefutott, de nem volt dolga (pl. már a képernyőn volt) · skipped: érintőképernyőn nem értelmezett
+  // waiting/notFound: a szekciója (még) nincs a DOM-ban · failed: hibát dobott (errorMessages)
+  const status = (window.__DKM = {
+    version: 6,
+    loaded: true,
+    active: false,
+    reduced: false,
+    lite: false,
+    effects: [],
+    started: [],
+    noop: [],
+    skipped: [],
+    waiting: [],
+    notFound: [],
+    failed: [],
+    errors: 0,
+    errorMessages: [],
+    found: {},
+    frames: {},
+  })
   if (window.__DKM_OFF) return
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+  const systemReduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+  // __DKM_FORCE_MOTION: csak az előnézet állítja be, ha a látogató ott kifejezetten kéri (egy oldalbetöltésre)
+  const reduced = systemReduced && !window.__DKM_FORCE_MOTION
   const lite = !reduced && isLowEnd()
   status.reduced = reduced
+  status.systemReduced = systemReduced
   status.lite = lite
   document.documentElement.classList.add('dkm')
   if (lite) document.documentElement.classList.add('dkm-lite')
-  const all = {
-    reel: () => reel({ still: false }),
-    heroField,
-    heroWorld,
-    heroLight,
-    navPill,
-    separators,
-    projects,
-    peek,
-    services,
-    servicesDepth,
-    servicesDeck,
-    processSignal,
-    processBeam,
-    story,
-    storyDepth,
-    storyYears,
-    reviews,
-    reviewsDepth,
-    reviewsEnter,
-    osCard,
-    os,
-    osTech,
-    osNetwork,
-    contact,
-    footer,
-    footerStage,
-    footerFloor,
-    magnetic,
-  }
   // hibakereséshez: ?dkmskip=reel,heroLight – az adott részek kihagyása
   const skip = new URLSearchParams(location.search).get('dkmskip')?.split(',') ?? []
   if (lite) skip.push('heroLight')
-  const parts = reduced ? [['reel', () => reel({ still: true })]] : Object.entries(all).filter(([k]) => !skip.includes(k))
-  for (const [name, fn] of parts) {
+  const fine = finePointer()
+  const pending = reduced
+    ? [['reel', () => reel({ still: true }), '#work .rl-a']]
+    : MODULES.filter(([name, , , req]) => {
+        if (skip.includes(name)) return false
+        if (req === 'pointer' && !fine) {
+          status.skipped.push(name)
+          return false
+        }
+        return true
+      })
+  status.active = !reduced
+  status.waiting = pending.map(([n]) => n)
+
+  const runOne = ([name, fn]) => {
     try {
-      if (fn() !== false) status.effects.push(name)
-      else status.failed.push(name)
+      const r = fn()
+      if (r === false) status.noop.push(name)
+      else {
+        status.started.push(name)
+        status.effects.push(name)
+      }
     } catch (e) {
       status.failed.push(name)
       status.errors++
+      status.errorMessages.push(`${name}: ${e && e.message ? e.message : e}`)
       console.warn('[dkm]', name, e)
     }
   }
-  status.active = !reduced
-}
-
-// Az oldalt a dc-runtime rajzolja ki a betöltés után: rövid időközönként megnézzük, megjelentek-e a célszekciók
-// (a láthatóság osztályváltással is változhat, ezt egy DOM-figyelő nem jelezné). Legfeljebb 15 mp-ig.
-function whenReady(cb) {
-  const ready = () => $('#work .rl-row') && $('#folyamat .pc-s') && $('#daekon-os .os8-in')
+  // 250 ms-onként: amelyik modul szekciója már megjelent, az azonnal indul; legfeljebb 20 mp-ig várunk
   let n = 0
   const tick = () => {
-    if (ready()) return cb()
-    if (++n < 60) setTimeout(tick, 250)
+    for (let i = 0; i < pending.length; ) {
+      const sel = pending[i][2]
+      const ok = !!$(sel)
+      status.found[sel] = ok
+      if (ok) runOne(pending.splice(i, 1)[0])
+      else i++
+    }
+    status.waiting = pending.map(([nm]) => nm)
+    if (pending.length && ++n < 80) setTimeout(tick, 250)
+    else if (pending.length) {
+      status.notFound = pending.map(([nm]) => nm)
+      status.waiting = []
+    }
   }
   tick()
 }
 
-whenReady(start)
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start)
+else start()
