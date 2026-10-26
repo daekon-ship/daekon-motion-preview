@@ -3,14 +3,22 @@ import { spring } from 'motion'
 import { animate } from 'motion/mini'
 import { finePointer } from './util.js'
 
-const SELECTOR = '.v5-cta, .h-cta-a, .g7-cta, .ft-close-a, .dkm-reel-cta'
-const PULL = 0.28
+// [szelektor, húzóerő]: a CTA-k erősebben, a menüpontok és elérhetőségek finomabban
+const TARGETS = [
+  ['.v5-cta, .h-cta-a, .g7-cta, .ft-close-a, .dkm-reel-cta, .rv-btn', 0.28],
+  ['.v5-nav a, .ft-big, .ft-meta a', 0.18],
+]
 const RADIUS = 90
 
 export function magnetic() {
   if (!finePointer()) return
-  const els = [...document.querySelectorAll(SELECTOR)].filter((el) => el.getClientRects().length)
-  for (const el of els) {
+  for (const [sel, pull] of TARGETS) {
+    for (const el of document.querySelectorAll(sel)) if (el.getClientRects().length) attach(el, pull)
+  }
+}
+
+function attach(el, PULL) {
+  {
     let active = false
     let raf = 0
     let last = null

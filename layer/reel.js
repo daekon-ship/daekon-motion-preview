@@ -6,6 +6,7 @@
 // A kártyák díszítő ismétlések (aria-hidden, nem fókuszálhatók): ugyanezek a linkek közvetlenül alatta, a listában vannak.
 import { inView, scroll, spring } from 'motion'
 import { animate } from 'motion/mini'
+import { whileVisible } from './fx.js'
 import { $, finePointer, shotFor } from './util.js'
 
 // x/y: a kártya közepe a színpadon (%), w: szélesség, r: döntés (fok), d: mélység (0–1, a nagyobb közelebb van)
@@ -94,8 +95,16 @@ export function reel({ still }) {
     const name = document.createElement('span')
     name.className = 'dkm-card-name'
     name.textContent = (a.querySelector('.rl-name') || a).textContent.replace(/\s*Kiemelt\s*$/i, '').trim()
-    inner.append(img, name)
-    card.append(inner)
+    const shine = document.createElement('span')
+    shine.className = 'dkm-card-shine'
+    inner.append(img, shine, name)
+    // lebegés külön rétegen, hogy ne ütközzön a belépő/húzó transzformációval
+    const float = document.createElement('span')
+    float.className = 'dkm-float'
+    float.style.setProperty('--fd', `${(6 + (cards.length % 4) * 1.3).toFixed(1)}s`)
+    float.style.setProperty('--fo', `${(-cards.length * 0.9).toFixed(1)}s`)
+    float.append(inner)
+    card.append(float)
     deck.append(card)
     cards.push({ card, inner, d: L.d, r: L.r })
   }
@@ -128,6 +137,7 @@ export function reel({ still }) {
 
   work.parentNode.insertBefore(sec, work)
   if (still) return
+  whileVisible(sec, 'is-live') // a lebegés csak akkor fut, amikor a szekció látszik
 
   // 1) belépés: mélység szerint, a közeliek előbb, rugóval
   for (const c of cards) {
@@ -202,6 +212,25 @@ export function reel({ still }) {
     })
   }
 
+  // 2b) a kártya a kurzor felé dől, a fényes visszaverődés követi az egeret (csak egérrel, gyenge gépen nem)
+  if (fine && !document.documentElement.classList.contains('dkm-lite')) {
+    for (const c of cards) {
+      c.card.addEventListener('pointermove', (e) => {
+        if (c.card.classList.contains('is-grab')) return
+        const r = c.inner.getBoundingClientRect()
+        const nx = (e.clientX - r.left) / r.width - 0.5
+        const ny = (e.clientY - r.top) / r.height - 0.5
+        const mag = Math.hypot(nx, ny)
+        c.inner.style.rotate = `${(-ny).toFixed(3)} ${nx.toFixed(3)} 0 ${(mag * 16).toFixed(2)}deg`
+        c.inner.style.setProperty('--sx', `${((nx + 0.5) * 100).toFixed(1)}%`)
+        c.inner.style.setProperty('--sy', `${((ny + 0.5) * 100).toFixed(1)}%`)
+      })
+      c.card.addEventListener('pointerleave', () => {
+        c.inner.style.rotate = ''
+      })
+    }
+  }
+
   // 3) megfogás és elhúzás (csak egérrel/tollal – érintésnél a görgetés az elsődleges), rugós visszaugrás
   for (const c of cards) {
     let start = null
@@ -215,6 +244,7 @@ export function reel({ still }) {
       c.card.style.zIndex = '30'
       c.card.setPointerCapture(e.pointerId)
       c.card.classList.add('is-grab')
+      c.inner.style.rotate = ''
     })
     c.card.addEventListener('pointermove', (e) => {
       if (!start) return

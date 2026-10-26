@@ -1,7 +1,7 @@
-// Belépő animációk ott, ahol az élő oldal statikus volt: projektsorok, „Így dolgozom”, DAEKON OS kártya.
+// Belépő animációk ott, ahol az élő oldal statikus volt: projektsorok, DAEKON OS kártya.
 import { inView, stagger } from 'motion'
 import { animate } from 'motion/mini'
-import { $, EASE, LILAC, LIME, belowFold, clear, hide } from './util.js'
+import { $, EASE, belowFold, clear, hide } from './util.js'
 
 // 1) Munkák: a projektsorok egymás után úsznak be, és mindegyik elválasztó vonala balról jobbra kirajzolódik
 export function projects() {
@@ -37,30 +37,6 @@ export function projects() {
       controls.finished.then(() => clear(rows))
     },
     { amount: 0.15 },
-  )
-}
-
-// 2) Így dolgozom: a felső vonal végigfut, a lépések sorban érkeznek, a sorszám egy pillanatra felvillan
-export function process() {
-  const list = $('#folyamat .pc-list')
-  const steps = list ? [...list.querySelectorAll('.pc-s')] : []
-  if (!steps.length || !belowFold(list)) return
-  hide(steps, 18)
-  inView(
-    list,
-    () => {
-      list.classList.add('dkm-run')
-      const controls = animate(steps, { opacity: [0, 1], transform: ['translateY(18px)', 'none'] }, { duration: 0.75, ease: EASE, delay: stagger(0.12, { startDelay: 0.15 }) })
-      steps.forEach((s, i) => {
-        const n = s.querySelector('.pc-n')
-        if (!n) return
-        animate(n, { color: [LIME, LIME, LILAC] }, { duration: 1.3, delay: 0.15 + i * 0.12, ease: 'ease-out' }).finished.then(() => {
-          n.style.color = ''
-        })
-      })
-      controls.finished.then(() => clear(steps))
-    },
-    { amount: 0.25 },
   )
 }
 

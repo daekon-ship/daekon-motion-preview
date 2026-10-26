@@ -7,14 +7,20 @@ Előnézet: https://daekon-ship.github.io/daekon-motion-preview/
 
 ## Felépítés
 - `site/` – az éles daekon.hu pontos másolata (2026-10-26, a kiszolgált fájlok; a főoldal SHA-256 hash-e egyezett az élővel). Nem szerkesztjük.
-- `layer/` – **az új animációk** (Motion: `animate`, `inView`, `stagger`), kb. 33 kB (gzip nélkül):
-  1. Munkák: a projektsorok egymás után úsznak be, az elválasztó vonaluk kirajzolódik; asztalon egérkövető fény a soron.
-  2. Így dolgozom: a felső vonal végigfut, a lépések sorban érkeznek, a sorszám egy pillanatra felvillan.
-  3. DAEKON OS: a kártya felemelkedik, egyszeri fénycsík fut végig rajta.
-  4. Projekt-showreel a Munkák előtt (sitereel.ai lebegő kártyái + motion.dev rugós gesztusai alapján): a 9 valódi projekt képernyőképe térben lebeg, görgetésre/egérre mélységgel mozog, egérrel elhúzható és rugóval visszaugrik, kattintásra megnyílik.
-  5. Lebegő előnézet a projektlistán (asztalon): a sor fölött az oldal képernyőképe követi a kurzort.
-  6. Mágneses CTA-gombok (asztalon), rugós visszaállással.
-  Csak ott mozgat, ahol az oldal eddig statikus volt; csökkentett mozgásnál semmit nem csinál; ami már a képernyőn van, azt nem rejti el; a végén nem hagy inline stílust.
+- `layer/` – **az új mozgásréteg** (Motion: `animate`, `inView`, `scroll`, `stagger`, `spring` + CSS), kb. 40 kB JS + 19 kB CSS (gzip nélkül). Szekciónként:
+  - **Hero:** egérkövető fényfolt a meglévő lila fények fölött; mágneses CTA-k. (A cím saját, eredeti animációja érintetlen.)
+  - **Navigáció:** rugóval átcsúszó fénylő jelölő az aktív menüpont mögött; mágneses menüpontok; fénycsík a „Kérj ajánlatot” gombon.
+  - **Szekcióhatárok:** belépéskor egyszer végigfutó fénycsík a szekciók felső vonalán.
+  - **Showreel:** a 9 valódi projekt lebegő, elhúzható, rugós kártyái + lassú lebegés (csak amíg látszik), kurzor felé dőlés, fényes visszaverődés, mélység szerinti sötétítés.
+  - **Munkák:** beúszó sorok kirajzolódó vonallal, egérkövető fény, lebegő képernyőkép-előnézet.
+  - **Szolgáltatások:** egérkövető fény a sorokon, rugós címmozdulat, az aktív sor felső vonala kirajzolódik, a 3D rétegköteg az egér felé dől.
+  - **Így dolgozom:** görgetéshez kötött vonal, a lépések sorban kigyúlnak, a sorszám felvillan.
+  - **Történet:** fénypont fut a 2011–2026 vonalon görgetésre; a bekezdések olvasás közben egymás után kerülnek előtérbe; egérkövető fény.
+  - **Vélemények:** finom rugós emelkedés és egérkövető fény (asztalon; mobilon statikus rács).
+  - **DAEKON OS:** belépő + fénycsík, vándorló háttérfény (csak amíg látszik), egérre dőlő kártya, a leírásban szereplő 5 modul egyszeri „ellenőrző” felvillanása (nem valós idejű adat).
+  - **Kapcsolat:** egérkövető fény és belépő fénycsík az ajánlatkérő sávon.
+  - **Footer:** görgetésre felkelő fény, a DAEKON-felirat vonalai kirajzolódnak, „itt kezdődik.” felragyog, mágneses elérhetőségek.
+  Elvek: csak transform/opacity és CSS-változók; csökkentett mozgásnál semmi nem mozog; gyenge eszközön („lite”) a folyamatos effektek kimaradnak; ami betöltéskor látszik, azt nem rejti el; a dc-runtime rejtett sablonpéldányát kerüli. Hibakereséshez: `?dkmskip=reel,heroLight,…`.
 - `preview/shim.js` – **csak előnézet**: noindex, az ajánlatkérő nem küld semmit (a `send.php` helyben elutasítva), sarokjelzés BE/KI kapcsolóval.
 - `scripts/build.mjs` – összerakja az `out/daekon-motion-preview/` mappát, és az előnézeti alútvonalhoz igazítja a gyökér-útvonalakat.
 

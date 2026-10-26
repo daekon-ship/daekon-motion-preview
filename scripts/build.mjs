@@ -23,7 +23,8 @@ await build({
   outfile: join(OUT, 'dkm.js'),
   legalComments: 'none',
 })
-cpSync('layer/dkm.css', join(OUT, 'dkm.css'))
+// a réteg stílusai egy fájlban (kevesebb kérés): alap + szekciónkénti effektek
+writeFileSync(join(OUT, 'dkm.css'), ['layer/dkm.css', 'layer/sections.css'].map((f) => readFileSync(f, 'utf-8')).join('\n'))
 
 const shim = readFileSync('preview/shim.js', 'utf-8')
 

@@ -1,0 +1,443 @@
+/* DAEKON motion layer – szekciónkénti effektek (sections.js). Minden szabály a .dkm osztály alatt hat. */
+
+/* Közös: egérkövető fény (a --dkm-x/--dkm-y változókat a JS állítja, csak egérrel) */
+@media (hover: hover) and (pointer: fine) {
+  .dkm .sv7-a,
+  .dkm .st8,
+  .dkm .rv-card.dkm-rv,
+  .dkm .dkm-bar {
+    isolation: isolate;
+  }
+  .dkm .sv7-a::after,
+  .dkm .st8::after,
+  .dkm .rv-card.dkm-rv::after,
+  .dkm .dkm-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(380px circle at var(--dkm-x, 50%) var(--dkm-y, 50%), rgba(185, 162, 255, 0.11), transparent 65%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .dkm .sv7-a:hover::after,
+  .dkm .st8:hover::after,
+  .dkm .rv-card.dkm-rv:hover::after,
+  .dkm .dkm-bar:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Szekcióhatárok: egyszer végigfutó fénycsík a felső vonalon */
+.dkm .dkm-sep {
+  position: relative;
+}
+
+.dkm .dkm-sep::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 28%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b9a2ff 45%, #d4ff3a 60%, transparent);
+  opacity: 0;
+  transform: translateX(-100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.dkm .dkm-sep.dkm-sep-on::before {
+  animation: dkm-comet 2.2s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes dkm-comet {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(360%);
+  }
+}
+
+/* Hero: egérkövető fényfolt a meglévő lila fények fölött (screen keverés, a szöveget nem takarja) */
+.dkm-hero-glow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: 620px;
+  height: 620px;
+  margin: -310px 0 0 -310px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(150, 120, 255, 0.22), rgba(108, 72, 255, 0.08) 40%, transparent 70%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.dkm-hero-glow.is-on {
+  opacity: 1;
+}
+
+/* Navigáció: rugóval átcsúszó fénylő jelölő az aktív menüpont mögött */
+.dkm .dkm-nav {
+  position: relative;
+}
+
+.dkm-pill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 34px;
+  margin-top: -17px;
+  width: 0;
+  border-radius: 999px;
+  background: rgba(185, 162, 255, 0.09);
+  box-shadow:
+    inset 0 0 0 1px rgba(185, 162, 255, 0.22),
+    0 0 18px -4px rgba(108, 72, 255, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Fejléc-CTA: átfutó fénycsík hoverre */
+.dkm .v5-cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.dkm .v5-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.55) 48%, transparent 66%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .dkm .v5-cta:hover::after {
+    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+    transform: translateX(120%);
+  }
+}
+
+/* Szolgáltatások: az aktív sor felső vonala kirajzolódik, rugós címmozdulat, a 3D köteg perspektívában dől */
+.dkm .sv7-a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, #d4ff3a, #b9a2ff 35%, rgba(108, 72, 255, 0.35) 75%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.dkm .sv7-a.is-on::before {
+  transform: scaleX(1);
+}
+
+.dkm .sv7-a .sv7-t {
+  transition: translate 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dkm .sv7-a:hover .sv7-t {
+    translate: 10px 0;
+  }
+}
+
+.dkm .dkm-persp {
+  perspective: 1100px;
+}
+
+/* Így dolgozom: görgetéshez kötött vonal + sorban kigyúló lépések */
+.dkm .dkm-proc {
+  position: relative;
+}
+
+.dkm .dkm-proc::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, #d4ff3a, #b9a2ff 40%, #6c48ff);
+  box-shadow: 0 0 14px rgba(185, 162, 255, 0.55);
+  transform: scaleX(var(--dkm-p, 0));
+  transform-origin: left;
+  pointer-events: none;
+}
+
+.dkm .dkm-proc .pc-s {
+  transition:
+    opacity 0.6s ease,
+    translate 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dkm .dkm-proc .pc-s:not(.dkm-on) {
+  opacity: 0.4;
+  translate: 0 8px;
+}
+
+.dkm .dkm-proc .pc-s.dkm-on .pc-n {
+  animation: dkm-num 1.2s ease-out both;
+}
+
+@keyframes dkm-num {
+  0% {
+    color: #d4ff3a;
+    text-shadow: 0 0 14px rgba(212, 255, 58, 0.8);
+  }
+  100% {
+    color: #b9a2ff;
+    text-shadow: none;
+  }
+}
+
+/* A DAEKON története: fénypont a 2011–2026 vonalon + olvasás közben előtérbe kerülő bekezdések */
+.dkm .dkm-st .st8-line {
+  position: relative;
+}
+
+.dkm .dkm-st .st8-line::after {
+  content: '';
+  position: absolute;
+  top: var(--dkm-ly, 50%);
+  left: calc(var(--dkm-p, 0) * 100%);
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: #f5f5f2;
+  box-shadow:
+    0 0 0 3px rgba(212, 255, 58, 0.35),
+    0 0 18px 4px rgba(185, 162, 255, 0.75);
+  pointer-events: none;
+}
+
+.dkm .dkm-st .dkm-read {
+  transition:
+    opacity 0.7s ease,
+    translate 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dkm .dkm-st .dkm-read:not(.is-read) {
+  opacity: 0.45;
+  translate: 0 6px;
+}
+
+/* Vélemények: finom, rugós emelkedés asztalon (külön `translate`, az eredeti `transform`-szabály érintetlen) */
+@media (hover: hover) and (pointer: fine) {
+  .dkm .rv-card.dkm-rv {
+    transition:
+      translate 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+      border-color 0.3s ease;
+  }
+  .dkm .rv-card.dkm-rv:hover {
+    translate: 0 -4px;
+  }
+}
+
+/* DAEKON OS: vándorló háttérfény (csak amíg látszik) + a leírt modulok egyszeri felvillanása */
+.dkm .dkm-os::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  width: 70%;
+  aspect-ratio: 1;
+  left: -10%;
+  top: -60%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(108, 72, 255, 0.26), rgba(185, 162, 255, 0.05) 45%, transparent 70%);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.dkm .dkm-os.is-live::before {
+  animation: dkm-roam 16s ease-in-out infinite alternate;
+}
+
+@keyframes dkm-roam {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(60%, 40%, 0);
+  }
+  100% {
+    transform: translate3d(110%, 10%, 0);
+  }
+}
+
+.dkm-os-mods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 4px 0 2px;
+  padding: 0;
+}
+
+.dkm-os-mods li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(185, 162, 255, 0.2);
+  background: rgba(9, 8, 13, 0.6);
+  font: 600 12.5px/1.2 'Manrope', sans-serif;
+  color: #c4c3bd;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    translate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (hover: hover) {
+  .dkm-os-mods li:hover {
+    border-color: rgba(212, 255, 58, 0.5);
+    color: #f5f5f2;
+    translate: 0 -2px;
+  }
+}
+
+.dkm-os-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3a3945;
+}
+
+.dkm-os-mods.is-in .dkm-os-dot {
+  animation: dkm-dot 0.9s ease-out calc(var(--i) * 0.18s + 0.2s) both;
+}
+
+@keyframes dkm-dot {
+  0% {
+    background: #3a3945;
+    box-shadow: none;
+  }
+  40% {
+    background: #d4ff3a;
+    box-shadow: 0 0 12px rgba(212, 255, 58, 0.9);
+  }
+  100% {
+    background: #b9a2ff;
+    box-shadow: 0 0 6px rgba(185, 162, 255, 0.5);
+  }
+}
+
+/* Kapcsolat: az ajánlatkérő sávon belépéskor egyszer végigfut egy fény */
+.dkm .dkm-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.dkm .dkm-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(185, 162, 255, 0.28) 48%, rgba(212, 255, 58, 0.12) 52%, transparent 65%);
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.dkm .dkm-bar.dkm-sweep-on::before {
+  animation: dkm-sweep 1.8s cubic-bezier(0.65, 0, 0.35, 1) 0.2s both;
+}
+
+/* Footer: görgetésre felkelő fény + „itt kezdődik.” felragyogás */
+.dkm .dkm-ft {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.dkm .dkm-ft::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  bottom: -55%;
+  width: min(1200px, 140vw);
+  aspect-ratio: 2 / 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(108, 72, 255, 0.32), rgba(185, 162, 255, 0.08) 55%, transparent);
+  transform: translate(-50%, calc((1 - var(--dkm-f, 0)) * 40%)) scale(calc(0.7 + var(--dkm-f, 0) * 0.3));
+  opacity: var(--dkm-f, 0);
+  pointer-events: none;
+}
+
+.dkm .dkm-shine {
+  background: linear-gradient(90deg, #b9a2ff 0%, #b9a2ff 40%, #ffffff 50%, #d4ff3a 55%, #b9a2ff 65%, #b9a2ff 100%);
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.dkm .dkm-shine.is-on {
+  animation: dkm-text-shine 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.3s both;
+}
+
+@keyframes dkm-text-shine {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
+/* Csökkentett mozgás: semmi nem mozog, és semmi nem marad halványítva */
+@media (prefers-reduced-motion: reduce) {
+  .dkm .dkm-sep::before,
+  .dkm .dkm-proc::before,
+  .dkm .dkm-st .st8-line::after,
+  .dkm .dkm-os::before,
+  .dkm .dkm-bar::before,
+  .dkm .dkm-ft::after,
+  .dkm .v5-cta::after {
+    display: none;
+  }
+  .dkm .dkm-proc .pc-s,
+  .dkm .dkm-st .dkm-read {
+    opacity: 1 !important;
+    translate: none !important;
+  }
+  .dkm-reel .dkm-float {
+    animation: none !important;
+  }
+}
+
+/* Gyenge eszköz („lite” mód): a folyamatosan futó effektek kikapcsolva */
+.dkm-lite .dkm-reel .dkm-float,
+.dkm-lite .dkm-os::before {
+  animation: none !important;
+}
+
+.dkm-lite .dkm-card-shine {
+  display: none;
+}
