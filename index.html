@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="hu" data-theme="violet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Látványterv-előnézet: nem indexelendő, nincs canonical a daekon.hu helyett -->
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="googlebot" content="noindex, nofollow" />
+    <title>DAEKON V2 – látványterv (előnézet)</title>
+    <meta name="description" content="A DAEKON weboldal V2 látványterve. Nem az éles oldal – az éles weboldal: daekon.hu" />
+    <meta name="theme-color" content="#07080d" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // téma alkalmazása az első festés előtt (villanás nélkül)
+      try {
+        var q = new URLSearchParams(location.search).get('theme')
+        var t = q || localStorage.getItem('daekon-v2-theme')
+        if (t === 'blue' || t === 'violet' || t === 'ultra') document.documentElement.dataset.theme = t
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"><!--app--></div>
+    <noscript>A látványterv megtekintéséhez JavaScript szükséges. Az éles oldal: <a href="https://daekon.hu">daekon.hu</a></noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

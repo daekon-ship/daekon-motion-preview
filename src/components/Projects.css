@@ -1,0 +1,345 @@
+.pj-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(28px, 3.2vw, 44px) clamp(16px, 2.4vw, 32px);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .pj-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pj-cell:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1100px) {
+  .pj-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+  }
+  .pj-cell,
+  .pj-cell:first-child {
+    grid-column: span var(--span, 6);
+  }
+  /* editorial ritmus: a keskenyebb kártyák kissé lejjebb ülnek */
+  .pj-cell:nth-child(2),
+  .pj-cell:nth-child(3) {
+    margin-top: clamp(24px, 4vw, 72px);
+  }
+  .pj-cell:nth-child(6) {
+    margin-top: 36px;
+  }
+}
+
+.pj-card {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.pj-tilt {
+  transform-style: preserve-3d;
+  transform-perspective: 1000px;
+  will-change: transform;
+  perspective: 1000px;
+}
+
+.pj-open {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius);
+  text-align: left;
+}
+
+.pj-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 60px -40px rgb(0 0 0 / 0.9);
+}
+
+.pj-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.9s var(--ease-out);
+}
+
+.pj-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+}
+
+.pj-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 14px;
+  background: linear-gradient(180deg, transparent 55%, rgb(5 6 12 / 0.65));
+  opacity: 0;
+  transition: opacity var(--t-ui) ease;
+}
+
+.pj-overlay span {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: var(--fs-small);
+  font-weight: 650;
+  color: #fff;
+  transform: translateY(6px);
+  transition: transform var(--t-ui) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .pj-open:hover img {
+    transform: scale(1.035);
+  }
+  .pj-open:hover .pj-overlay,
+  .pj-open:focus-visible .pj-overlay {
+    opacity: 1;
+  }
+  .pj-open:hover .pj-overlay span {
+    transform: none;
+  }
+}
+
+/* érintőképernyőn a „Részletek” jelzés mindig látszik, kicsiben */
+@media (hover: none) {
+  .pj-overlay {
+    opacity: 1;
+    background: none;
+    padding: 10px;
+  }
+  .pj-overlay span {
+    transform: none;
+    padding: 6px 12px;
+    font-size: var(--fs-micro);
+  }
+}
+
+.pj-meta {
+  display: grid;
+  gap: 6px;
+}
+
+.pj-meta-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pj-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.pj-badge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--accent-ink);
+  background: var(--pixel);
+}
+
+.pj-name {
+  font-size: var(--fs-h3);
+}
+
+.is-featured .pj-name {
+  font-size: clamp(1.25rem, 1rem + 0.9vw, 1.75rem);
+}
+
+.pj-short {
+  color: var(--text-2);
+  font-size: 0.9375rem;
+}
+
+.pj-link {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.pj-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.pj-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-top: clamp(40px, 5vw, 72px);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--line);
+}
+
+/* részletező nézet */
+.pjd-root {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+}
+
+.pjd-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(3 4 8 / 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.pjd {
+  position: relative;
+  width: min(1100px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--radius-l);
+  border: 1px solid var(--line-strong);
+  background: var(--bg-2);
+  box-shadow: 0 50px 120px -40px rgb(0 0 0 / 0.9);
+  display: grid;
+}
+
+.pjd-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.pjd-visuals {
+  position: relative;
+  padding: 16px 16px 0;
+}
+
+.pjd-desktop {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+
+.pjd-desktop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.pjd-phone {
+  display: none;
+}
+
+.pjd-body {
+  display: grid;
+  gap: var(--s-3);
+  padding: 20px 20px 24px;
+}
+
+.pjd-body h3 {
+  font-size: clamp(1.35rem, 1.1rem + 1vw, 1.9rem);
+}
+
+.pjd-body p {
+  color: var(--text-2);
+}
+
+.pjd-note {
+  font-size: var(--fs-small);
+  border-left: 2px solid var(--pixel);
+  padding-left: 10px;
+}
+
+.pjd-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+
+.pjd-tags li {
+  padding: 5px 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: var(--fs-small);
+  color: var(--text-2);
+}
+
+.pjd-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+}
+
+@media (min-width: 860px) {
+  .pjd {
+    grid-template-columns: 1.35fr 1fr;
+    align-items: center;
+  }
+  .pjd-visuals {
+    padding: 24px 0 24px 24px;
+  }
+  .pjd-phone {
+    display: block;
+    position: absolute;
+    right: -18px;
+    bottom: 4px;
+    width: 26%;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 4px solid #1b1d27;
+    box-shadow: 0 30px 50px -20px rgb(0 0 0 / 0.9);
+  }
+  .pjd-body {
+    padding: 32px 36px 32px 44px;
+  }
+}

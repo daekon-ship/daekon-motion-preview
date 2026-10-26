@@ -1,0 +1,3 @@
+# DAEKON V2 látványterv – előnézet, nem indexelendő. Az éles oldal: https://daekon.hu
+User-agent: *
+Disallow: /

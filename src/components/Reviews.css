@@ -1,0 +1,122 @@
+.rv-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .rv-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .rv-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.rv-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 20px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  min-width: 0;
+}
+
+.rv-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.rv-src {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  color: var(--text-2);
+}
+
+.rv-rec {
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent-2) 45%, transparent);
+  color: var(--accent-2);
+}
+
+.rv-card blockquote {
+  margin: 0;
+  flex: 1;
+}
+
+.rv-card blockquote p {
+  white-space: pre-line;
+  font-size: 0.9875rem;
+  line-height: 1.6;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.rv-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.rv-name {
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+
+.rv-date {
+  font-size: var(--fs-micro);
+  color: var(--text-3);
+}
+
+.rv-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: var(--fs-small);
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.rv-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rv-summary {
+  display: grid;
+  gap: var(--s-4);
+  margin-top: var(--s-6);
+  font-size: var(--fs-small);
+  color: var(--text-2);
+}
+
+.rv-summary strong {
+  color: var(--text);
+}
+
+.rv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-4);
+}

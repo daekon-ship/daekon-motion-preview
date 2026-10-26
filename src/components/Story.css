@@ -1,0 +1,125 @@
+.story {
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--bg-2) 80%, transparent) 20%, transparent);
+}
+
+.st-layout {
+  display: grid;
+  gap: clamp(32px, 5vw, 80px);
+}
+
+.st-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 16px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: var(--fs-small);
+  max-width: 460px;
+}
+
+.st-card-k {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding-top: 2px;
+}
+
+.st-line {
+  position: relative;
+  padding-left: 32px;
+}
+
+.st-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(36px, 5vw, 64px);
+}
+
+.st-track {
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--line-strong);
+}
+
+.st-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--accent-2), var(--accent));
+  transform-origin: top;
+}
+
+.st-pixel {
+  position: absolute;
+  left: -4px;
+  width: 9px;
+  height: 9px;
+  margin-top: -4px;
+  background: var(--pixel);
+  box-shadow: 0 0 16px var(--pixel);
+}
+
+.st-item {
+  display: grid;
+  gap: 10px;
+  max-width: 62ch;
+}
+
+.st-mark {
+  font-family: var(--font-mono);
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1.1;
+}
+
+.st-item h3 {
+  font-size: var(--fs-h3);
+}
+
+.st-item p {
+  color: var(--text-2);
+}
+
+.st-item .link-arrow {
+  justify-self: start;
+  min-height: 44px;
+}
+
+@media (min-width: 1000px) {
+  .st-layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: start;
+  }
+  .st-intro {
+    position: sticky;
+    top: calc(var(--header-h) + 40px);
+    display: grid;
+    gap: var(--s-6);
+  }
+  .st-intro .section-head {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 999px) {
+  .st-intro {
+    display: grid;
+    gap: var(--s-5);
+  }
+  .st-intro .section-head {
+    margin-bottom: 0;
+  }
+}
