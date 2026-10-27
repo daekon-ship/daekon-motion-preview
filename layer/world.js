@@ -3,7 +3,7 @@
 // DAEKON OS hálózat (forgó 3D csomópont-gömb, a modulokból a mag felé áramló jelek), footer-fénypadló.
 // Mindegyik csak látható állapotban rajzol, háttérfülön áll, a felbontás (DPR) korlátozott.
 // Csak dekoráció: aria-hidden, nincs benne valós vagy kitalált rendszerállapot.
-import { $, finePointer } from './util.js'
+import { $, finePointer, isStatic } from './util.js'
 
 const LILAC = [185, 162, 255]
 const LIME = [212, 255, 58]
@@ -45,12 +45,22 @@ function run(canvas, host, draw, { dpr = 1.5, name = canvas.className.split(' ')
     canvas.height = Math.max(1, Math.round(h * ratio))
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
   }
-  new ResizeObserver(size).observe(canvas)
+  new ResizeObserver(() => {
+    size()
+    if (isStatic() && visible) requestAnimationFrame(frame)
+  }).observe(canvas)
   size()
   const minDt = 1000 / fps - 3
+  const still = isStatic() // álló üzemmód: egyetlen, kompozíció szerinti képkocka, ciklus nélkül
   const frame = (now) => {
     raf = 0
     if (!visible || document.hidden) return
+    if (still) {
+      ctx.clearRect(0, 0, w, h)
+      draw(ctx, w, h, 3.2, 1 / 60)
+      frames[name]++
+      return
+    }
     raf = requestAnimationFrame(frame)
     if (now - last < minDt) return
     const dt = Math.min(0.05, (now - last) / 1000)

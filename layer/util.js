@@ -58,3 +58,6 @@ export function shotFor(href, size = 'd-sm') {
 }
 
 export const finePointer = () => matchMedia('(hover: hover) and (pointer: fine)').matches
+
+// álló üzemmód: csökkentett mozgás beállítás mellett az új design látszik, de semmi nem mozog
+export const isStatic = () => document.documentElement.classList.contains('dkm-static')

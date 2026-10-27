@@ -1,6 +1,6 @@
 // Szekciónkénti egyedi effektek – mindegyik a szekció meglévő dizájnjából indul ki, új tartalmat nem talál ki.
 import { inView, scroll } from 'motion'
-import { animate } from 'motion/mini'
+import { animate } from './anim.js'
 import { onEnter, spotlight, tilt, whileVisible } from './fx.js'
 import { $, belowFold, finePointer } from './util.js'
 

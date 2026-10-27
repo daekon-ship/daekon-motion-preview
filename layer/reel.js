@@ -5,7 +5,7 @@
 // - egérrel megfoghatók és elhúzhatók, elengedéskor rugóval visszaugranak; kattintásra megnyílik az élő oldal.
 // A kártyák díszítő ismétlések (aria-hidden, nem fókuszálhatók): ugyanezek a linkek közvetlenül alatta, a listában vannak.
 import { inView, scroll, spring } from 'motion'
-import { animate } from 'motion/mini'
+import { animate } from './anim.js'
 import { whileVisible } from './fx.js'
 import { $, finePointer, shotFor } from './util.js'
 

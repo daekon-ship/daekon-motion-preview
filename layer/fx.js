@@ -1,6 +1,6 @@
 // Újrahasznosítható effekt-építőkockák (egy rAF-ciklus elemenként, csak amíg kell).
 import { inView } from 'motion'
-import { finePointer } from './util.js'
+import { finePointer, isStatic } from './util.js'
 
 /** Egérkövető fény: --dkm-x / --dkm-y CSS-változók az elemen (csak egérrel). A fényt a CSS rajzolja. */
 export function spotlight(els) {
@@ -30,7 +30,7 @@ export function spotlight(els) {
  * A `rotate` egyedi transzformációs tulajdonságot használja, így nem ütközik az elem saját `transform`-jával.
  */
 export function tilt(el, { max = 4, area = el, perspective = 1000 } = {}) {
-  if (!finePointer()) return
+  if (!finePointer() || isStatic()) return
   const tgt = { x: 0, y: 0 }
   const cur = { x: 0, y: 0 }
   let raf = 0

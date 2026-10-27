@@ -2,7 +2,7 @@
 // szolgáltatások: az aktív szolgáltatáshoz illő képernyő-kártya a rétegköteg felirata alatt; folyamat: körbefutó üstökös-jel és kigyúló lépések; történet: görgetésre
 // pörgő 3D évszám (2011 → 2026); vélemények: térbeli belépő.
 import { inView, scroll, spring } from 'motion'
-import { animate } from 'motion/mini'
+import { animate } from './anim.js'
 import { tilt } from './fx.js'
 import { $, finePointer, ROOT } from './util.js'
 

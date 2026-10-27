@@ -1,7 +1,7 @@
 // Navigáció: az aktív menüpont mögött rugóval átcsúszó fénylő „pill” (a meglévő aláhúzás mellé).
 // A menü működéséhez nem nyúl: az aktív állapotot továbbra is az oldal saját kódja állítja (.is-active).
 import { spring } from 'motion'
-import { animate } from 'motion/mini'
+import { animate } from './anim.js'
 import { $ } from './util.js'
 
 export function navPill() {

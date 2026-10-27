@@ -104,24 +104,29 @@ function start() {
   const phone = !fine || matchMedia('(max-width: 899px)').matches
   status.phone = phone
   if (phone) document.documentElement.classList.add('dkm-phone')
-  // csökkentett mozgásnál: álló showreel és álló, teljesen kirajzolt folyamat-timeline
-  const pending = reduced
-    ? [
-        ['reel', () => reel({ still: true }), '#work .rl-a'],
-        ['processTimeline', () => processTimeline({ still: true }), '#folyamat .pc-s'],
-        ['storyThread', () => storyThread({ still: true }), '#rolam .st8-body'],
-        ['heroFit', heroFit, '#top [data-hero-copy]'],
-        ['reviewsLayout', reviewsLayout, '#velemenyek'],
-        ['servicesGrid', servicesGrid, '#szolgaltatasok .sv7-a'],
-      ]
-    : MODULES.filter(([name, , , req]) => {
-        if (skip.includes(name)) return false
-        if (req === 'pointer' && !fine) {
-          status.skipped.push(name)
-          return false
-        }
-        return true
-      })
+  // Csökkentett mozgás (rendszerbeállítás) → ÁLLÓ ÜZEMMÓD: az új design minden eleme megjelenik, de semmi nem mozog
+  // (html.dkm-static: a CSS-animációk/átmenetek azonnal a végállapotba ugranak, a canvasok egyetlen képkockát
+  // rajzolnak, az animate() hívások azonnaliak, nincs parallaxis és egérkövetés). A beállítást nem bíráljuk felül:
+  // mozgás csak ?dkmmotion=1 kifejezett kérésre van.
+  if (reduced) document.documentElement.classList.add('dkm-static')
+  const STILL = {
+    reel: () => reel({ still: true }),
+    processTimeline: () => processTimeline({ still: true }),
+    storyThread: () => storyThread({ still: true }),
+  }
+  const MOTION_ONLY = ['heroLight', 'magnetic', 'storyYears'] // egérkövető fény, mágneses gombok, görgetésre pörgő évszám
+  const pending = MODULES.filter(([name, , , req]) => {
+    if (skip.includes(name)) return false
+    if (reduced && MOTION_ONLY.includes(name)) {
+      status.skipped.push(name)
+      return false
+    }
+    if (req === 'pointer' && !fine) {
+      status.skipped.push(name)
+      return false
+    }
+    return true
+  }).map((m) => (reduced && STILL[m[0]] ? [m[0], STILL[m[0]], m[2], m[3]] : m))
   status.active = !reduced
   status.waiting = pending.map(([n]) => n)
 

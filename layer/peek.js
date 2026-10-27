@@ -1,5 +1,5 @@
 // Lebegő előnézet a projektlistán (csak egérrel): a sor fölött a kurzort rugalmasan követi az adott oldal képernyőképe.
-import { animate } from 'motion/mini'
+import { animate } from './anim.js'
 import { $, finePointer, shotFor } from './util.js'
 
 export function peek() {

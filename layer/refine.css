@@ -442,3 +442,38 @@ html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-btn-mail {
     display: none !important;
   }
 }
+
+/* ---------- ÁLLÓ ÜZEMMÓD (csökkentett mozgás beállítás, html.dkm-static) ----------
+   Az új design minden eleme látszik, de semmi nem mozog: minden CSS-animáció és -átmenet azonnal a végállapotába
+   ugrik (a „both/forwards” animációk így a kész képet mutatják), a görgetéshez kötött elmozdulások nullázódnak. */
+html.dkm-static *,
+html.dkm-static *::before,
+html.dkm-static *::after {
+  animation-duration: 0.001s !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001s !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+
+html.dkm-static .dkm-fl,
+html.dkm-static .dkm-yr,
+html.dkm-static .dkm-card {
+  transform: none !important;
+}
+
+html.dkm-static .dkm-card {
+  transform: translate(-50%, -50%) rotate(var(--r)) !important;
+}
+
+@media (max-width: 699px) {
+  html.dkm-static .dkm-card {
+    transform: translate(-50%, -50%) rotate(var(--rm, var(--r))) !important;
+  }
+}
+
+html.dkm-static .dkm-st5 {
+  rotate: none !important;
+  translate: none !important;
+}

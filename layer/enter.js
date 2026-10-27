@@ -1,6 +1,6 @@
 // Belépő animációk ott, ahol az élő oldal statikus volt: projektsorok, DAEKON OS kártya.
 import { inView, stagger } from 'motion'
-import { animate } from 'motion/mini'
+import { animate } from './anim.js'
 import { $, EASE, belowFold, clear, hide } from './util.js'
 
 // 1) Munkák: a projektsorok egymás után úsznak be, és mindegyik elválasztó vonala balról jobbra kirajzolódik

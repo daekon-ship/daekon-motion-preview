@@ -2,7 +2,7 @@
 // A V4 mérés szerint a korábbi effektek a képernyő 0,1–2%-át változtatták meg, mobilon szinte semmit:
 // ezek a modulok mobilon is látható, görgetéshez kötött mozgást adnak, asztalon egérre is reagálnak.
 import { inView, scroll, stagger } from 'motion'
-import { animate } from 'motion/mini'
+import { animate } from './anim.js'
 import { tilt, whileVisible } from './fx.js'
 import { $, finePointer } from './util.js'
 

@@ -1,6 +1,6 @@
 // Mágneses CTA-k (csak egérrel): a gomb finoman a kurzor felé húzódik, elengedve rugóval visszaáll.
 import { spring } from 'motion'
-import { animate } from 'motion/mini'
+import { animate } from './anim.js'
 import { finePointer } from './util.js'
 
 // [szelektor, húzóerő]: a CTA-k erősebben, a menüpontok és elérhetőségek finomabban
