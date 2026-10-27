@@ -368,3 +368,19 @@ html.dkm body #dc-root#dc-root#dc-root #rolam .st8-tog {
   margin: 0;
   align-self: stretch;
 }
+
+/* Vélemények (tulajdonosi kérés, 2026-10-27): e-mailes véleményküldés nem kell, csak a Facebook-ajánlás marad */
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-btn-mail {
+  display: none !important;
+}
+
+/* Telefon: a véleménysáv függőlegesen ne legyen görgethető. Az overflow-x: auto miatt az overflow-y is „auto” lett,
+   és a beúszó kártyák miatt a sáv ~20 px-rel magasabb tartalmat kapott: a lefelé húzás először a sávon belül
+   görgetett, ott megakadt („belé akadsz, mikor görgetsz le”). A függőleges húzás mindig az oldalt görgeti. */
+@media (max-width: 899px) {
+  html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-list {
+    overflow-y: hidden !important;
+    overscroll-behavior-y: auto !important;
+    touch-action: pan-x pan-y;
+  }
+}
