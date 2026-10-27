@@ -36,16 +36,3 @@
     height: clamp(620px, 92svh, 860px);
   }
 }
-
-/* Így dolgozom: a kigyúló lépés-panel telefonon szorosabb kerettel (az asztali -20 px a szomszéd lépésre lógott),
-   a szöveg pedig billenés nélkül, csak finoman úszik be */
-.dkm-phone .dkm-pc6::after {
-  inset: -6px -8px -8px -10px;
-  border-radius: 12px;
-  box-shadow: none;
-}
-
-.dkm-phone .dkm-pc6 .pc-t,
-.dkm-phone .dkm-pc6 .pc-d {
-  transform: translateY(8px);
-}

@@ -14,7 +14,7 @@
 @keyframes dkm-intro-fade{to{opacity:1}}
 @keyframes dkm-intro-safety{to{visibility:hidden}}
 @media (max-width:480px){#dkm-intro small{font-size:9.5px;letter-spacing:.12em}}
-@media (prefers-reduced-motion:reduce){#dkm-intro{display:none}}
+@media (prefers-reduced-motion:reduce){html:not(.dkm-force) #dkm-intro{display:none}}
 </style>
 <div id="dkm-intro" aria-hidden="true"><b><span>DAEKON</span></b><i></i><small>Weboldalak · Webalkalmazások · Egyedi rendszerek</small></div>
 <script>
@@ -22,7 +22,10 @@
   var el = document.getElementById('dkm-intro')
   if (!el) return
   var q = new URLSearchParams(location.search)
-  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches && q.get('dkmmotion') !== '1'
+  var sysReduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+  // kifejezett kérésre (?dkmmotion=1) a betöltő is látszik csökkentett mozgás mellett (a CSS ezt a dkm-force osztályból tudja)
+  if (sysReduced && q.get('dkmmotion') === '1') document.documentElement.classList.add('dkm-force')
+  var reduced = sysReduced && q.get('dkmmotion') !== '1'
   if (q.get('dkm') === '0' || reduced) return el.remove()
   var t0 = Date.now()
   var done = false

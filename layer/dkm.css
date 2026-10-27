@@ -74,8 +74,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dkm .rl-row::before,
-  .dkm .os8-in::after {
+  .dkm:not(.dkm-force) .rl-row::before,
+  .dkm:not(.dkm-force) .os8-in::after{
     animation: none !important;
     display: none;
   }
@@ -386,9 +386,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dkm .dkm-reel-k,
-  .dkm .dkm-reel-h,
-  .dkm .dkm-reel-cta {
+  .dkm:not(.dkm-force) .dkm-reel-k,
+  .dkm:not(.dkm-force) .dkm-reel-h,
+  .dkm:not(.dkm-force) .dkm-reel-cta{
     opacity: 1;
     transform: none;
     transition: none;

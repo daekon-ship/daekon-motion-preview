@@ -125,16 +125,6 @@ export function servicesDeck() {
   return true
 }
 
-// ---------- ÍGY DOLGOZOM: körbefutó üstökös-jelek, kigyúló lépések ----------
-export function processBeam() {
-  const rail = $('#folyamat .dkm-rail')
-  if (!rail) return false
-  rail.classList.add('dkm-rail6')
-  for (let i = 0; i < 2; i++) el('span', 'dkm-comet', rail).style.animationDelay = `${i * -1.3}s`
-  for (const s of all('#folyamat .pc-s')) s.classList.add('dkm-pc6')
-  return true
-}
-
 // ---------- TÖRTÉNET: görgetésre pörgő, térbeli évszám ----------
 export function storyYears() {
   const card = $('#rolam .st8')

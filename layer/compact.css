@@ -198,3 +198,14 @@ html.dkm body #dc-root#dc-root#dc-root #velemenyek {
     scroll-snap-align: start !important;
   }
 }
+
+/* Az oldal a lenti szekciókat csak láthatóvá váláskor rajzolja ki (content-visibility: auto), addig becsült
+   helykitöltő magassággal (pl. Vélemények 2300 px). A kompakt méretek miatt a becslés már nem egyezik a valós
+   magassággal: kirajzoláskor az oldal megugrott (telefonon CLS 0,58), és a menüpontok mellé ugrottak.
+   A mozgásrétegben ezért minden szekció a valós magasságával szerepel. */
+html.dkm body #dc-root#dc-root#dc-root section,
+html.dkm body #dc-root#dc-root#dc-root footer,
+html.dkm body #dc-root#dc-root#dc-root .ct-anchor {
+  content-visibility: visible !important;
+  contain-intrinsic-size: none !important;
+}

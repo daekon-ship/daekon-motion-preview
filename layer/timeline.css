@@ -1,0 +1,338 @@
+/* ÍGY DOLGOZOM – neon-timeline (timeline.js). Minden koordináta a lépéslista koordinátarendszerében:
+   --a / --b: a vonal kezdete és vége (első és utolsó pont közepe), --pos: egy pont helye, --p: haladás (0–1),
+   --y (asztal): a vonal függőleges középvonala, --x (telefon/tablet): a függőleges vonal középvonala.
+   Minden pont, a fénycsomag és az üstökös középpontja pontosan ezen a középvonalon van; a fénycsóvák hossza
+   legfeljebb a már kirajzolt szakasz, így soha nem lógnak túl a kezdőponton. */
+
+@property --k {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+/* az oldal saját (régi) összekötő vonala nem kell */
+.dkm .dkm-proc::before {
+  display: none;
+}
+
+.dkm .dkm-proc-host {
+  position: relative;
+}
+
+.dkm-tl {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  --p: 0;
+  --y: 0px;
+}
+
+.dkm-tl > span {
+  position: absolute;
+  box-sizing: border-box;
+  display: block;
+}
+
+/* ---------- vonal: halvány alap + kitöltés, egységes 3 px vastagság és lekerekítés ---------- */
+.dkm-tl-base,
+.dkm-tl-fill {
+  left: var(--a);
+  top: calc(var(--y) - 1.5px);
+  height: 3px;
+  border-radius: 3px;
+}
+
+.dkm-tl-base {
+  width: calc(var(--b) - var(--a));
+  background: rgba(185, 162, 255, 0.16);
+}
+
+.dkm-tl-fill {
+  width: calc((var(--b) - var(--a)) * var(--p));
+  background: linear-gradient(90deg, #d4ff3a, #b9a2ff 45%, #6c48ff);
+  box-shadow:
+    0 0 6px rgba(185, 162, 255, 0.75),
+    0 0 18px rgba(108, 72, 255, 0.4);
+}
+
+/* ---------- pontok ---------- */
+.dkm-tl-node {
+  left: calc(var(--pos) - 7.5px);
+  top: calc(var(--y) - 7.5px);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid #3a3945;
+  background: #050505;
+  transition:
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease,
+    scale 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dkm-tl-node.is-on {
+  border-color: #d4ff3a;
+  background: #b9a2ff;
+  box-shadow: 0 0 8px rgba(212, 255, 58, 0.45);
+}
+
+/* az éppen elért pont kap erősebb, de visszafogott fényt */
+.dkm-tl-node.is-cur {
+  scale: 1.15;
+  box-shadow:
+    0 0 0 4px rgba(212, 255, 58, 0.16),
+    0 0 14px rgba(212, 255, 58, 0.7);
+}
+
+.dkm-tl-node::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid #d4ff3a;
+  opacity: 0;
+}
+
+.dkm-tl-node.is-on::after {
+  animation: dkm-tl-ping 0.9s ease-out both;
+}
+
+@keyframes dkm-tl-ping {
+  from {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* ---------- fénycsomag: a kitöltés végén, csóvája legfeljebb a kirajzolt szakasz ---------- */
+.dkm-tl-packet {
+  left: calc(var(--a) + (var(--b) - var(--a)) * var(--p) - 5.5px);
+  top: calc(var(--y) - 5.5px);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 3px rgba(212, 255, 58, 0.25),
+    0 0 12px 3px rgba(212, 255, 58, 0.45),
+    0 0 26px 6px rgba(108, 72, 255, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dkm-tl.is-moving .dkm-tl-packet {
+  opacity: 1;
+}
+
+.dkm-tl-packet::after {
+  content: '';
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  width: min(90px, calc((var(--b) - var(--a)) * var(--p)));
+  border-radius: 3px;
+  background: linear-gradient(90deg, transparent, rgba(212, 255, 58, 0.6));
+}
+
+/* ---------- üstökös: egyetlen, lassú, finom fény a kirajzolt szakaszon (a fénycsomag előtt elhalványul) ---------- */
+.dkm-tl-comet {
+  left: calc(var(--a) + (var(--b) - var(--a)) * var(--p) * var(--k) - 3.5px);
+  top: calc(var(--y) - 3.5px);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px 2px rgba(212, 255, 58, 0.5);
+  opacity: 0;
+}
+
+.dkm-tl.is-moving .dkm-tl-comet {
+  animation: dkm-tl-comet 3.6s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+}
+
+.dkm-tl-comet::after {
+  content: '';
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  width: min(110px, calc((var(--b) - var(--a)) * var(--p) * var(--k)));
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(212, 255, 58, 0.55));
+}
+
+@keyframes dkm-tl-comet {
+  0% {
+    --k: 0;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  70% {
+    opacity: 0.85;
+  }
+  88% {
+    --k: 0.9;
+    opacity: 0;
+  }
+  100% {
+    --k: 0.9;
+    opacity: 0;
+  }
+}
+
+/* ---------- függőleges változat (telefon, tablet): a vonal a sorszám és a szöveg között ---------- */
+.dkm-tl.is-v .dkm-tl-base,
+.dkm-tl.is-v .dkm-tl-fill {
+  left: calc(var(--x) - 1.5px);
+  top: var(--a);
+  width: 3px;
+  height: calc(var(--b) - var(--a));
+}
+
+.dkm-tl.is-v .dkm-tl-fill {
+  height: calc((var(--b) - var(--a)) * var(--p));
+  background: linear-gradient(180deg, #d4ff3a, #b9a2ff 45%, #6c48ff);
+}
+
+.dkm-tl.is-v .dkm-tl-node {
+  left: calc(var(--x) - 6.5px);
+  top: calc(var(--pos) - 6.5px);
+  width: 13px;
+  height: 13px;
+}
+
+.dkm-tl.is-v .dkm-tl-packet {
+  left: calc(var(--x) - 5.5px);
+  top: calc(var(--a) + (var(--b) - var(--a)) * var(--p) - 5.5px);
+}
+
+.dkm-tl.is-v .dkm-tl-packet::after {
+  right: auto;
+  left: 50%;
+  top: auto;
+  bottom: 50%;
+  width: 3px;
+  margin: 0 0 0 -1.5px;
+  height: min(70px, calc((var(--b) - var(--a)) * var(--p)));
+  background: linear-gradient(180deg, transparent, rgba(212, 255, 58, 0.6));
+}
+
+.dkm-tl.is-v .dkm-tl-comet {
+  left: calc(var(--x) - 3.5px);
+  top: calc(var(--a) + (var(--b) - var(--a)) * var(--p) * var(--k) - 3.5px);
+}
+
+.dkm-tl.is-v .dkm-tl-comet::after {
+  right: auto;
+  left: 50%;
+  top: auto;
+  bottom: 50%;
+  width: 2px;
+  margin: 0 0 0 -1px;
+  height: min(80px, calc((var(--b) - var(--a)) * var(--p) * var(--k)));
+  background: linear-gradient(180deg, transparent, rgba(212, 255, 58, 0.55));
+}
+
+/* ---------- kigyúló lépés-panelek: a kártyák közötti rés feléig érnek (--dkm-gx), nem lógnak egymásra ---------- */
+.dkm .dkm-pc6 {
+  position: relative;
+  isolation: isolate;
+}
+
+.dkm .dkm-pc6::after {
+  content: '';
+  position: absolute;
+  inset: -20px calc(-1 * var(--dkm-gx, 12px)) -22px calc(-1 * var(--dkm-gx, 12px));
+  z-index: -1;
+  border-radius: 16px;
+  border: 1px solid rgba(185, 162, 255, 0.2);
+  background:
+    radial-gradient(120% 70% at 15% 0%, rgba(108, 72, 255, 0.3), rgba(108, 72, 255, 0) 70%),
+    linear-gradient(180deg, rgba(185, 162, 255, 0.06), rgba(185, 162, 255, 0));
+  box-shadow: 0 24px 50px -30px rgba(108, 72, 255, 0.55);
+  opacity: 0;
+  translate: 0 10px;
+  transition:
+    opacity 0.5s ease,
+    translate 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease;
+  pointer-events: none;
+}
+
+.dkm .dkm-pc6.dkm-on::after {
+  opacity: 1;
+  translate: none;
+}
+
+/* az éppen aktív lépés kerete kap egy leheletnyi lime árnyalatot */
+.dkm .dkm-pc6.dkm-cur::after {
+  border-color: rgba(212, 255, 58, 0.28);
+}
+
+.dkm .dkm-pc6 .pc-t,
+.dkm .dkm-pc6 .pc-d {
+  translate: 0 8px;
+  transition: translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dkm .dkm-pc6.dkm-on .pc-t,
+.dkm .dkm-pc6.dkm-on .pc-d {
+  translate: none;
+}
+
+.dkm .pc-s.dkm-pc6.dkm-hit .pc-n {
+  display: inline-block;
+  animation: dkm-tl-pop 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes dkm-tl-pop {
+  0% {
+    transform: scale(1);
+    color: #b9a2ff;
+  }
+  35% {
+    transform: scale(1.22);
+    color: #d4ff3a;
+    text-shadow: 0 0 12px rgba(212, 255, 58, 0.8);
+  }
+  100% {
+    transform: scale(1);
+    color: #b9a2ff;
+  }
+}
+
+@media (max-width: 899px) {
+  .dkm .dkm-pc6::after {
+    inset: 3px -8px 3px -10px;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+}
+
+/* ---------- csökkentett mozgás: álló, teljesen kirajzolt timeline ---------- */
+.dkm-tl.is-still .dkm-tl-node::after {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not(.dkm-force) .dkm-tl *,
+  html:not(.dkm-force) .dkm-tl *::after,
+  .dkm:not(.dkm-force) .dkm-pc6::after,
+  .dkm:not(.dkm-force) .dkm-pc6 .pc-t,
+  .dkm:not(.dkm-force) .dkm-pc6 .pc-d,
+  .dkm:not(.dkm-force) .pc-s.dkm-pc6 .pc-n{
+    animation: none !important;
+    transition: none !important;
+    translate: none !important;
+  }
+}

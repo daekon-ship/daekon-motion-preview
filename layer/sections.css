@@ -412,21 +412,21 @@
 
 /* Csökkentett mozgás: semmi nem mozog, és semmi nem marad halványítva */
 @media (prefers-reduced-motion: reduce) {
-  .dkm .dkm-sep::before,
-  .dkm .dkm-proc::before,
-  .dkm .dkm-st .st8-line::after,
-  .dkm .dkm-os::before,
-  .dkm .dkm-bar::before,
-  .dkm .dkm-ft::after,
-  .dkm .v5-cta::after {
+  .dkm:not(.dkm-force) .dkm-sep::before,
+  .dkm:not(.dkm-force) .dkm-proc::before,
+  .dkm:not(.dkm-force) .dkm-st .st8-line::after,
+  .dkm:not(.dkm-force) .dkm-os::before,
+  .dkm:not(.dkm-force) .dkm-bar::before,
+  .dkm:not(.dkm-force) .dkm-ft::after,
+  .dkm:not(.dkm-force) .v5-cta::after{
     display: none;
   }
-  .dkm .dkm-proc .pc-s,
-  .dkm .dkm-st .dkm-read {
+  .dkm:not(.dkm-force) .dkm-proc .pc-s,
+  .dkm:not(.dkm-force) .dkm-st .dkm-read{
     opacity: 1 !important;
     translate: none !important;
   }
-  .dkm-reel .dkm-float {
+  html:not(.dkm-force) .dkm-reel .dkm-float{
     animation: none !important;
   }
 }

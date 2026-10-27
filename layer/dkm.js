@@ -10,8 +10,9 @@ import { magnetic } from './magnetic.js'
 import { navPill } from './nav.js'
 import { reel } from './reel.js'
 import { contact, footer, heroLight, os, reviews, separators, services, story } from './sections.js'
-import { footerStage, heroField, osTech, processSignal, reviewsDepth, servicesDepth, storyDepth } from './v5.js'
-import { processBeam, reviewsCompact, reviewsEnter, servicesDeck, storyYears } from './v6.js'
+import { footerStage, heroField, osTech, reviewsDepth, servicesDepth, storyDepth } from './v5.js'
+import { reviewsCompact, reviewsEnter, servicesDeck, storyYears } from './v6.js'
+import { processTimeline } from './timeline.js'
 import { footerFloor, heroWorld, osNetwork } from './world.js'
 
 // Gyenge eszköz felismerése csak hardveres jelekből (kevés mag/memória, adattakarékos mód) → „lite” mód:
@@ -25,7 +26,7 @@ function isLowEnd() {
 }
 
 // Modulonként: [futtató, a cél-szekció szelektora]. Minden modul csak a SAJÁT szekciójára vár, így egy hiányzó
-// vagy késve megjelenő szekció nem akadályozza a többi indulását. A sorrend számít (pl. processBeam a processSignal után).
+// vagy késve megjelenő szekció nem akadályozza a többi indulását.
 const MODULES = [
   ['reel', () => reel({ still: false }), '#work .rl-a'],
   ['heroField', heroField, '#top > div'],
@@ -36,8 +37,7 @@ const MODULES = [
   ['services', services, '#szolgaltatasok .sv7-a'],
   ['servicesDepth', servicesDepth, '#szolgaltatasok .sv7-a'],
   ['servicesDeck', servicesDeck, '#szolgaltatasok .sv7-a'],
-  ['processSignal', processSignal, '#folyamat .pc-s'],
-  ['processBeam', processBeam, '#folyamat .dkm-rail'],
+  ['processTimeline', () => processTimeline(), '#folyamat .pc-s'],
   ['story', story, '#rolam .st8'],
   ['storyDepth', storyDepth, '#rolam .st8'],
   ['storyYears', storyYears, '#rolam .st8'],
@@ -87,6 +87,8 @@ function start() {
   status.systemReduced = systemReduced
   status.lite = lite
   document.documentElement.classList.add('dkm')
+  // kifejezett kérésre (?dkmmotion=1) a CSS csökkentett-mozgás szabályai sem kapcsolják ki az animációkat
+  if (systemReduced && window.__DKM_FORCE_MOTION) document.documentElement.classList.add('dkm-force')
   if (lite) document.documentElement.classList.add('dkm-lite')
   // hibakereséshez: ?dkmskip=reel,heroLight – az adott részek kihagyása
   const skip = new URLSearchParams(location.search).get('dkmskip')?.split(',') ?? []
@@ -97,8 +99,12 @@ function start() {
   const phone = !fine || matchMedia('(max-width: 899px)').matches
   status.phone = phone
   if (phone) document.documentElement.classList.add('dkm-phone')
+  // csökkentett mozgásnál: álló showreel és álló, teljesen kirajzolt folyamat-timeline
   const pending = reduced
-    ? [['reel', () => reel({ still: true }), '#work .rl-a']]
+    ? [
+        ['reel', () => reel({ still: true }), '#work .rl-a'],
+        ['processTimeline', () => processTimeline({ still: true }), '#folyamat .pc-s'],
+      ]
     : MODULES.filter(([name, , , req]) => {
         if (skip.includes(name)) return false
         if (req === 'pointer' && !fine) {
