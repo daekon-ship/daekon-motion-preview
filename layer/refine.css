@@ -69,10 +69,15 @@ html.dkm body #dc-root#dc-root#dc-root .dkm-reel-stage {
   }
 }
 
-/* ---------- SZOLGÁLTATÁSOK: asztalon is egy oszlopban, mint telefonon (tulajdonosi döntés, 2026-10-27) ----------
-   a 6 szolgáltatás egymás alatt; bal oldalon a ragadós rétegköteg és a képernyőkártya, amely görgetés közben
-   az aktív sorhoz vált (az oldal saját görgetés-kijelölése + rámutatás) */
-@media (min-width: 1100px) {
+/* ---------- SZOLGÁLTATÁSOK: asztalon is pontosan a telefonos lista (tulajdonosi döntés, 2026-10-27) ----------
+   a 6 szolgáltatás egymás alatt, teljes szélességben; a rétegköteg és a képernyőkártya nem jelenik meg */
+@media (min-width: 900px) {
+  html.dkm body #dc-root#dc-root#dc-root #szolgaltatasok .sv7 {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  html.dkm body #dc-root#dc-root#dc-root #szolgaltatasok .sv8 {
+    display: none !important;
+  }
   html.dkm body #dc-root#dc-root#dc-root .dkm-sv-grid .sv7-a {
     padding-top: 22px !important;
     padding-bottom: 22px !important;
