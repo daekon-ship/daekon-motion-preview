@@ -3,7 +3,7 @@
 // - ?dkm=0: az új animációs réteg kikapcsolva (összehasonlításhoz az éles állapottal)
 // - ?dkmmotion=1: a látogató KIFEJEZETT kérésére, csak arra az egy megnyitásra, csökkentett mozgás mellett is lefut a réteg
 // - diagnosztikai panel: betöltés, megtalált szekciók, ténylegesen elindult és ténylegesen rajzoló effektek, hibák
-// - IDEIGLENES verziójelzés („DAEKON V6 TESZT — <commit>”): a tulajdonosi ellenőrzés után törlendő (testBanner)
+// - csökkentett mozgásnál az alsó sávban link: „Animációk megtekintése” (?dkmmotion=1, csak kattintásra)
 ;(function () {
   var params = new URLSearchParams(location.search)
   if (params.get('dkm') === '0') window.__DKM_OFF = true
@@ -41,44 +41,6 @@
     if (val == null) u.searchParams.delete(key)
     else u.searchParams.set(key, val)
     return u.pathname + u.search + u.hash
-  }
-
-  // ---------- IDEIGLENES: verziójelzés + csökkentett mozgás figyelmeztetés (ellenőrzés után törlendő) ----------
-  function testBanner() {
-    var commit = window.__DKM_COMMIT || '?'
-    var box = node(
-      'div',
-      'position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:2147483001;max-width:min(620px,calc(100vw - 24px));' +
-        'display:grid;gap:8px;padding:12px 16px;border-radius:14px;background:#D4FF3A;color:#050505;box-shadow:0 18px 40px -12px #000;' +
-        "font:700 13px/1.4 Manrope,system-ui,sans-serif;text-align:center",
-    )
-    box.setAttribute('role', 'status')
-    box.append(node('div', 'font-size:16px;letter-spacing:.04em', 'DAEKON V6 TESZT — ' + commit))
-    if (window.__DKM_OFF) {
-      box.append(node('div', 'font-weight:600', 'Animációk KIKAPCSOLVA (?dkm=0) – ez az eredeti daekon.hu állapota.'))
-    } else if (systemReduced && !window.__DKM_FORCE_MOTION) {
-      box.style.background = '#FFB13A'
-      box.append(
-        node(
-          'div',
-          'font-weight:600',
-          'Ezen az eszközön be van kapcsolva a csökkentett mozgás, ezért az animációk szándékosan NEM futnak. ' +
-            'Windows: Gépház › Könnyű kezelés › Kijelző › „Animációk megjelenítése a Windowsban” – kapcsold BE, majd frissítsd az oldalt.',
-        ),
-      )
-      var force = node('a', 'color:#050505;text-decoration:underline;text-underline-offset:3px', 'Animációk megtekintése most, csak erre a megnyitásra →')
-      force.href = urlWith('dkmmotion', '1')
-      box.append(force)
-    } else if (systemReduced && window.__DKM_FORCE_MOTION) {
-      box.append(node('div', 'font-weight:600', 'A csökkentett mozgás beállítás ellenére, a te kérésedre most futnak az animációk (csak erre a megnyitásra).'))
-    }
-    var close = node('button', 'position:absolute;right:6px;top:4px;border:0;background:none;font:inherit;cursor:pointer;color:#050505', '✕')
-    close.setAttribute('aria-label', 'Tesztjelzés elrejtése')
-    close.onclick = function () {
-      box.remove()
-    }
-    box.append(close)
-    document.body.appendChild(box)
   }
 
   function ui() {
@@ -142,6 +104,13 @@
     var a = node('a', 'color:#CBB9FF;text-decoration:underline;text-underline-offset:3px;white-space:nowrap', on ? 'Animációk: BE' : 'Animációk: KI')
     a.href = urlWith('dkm', on ? '0' : null)
     bar.append(a)
+    // csökkentett mozgás beállítás mellett az animációk szándékosan nem futnak; megtekintés csak kifejezett kattintásra
+    if (on && systemReduced && !window.__DKM_FORCE_MOTION) {
+      a.textContent = 'Animációk: KI (csökkentett mozgás)'
+      var force = node('a', 'color:#D4FF3A;text-decoration:underline;text-underline-offset:3px;white-space:nowrap', 'Animációk megtekintése')
+      force.href = urlWith('dkmmotion', '1')
+      bar.append(force)
+    }
     var open = node('button', 'border:0;background:none;color:#CBB9FF;font:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px', 'Diagnosztika')
     bar.append(open)
 
@@ -216,7 +185,6 @@
     wrap.append(bar)
     document.body.appendChild(wrap)
     document.body.appendChild(panel)
-    testBanner()
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ui)
   else ui()
