@@ -256,57 +256,6 @@
   transform: translate3d(0, calc((0.5 - var(--sp, 0.5)) * -320px), 0);
 }
 
-.dkm .dkm-thread {
-  position: relative;
-}
-
-.dkm-thread-line {
-  position: absolute;
-  left: -26px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: rgba(185, 162, 255, 0.14);
-  pointer-events: none;
-}
-
-.dkm-thread-line::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  transform-origin: top;
-  transform: scaleY(min(1, max(0, (var(--sp, 0) - 0.15) * 1.9)));
-  background: linear-gradient(180deg, #d4ff3a, #b9a2ff 50%, #6c48ff);
-  box-shadow: 0 0 12px rgba(185, 162, 255, 0.7);
-}
-
-.dkm .dkm-thread .dkm-read {
-  position: relative;
-}
-
-.dkm .dkm-thread .dkm-read::before {
-  content: '';
-  position: absolute;
-  left: -31px;
-  top: 0.55em;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid #3a3945;
-  background: #0b0a10;
-  transition:
-    border-color 0.5s ease,
-    background-color 0.5s ease,
-    box-shadow 0.5s ease,
-    scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.dkm .dkm-thread .dkm-read.is-read::before {
-  border-color: #d4ff3a;
-  background: #b9a2ff;
-  box-shadow: 0 0 14px rgba(212, 255, 58, 0.75);
-  scale: 1.15;
-}
 
 @media (max-width: 699px) {
   .dkm-ring {
@@ -339,14 +288,6 @@
   }
   .dkm-yr-b {
     -webkit-text-stroke-color: rgba(212, 255, 58, 0.1);
-  }
-  .dkm-thread-line {
-    left: -14px;
-  }
-  .dkm .dkm-thread .dkm-read::before {
-    left: -19px;
-    width: 10px;
-    height: 10px;
   }
 }
 

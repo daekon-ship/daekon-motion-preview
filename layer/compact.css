@@ -155,15 +155,6 @@ html.dkm body #dc-root#dc-root#dc-root .sv7-a {
   padding-bottom: 18px !important;
 }
 
-html.dkm #ai .ct-in {
-  padding-top: 40px !important;
-}
-
-html.dkm body #dc-root#dc-root#dc-root #velemenyek {
-  padding-top: 36px !important;
-  padding-bottom: 36px !important;
-}
-
 @media (max-width: 899px) {
   html.dkm body #dc-root#dc-root#dc-root .sv7-a {
     padding-top: 14px !important;
@@ -171,8 +162,8 @@ html.dkm body #dc-root#dc-root#dc-root #velemenyek {
   }
 }
 
-/* Telefon: az értékelések egymás mellett, oldalra lapozva (a következő kártya széle kilátszik) – a 8 kártya
-   egymás alatt ~2000 px volt; így a szekció kb. egy kártya magas */
+/* Telefon: az értékelések egymás mellett, oldalra lapozva (egyszerre egy kártya – refine.css, lapozó: refine.js) –
+   a 8 kártya egymás alatt ~2000 px volt; így a szekció kb. egy kártya magas */
 @media (max-width: 899px) {
   html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-list {
     display: flex !important;
@@ -193,8 +184,6 @@ html.dkm body #dc-root#dc-root#dc-root #velemenyek {
     display: none;
   }
   html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-card {
-    flex: 0 0 84% !important;
-    width: 84% !important;
     scroll-snap-align: start !important;
   }
 }

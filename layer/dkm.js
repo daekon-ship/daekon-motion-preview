@@ -13,6 +13,7 @@ import { contact, footer, heroLight, os, reviews, separators, services, story } 
 import { footerStage, heroField, osTech, reviewsDepth, servicesDepth, storyDepth } from './v5.js'
 import { reviewsCompact, reviewsEnter, servicesDeck, storyYears } from './v6.js'
 import { processTimeline } from './timeline.js'
+import { reviewsLayout, servicesGrid, storyThread } from './refine.js'
 import { footerFloor, heroWorld, osNetwork } from './world.js'
 
 // Gyenge eszköz felismerése csak hardveres jelekből (kevés mag/memória, adattakarékos mód) → „lite” mód:
@@ -37,14 +38,17 @@ const MODULES = [
   ['services', services, '#szolgaltatasok .sv7-a'],
   ['servicesDepth', servicesDepth, '#szolgaltatasok .sv7-a'],
   ['servicesDeck', servicesDeck, '#szolgaltatasok .sv7-a'],
+  ['servicesGrid', servicesGrid, '#szolgaltatasok .sv7-a'],
   ['processTimeline', () => processTimeline(), '#folyamat .pc-s'],
   ['story', story, '#rolam .st8'],
   ['storyDepth', storyDepth, '#rolam .st8'],
   ['storyYears', storyYears, '#rolam .st8'],
+  ['storyThread', () => storyThread(), '#rolam .st8-body'],
   ['reviews', reviews, '#velemenyek', 'pointer'],
   ['reviewsDepth', reviewsDepth, '#velemenyek'],
   ['reviewsEnter', reviewsEnter, '#velemenyek'],
   ['reviewsCompact', reviewsCompact, '#velemenyek'],
+  ['reviewsLayout', reviewsLayout, '#velemenyek'],
   ['osCard', osCard, '#daekon-os .os8-in'],
   ['os', os, '#daekon-os .os8-in'],
   ['osTech', osTech, '#daekon-os .os8-in'],
@@ -104,6 +108,9 @@ function start() {
     ? [
         ['reel', () => reel({ still: true }), '#work .rl-a'],
         ['processTimeline', () => processTimeline({ still: true }), '#folyamat .pc-s'],
+        ['storyThread', () => storyThread({ still: true }), '#rolam .st8-body'],
+        ['reviewsLayout', reviewsLayout, '#velemenyek'],
+        ['servicesGrid', servicesGrid, '#szolgaltatasok .sv7-a'],
       ]
     : MODULES.filter(([name, , , req]) => {
         if (skip.includes(name)) return false

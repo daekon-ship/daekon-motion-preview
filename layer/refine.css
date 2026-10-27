@@ -1,0 +1,370 @@
+/* V8 – kompakt, prémium véglegesítés (2026-10-27). Egységes térközrendszer + szekciónkénti tömörítés.
+   Csak elrendezés, térköz és interakció változik; színek, betűtípusok, szövegek, linkek, vélemények változatlanok.
+   Az oldal saját szabályai „html body #dc-root … !important” erősségűek, ezért a #dc-root háromszor szerepel. */
+
+:root {
+  --dkm-sec-y: clamp(36px, 3.3vw, 52px); /* szekciók felső/alsó térköze */
+  --dkm-head-gap: clamp(18px, 1.8vw, 26px); /* szekciócím → tartalom */
+  --dkm-gap: 16px; /* kártyák közötti rés */
+  --dkm-r: 14px; /* kártyák lekerekítése */
+  --dkm-line: rgba(185, 162, 255, 0.2); /* finom keret */
+  --dkm-line-hi: rgba(185, 162, 255, 0.45); /* kiemelt keret */
+  --dkm-glow: 0 18px 44px -26px rgba(108, 72, 255, 0.75);
+  --dkm-t: 0.45s;
+  --dkm-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 899px) {
+  :root {
+    --dkm-sec-y: 32px;
+    --dkm-head-gap: 18px;
+    --dkm-gap: 12px;
+  }
+}
+
+/* ---------- egységes szekció-ritmus ---------- */
+html.dkm body #dc-root#dc-root#dc-root #szolgaltatasok,
+html.dkm body #dc-root#dc-root#dc-root #velemenyek,
+html.dkm body #dc-root#dc-root#dc-root #folyamat,
+html.dkm body #dc-root#dc-root#dc-root #rolam,
+html.dkm body #dc-root#dc-root#dc-root #daekon-os,
+html.dkm body #dc-root#dc-root#dc-root #gyik {
+  padding-top: var(--dkm-sec-y) !important;
+  padding-bottom: var(--dkm-sec-y) !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #ai .ct-in {
+  padding-top: var(--dkm-sec-y) !important;
+  padding-bottom: var(--dkm-sec-y) !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root .sw-head {
+  margin-bottom: var(--dkm-head-gap) !important;
+}
+
+/* ---------- HERO + átvezetés: rövidebb görgetési út (a jelenetek a valós magasságból számolnak, végigfutnak) ---------- */
+@media (min-width: 1100px) {
+  html.dkm body [data-hero] {
+    height: 160vh !important;
+  }
+  html.dkm body [data-enter] {
+    height: 125vh !important;
+  }
+}
+
+@media (max-width: 900px) and (orientation: portrait) and (min-height: 640px) {
+  html.dkm body [data-hero] {
+    height: 128svh !important;
+  }
+}
+
+/* ---------- REFERENCIÁK: alacsonyabb showreel-színpad (a kártyák helye %-ban, arányosan követik) ---------- */
+html.dkm body #dc-root#dc-root#dc-root .dkm-reel-stage {
+  height: clamp(500px, 68vh, 640px);
+}
+
+@supports (height: 1svh) {
+  html.dkm.dkm-phone body #dc-root#dc-root#dc-root .dkm-reel-stage {
+    height: clamp(460px, 70svh, 580px);
+  }
+}
+
+/* ---------- SZOLGÁLTATÁSOK: asztalon 2×3-as rács a rétegköteg mellett ---------- */
+@media (min-width: 1100px) {
+  html.dkm body #dc-root#dc-root#dc-root .sv7-list.dkm-sv-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(22px, 2.4vw, 36px);
+    align-content: start;
+  }
+  html.dkm body #dc-root#dc-root#dc-root .dkm-sv-grid .sv7-a {
+    padding: 18px 44px 20px 0 !important;
+  }
+  html.dkm body #dc-root#dc-root#dc-root .dkm-sv-grid .sv7-num {
+    top: 16px !important;
+    font-size: clamp(20px, 1.4vw, 24px) !important;
+  }
+  html.dkm body #dc-root#dc-root#dc-root .dkm-sv-grid .sv7-t {
+    margin-bottom: 8px !important;
+    max-width: none !important;
+  }
+  html.dkm body #dc-root#dc-root#dc-root .sv8 {
+    height: 470px !important;
+  }
+}
+
+/* ---------- VÉLEMÉNYEK ---------- */
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-card {
+  border-color: var(--dkm-line) !important;
+  border-radius: var(--dkm-r) !important;
+  transition:
+    border-color var(--dkm-t) ease,
+    box-shadow var(--dkm-t) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-card:hover {
+    border-color: var(--dkm-line-hi) !important;
+    box-shadow:
+      0 0 0 1px rgba(185, 162, 255, 0.12),
+      var(--dkm-glow);
+  }
+}
+
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-list-wrap {
+  margin-top: 0 !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-note {
+  margin-top: 12px !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-ask {
+  margin-top: 14px !important;
+}
+
+.dkm-rv-more {
+  display: block;
+  margin: 16px auto 0;
+  padding: 10px 20px;
+  min-height: 40px;
+  border: 1px solid var(--dkm-line-hi);
+  border-radius: 999px;
+  background: rgba(108, 72, 255, 0.08);
+  color: #cbb9ff;
+  font: 600 13.5px/1.2 Manrope, system-ui, sans-serif;
+  cursor: pointer;
+  transition:
+    border-color var(--dkm-t) ease,
+    box-shadow var(--dkm-t) ease,
+    color var(--dkm-t) ease;
+}
+
+.dkm-rv-more:hover,
+.dkm-rv-more:focus-visible {
+  color: #f5f5f2;
+  border-color: rgba(212, 255, 58, 0.5);
+  box-shadow: 0 0 18px -4px rgba(185, 162, 255, 0.6);
+  outline: none;
+}
+
+.dkm-rv-nav {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  /* alapállapotban egyetlen sor: 3 válogatott kártya; a többi a lenyitóval */
+  html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-list:not(.dkm-rv-open) .rv-card.dkm-rv-extra {
+    display: none !important;
+  }
+}
+
+@media (max-width: 899px) {
+  .dkm-rv-more {
+    display: none;
+  }
+  /* telefon: egyszerre egy kártya, lapozható */
+  html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-card {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+  }
+  .dkm-rv-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .dkm-rv-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--dkm-line-hi);
+    background: rgba(108, 72, 255, 0.08);
+    color: #cbb9ff;
+    font: 600 16px/1 Manrope, system-ui, sans-serif;
+    cursor: pointer;
+    transition:
+      opacity 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .dkm-rv-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .dkm-rv-btn:focus-visible {
+    outline: 2px solid #b9a2ff;
+    outline-offset: 3px;
+  }
+  .dkm-rv-count {
+    min-width: 52px;
+    text-align: center;
+    font: 500 12.5px/1 'Geist Mono', ui-monospace, monospace;
+    letter-spacing: 0.08em;
+    color: #a9a8a2;
+  }
+  html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-list:focus-visible {
+    outline: 2px solid #b9a2ff;
+    outline-offset: 4px;
+    border-radius: var(--dkm-r);
+  }
+}
+
+/* ---------- RÓLAM: rövid bemutatkozás, a részletes történet alapból összecsukva (minden méreten) ---------- */
+html.dkm body #dc-root#dc-root#dc-root #rolam .st8-more:not(.is-open) {
+  display: none !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #rolam .st8-tog {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  margin: 4px 0 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: 600 14px/1.3 Manrope, sans-serif;
+  color: #cbb9ff;
+  cursor: pointer;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #rolam .st8-tog:focus-visible {
+  outline: 2px solid #b9a2ff;
+  outline-offset: 3px;
+}
+
+/* történet-idővonal (refine.js storyThread): saját oszlop, a vonal az első és az utolsó pont között,
+   a pontok középpontja pontosan a vonal középtengelyén */
+.dkm .dkm-thread {
+  position: relative;
+  --dkm-tx: -25px; /* a vonal középtengelye a szöveg bal szélétől */
+  --dkm-dot: 9px;
+}
+
+.dkm-thread-line {
+  position: absolute;
+  left: calc(var(--dkm-tx) - 1px);
+  width: 2px;
+  border-radius: 2px;
+  background: rgba(185, 162, 255, 0.16);
+  pointer-events: none;
+}
+
+.dkm-thread-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--tf, 0px);
+  border-radius: inherit;
+  background: linear-gradient(180deg, #d4ff3a, #b9a2ff 50%, #6c48ff);
+  box-shadow: 0 0 8px rgba(185, 162, 255, 0.55);
+}
+
+.dkm .dkm-thread .dkm-read {
+  position: relative;
+  translate: none !important; /* a pont ne mozduljon el a vonalon */
+}
+
+.dkm .dkm-thread .dkm-read::before {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+  left: calc(var(--dkm-tx) - var(--dkm-dot) / 2);
+  top: calc(0.75em - var(--dkm-dot) / 2);
+  width: var(--dkm-dot);
+  height: var(--dkm-dot);
+  border-radius: 50%;
+  border: 1.5px solid #3a3945;
+  background: #0b0a10;
+  transition:
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.dkm .dkm-thread .dkm-read.is-read::before {
+  border-color: #b9a2ff;
+  background: #6c48ff;
+}
+
+/* az éppen elért pont: visszafogott neonfény */
+.dkm .dkm-thread .dkm-read.is-cur::before {
+  border-color: #d4ff3a;
+  background: #b9a2ff;
+  box-shadow: 0 0 10px rgba(212, 255, 58, 0.55);
+}
+
+@media (max-width: 899px) {
+  /* telefon: a vonal saját sávot kap a szöveg mellett (nem lóg ki a kártyából, nem ér a szöveghez) */
+  html.dkm body #dc-root#dc-root#dc-root #rolam .st8-body.dkm-thread {
+    padding-left: 22px !important;
+  }
+  .dkm .dkm-thread {
+    --dkm-tx: 6px;
+    --dkm-dot: 8px;
+  }
+  .dkm .dkm-thread .dkm-read::before {
+    left: calc(var(--dkm-tx) - 22px - var(--dkm-dot) / 2);
+  }
+  .dkm-thread-line {
+    left: calc(var(--dkm-tx) - 1px);
+  }
+}
+
+/* ---------- GYAKORI KÉRDÉSEK: asztalon cím balra, kérdések jobbra; egységes, kényelmes sorok ---------- */
+@media (min-width: 1100px) {
+  html.dkm body #dc-root#dc-root#dc-root #gyik {
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    column-gap: clamp(40px, 5vw, 96px);
+    align-items: start;
+  }
+  html.dkm body #dc-root#dc-root#dc-root #gyik > .sw-head {
+    margin-bottom: 0 !important;
+  }
+}
+
+html.dkm body #dc-root#dc-root#dc-root #gyik summary {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  min-height: 44px;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #gyik .fq6-list {
+  margin-top: 0 !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #ai .ct-head {
+  margin-top: var(--dkm-head-gap) !important;
+}
+
+/* telefon: az átvezetés („PROJEKTEK”) itt nem ragadós jelenet, csak egy rövid kép – alacsonyabb */
+@media (max-width: 899px) {
+  html.dkm body #dc-root#dc-root#dc-root [data-enter-sticky] {
+    height: clamp(320px, 46svh, 420px) !important;
+  }
+}
+
+/* Rólam: a lenyitó gomb saját sorban (különben az „Itt kezdődött minden” link mellé csúszott) */
+html.dkm body #dc-root#dc-root#dc-root #rolam .st8-tog {
+  display: flex !important;
+  width: max-content;
+}
+
+/* a pörgő évszám a rövidebb (összecsukott) kártyában a jobb alsó, üres sarokba kerül, kisebben – nem fedi a szöveget */
+@media (min-width: 900px) {
+  html.dkm body #dc-root#dc-root#dc-root #rolam .dkm-yr-a.dkm-odo {
+    left: auto !important;
+    right: 3% !important;
+    bottom: 8% !important;
+    font-size: min(6.4vw, 92px) !important;
+  }
+}
+
+.rv-ask-btns .dkm-rv-more {
+  margin: 0;
+  align-self: stretch;
+}

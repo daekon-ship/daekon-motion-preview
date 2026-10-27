@@ -31,6 +31,13 @@ Előnézet: https://daekon-ship.github.io/daekon-motion-preview/
   - **Footer:** mozgó fénypadló, görgetésre emelkedő látóhatár.
   A vásznak csak láthatóan rajzolnak, háttérfülön állnak, DPR ≤ 1,5; csökkentett mozgásnál nem indulnak.
 - **Tulajdonosi döntések (2026-10-26):** a főoldalon csak a showreel mutatja a projekteket – a showreel a `#work` szekcióba kerül, a „Munkák” menüpont oda visz, a régi projektlista rejtve; kompakt tipográfia és térközök (`layer/compact.css`; az élő CSS `#dc-root .sc-interp{font-size:clamp(17px,1.45vw,23px)!important}` szabálya fújta fel a szövegeket).
+- **2026-10-27 – telefon, timeline, kompakt véglegesítés:**
+  - `layer/phone.css`: telefonon minden effekt fut, de hangolva (keverési mód nélkül, 1× felbontású és 30 fps-es canvasok, kisebb elmozdulás).
+  - `layer/timeline.js` + `timeline.css`: az „Így dolgozom” görgetéshez kötött neon-timeline (kártyaközép-horgonyok, offset-alapú koordináták, rAF, determinisztikus 0–1 haladás).
+  - `layer/refine.js` + `refine.css`: egységes térközrendszer (CSS-változók), rövidebb hero/átvezetés, alacsonyabb showreel, 2×3-as szolgáltatás-rács, vélemények (asztalon 1 sor + „Mind a 8”, telefonon lapozó 1/8), Rólam összecsukott történet + pontos idővonal, kétoszlopos GYIK.
+  - `content-visibility` kikapcsolva a rétegben (a régi helykitöltő magasságok ugrást és menü-elcsúszást okoztak).
+  - `?dkmmotion=1` mellett a CSS csökkentett-mozgás szabályai sem kapcsolják ki az animációkat (`html.dkm-force`).
+  - Visszaállítási pontok: `v7-before-timeline`, `v8-before-compact`.
 - **Indítás:** modulonként – minden effekt csak a saját szekciójára vár (`layer/dkm.js` MODULES), egy hiányzó szekció nem állítja meg a többit. Csökkentett mozgásnál (pl. Windows „Animációk megjelenítése” KI) szándékosan csak az álló showreel jelenik meg.
 - `evidence/` – vizuális bizonyíték (KI/BE képpárok, összehasonlító videók): https://daekon-ship.github.io/daekon-motion-preview/evidence/
 - `preview/shim.js` – **csak előnézet**: noindex, az ajánlatkérő nem küld semmit (a `send.php` helyben elutasítva), BE/KI kapcsoló, diagnosztikai panel (megtalált szekciók, elindult és ténylegesen rajzoló effektek, hibák), csökkentett mozgásnál az alsó sávban „Animációk megtekintése” link (`?dkmmotion=1`, csak kattintásra, arra az egy megnyitásra). Az ideiglenes „DAEKON V6 TESZT” jelzés 2026-10-27-én, a tulajdonos kérésére kikerült.

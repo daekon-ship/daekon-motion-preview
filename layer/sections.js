@@ -80,30 +80,6 @@ export function story() {
     },
     { target: card, offset: ['start 80%', 'end 60%'] },
   )
-  const paras = [...card.querySelectorAll('.st8-body p, .st8-body h3')]
-  // az idővonal kitöltése pontosan az utolsó kigyúlt pont közepéig ér (korábban a kártya görgetése hajtotta,
-  // ezért elcsúszott a pontokhoz képest). offsetTop: a bekezdések belépő eltolása nem torzítja
-  const fill = () => {
-    const tl = card.querySelector('.dkm-thread-line')
-    const last = paras.filter((p) => p.classList.contains('is-read')).pop()
-    if (!tl || !last) return
-    const b = getComputedStyle(last, '::before')
-    const y = last.offsetTop + (parseFloat(b.top) || 0) + (parseFloat(b.height) || 12) / 2 - tl.offsetTop
-    tl.style.setProperty('--tf', `${Math.max(0, y).toFixed(1)}px`)
-  }
-  window.addEventListener('resize', fill)
-  for (const p of paras) {
-    p.classList.add('dkm-read')
-    // az olvasási sáv fölé érve kiemelődik, és utána úgy is marad (a már elolvasott szöveg nem halványul vissza)
-    inView(
-      p,
-      () => {
-        p.classList.add('is-read')
-        fill()
-      },
-      { margin: '0px 0px -38% 0px', amount: 'some' },
-    )
-  }
 }
 
 // VÉLEMÉNYEK – asztalon finom emelkedés és egérkövető fény (mobilon a rács statikus marad)

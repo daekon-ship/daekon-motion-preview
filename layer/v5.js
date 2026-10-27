@@ -125,13 +125,6 @@ export function storyDepth() {
     el('span', cls, depth).textContent = y
   card.prepend(depth)
 
-  const body = card.querySelector('.st8-body')
-  if (body) {
-    body.classList.add('dkm-thread')
-    const line = el('span', 'dkm-thread-line')
-    line.setAttribute('aria-hidden', 'true')
-    body.prepend(line)
-  }
   scroll(
     (p) => {
       card.style.setProperty('--sp', p.toFixed(4))
