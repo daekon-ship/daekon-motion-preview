@@ -349,7 +349,9 @@
   background: none;
   -webkit-background-clip: border-box;
   background-clip: border-box;
-  text-shadow: 0 18px 50px rgba(108, 72, 255, 0.35);
+  /* elmosott fény nélkül: a pörgő számjegyek levágott (overflow) dobozai téglalappá vágták a fényt */
+  text-shadow: none;
+  will-change: auto;
   transform: none;
   transition: -webkit-text-stroke-color 0.8s ease;
 }

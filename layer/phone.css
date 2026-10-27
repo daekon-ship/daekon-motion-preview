@@ -1,0 +1,51 @@
+/* Telefon/érintőképernyő (html.dkm-phone, dkm.js állítja). Minden effekt fut, de telefonra hangolva – a tulajdonos
+   2026-10-27-i jelzése alapján („telefonon buggol, laggol, sok minden csúszik”):
+   - keverési mód (mix-blend-mode) nélkül: a teljes képernyős rétegek keverése minden képkockán az egész alatta lévő
+     oldalt újraszámolja, ez telefonon akadást okozott; sötét háttéren a sima átlátszóság szinte ugyanígy néz ki
+   - a görgetésre mozduló hero-rétegek sokkal kisebb utat tesznek meg (a nagy elmozdulás „csúszásnak” látszott)
+   - svh: a böngésző címsorának megjelenése/eltűnése nem méretezi át a showreelt (ettől ugrált az oldal) */
+
+.dkm-phone .dkm-field,
+.dkm-phone .dkm-ribbon,
+.dkm-phone .dkm-world,
+.dkm-phone .dkm-beams,
+.dkm-phone .dkm-beam,
+.dkm-phone .dkm-card-shine {
+  mix-blend-mode: normal;
+}
+
+.dkm-phone .dkm-world,
+.dkm-phone .dkm-beams {
+  opacity: 0.55;
+}
+
+.dkm-phone .dkm-fl-far {
+  transform: translate3d(calc(var(--mx, 0) * -40px), calc(var(--my, 0) * -26px + var(--sp, 0) * -30px), 0);
+}
+
+.dkm-phone .dkm-fl-mid {
+  transform: translate3d(calc(var(--mx, 0) * -80px), calc(var(--my, 0) * -50px + var(--sp, 0) * -60px), 0);
+}
+
+.dkm-phone .dkm-fl-near {
+  transform: translate3d(calc(var(--mx, 0) * -150px), calc(var(--my, 0) * -95px + var(--sp, 0) * -100px), 0);
+}
+
+@supports (height: 1svh) {
+  .dkm-phone .dkm-reel-stage {
+    height: clamp(620px, 92svh, 860px);
+  }
+}
+
+/* Így dolgozom: a kigyúló lépés-panel telefonon szorosabb kerettel (az asztali -20 px a szomszéd lépésre lógott),
+   a szöveg pedig billenés nélkül, csak finoman úszik be */
+.dkm-phone .dkm-pc6::after {
+  inset: -6px -8px -8px -10px;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.dkm-phone .dkm-pc6 .pc-t,
+.dkm-phone .dkm-pc6 .pc-d {
+  transform: translateY(8px);
+}

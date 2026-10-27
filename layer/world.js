@@ -24,7 +24,9 @@ function run(canvas, host, draw, { dpr = 1.5, name = canvas.className.split(' ')
   const frames = (window.__DKM && window.__DKM.frames) || {}
   frames[name] = 0
   const ctx = canvas.getContext('2d')
-  const fps = lite() ? 30 : 60
+  const phone = document.documentElement.classList.contains('dkm-phone')
+  const fps = lite() || phone ? 30 : 60
+  if (phone) dpr = 1
   let w = 0
   let h = 0
   let raf = 0
@@ -33,6 +35,9 @@ function run(canvas, host, draw, { dpr = 1.5, name = canvas.className.split(' ')
   const t0 = performance.now()
   const size = () => {
     const r = canvas.getBoundingClientRect()
+    // telefonon görgetéskor a böngésző címsora miatt a magasság kicsit változik: ilyenkor nem méretezünk újra
+    // (az újraméretezés törli és újrarajzolja a vásznat – ettől akadt és ugrált)
+    if (phone && w && Math.abs(r.width - w) < 1 && Math.abs(r.height - h) < 140) return
     const ratio = Math.min(devicePixelRatio || 1, dpr)
     w = r.width
     h = r.height

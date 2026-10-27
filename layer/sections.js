@@ -63,12 +63,14 @@ export function story() {
   spotlight([card])
   // a fénypont pontosan a vonal végpontjainak magasságában fusson
   const line = card.querySelector('.st8-line')
-  const dot = line && line.querySelector('i')
+  // a fénypont magán a vonalon fut: a vonal a .st8-line ::before eleme (a <i> elemek az évszám-feliratok alatta –
+  // korábban azokhoz igazodott, ezért telefonon a pont a „2026” feliratra csúszott)
   const align = () => {
-    if (!line || !dot) return
-    const lr = line.getBoundingClientRect()
-    const dr = dot.getBoundingClientRect()
-    line.style.setProperty('--dkm-ly', `${(dr.top + dr.height / 2 - lr.top).toFixed(1)}px`)
+    if (!line) return
+    const b = getComputedStyle(line, '::before')
+    const top = parseFloat(b.top)
+    if (Number.isNaN(top)) return
+    line.style.setProperty('--dkm-ly', `${(top + (parseFloat(b.height) || 1) / 2).toFixed(1)}px`)
   }
   align()
   window.addEventListener('resize', align)

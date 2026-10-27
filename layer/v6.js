@@ -175,17 +175,19 @@ export function reviewsEnter() {
     cards.forEach((c, i) => {
       if (c.getBoundingClientRect().top < innerHeight * 0.95) return
       // az oldal a kártya transform-ját rögzíti, ezért az egyedi transzformációs tulajdonságokat animáljuk
+      // telefonon kisebb elmozdulás és billenés nélkül (ott a nagy mozgás csúszkálásnak hatott)
+      const phone = document.documentElement.classList.contains('dkm-phone')
       c.style.opacity = '0'
-      c.style.translate = '0 80px'
-      c.style.rotate = 'x -28deg'
-      c.style.scale = '0.92'
+      c.style.translate = phone ? '0 28px' : '0 80px'
+      c.style.rotate = phone ? 'x 0deg' : 'x -28deg'
+      c.style.scale = phone ? '0.98' : '0.92'
       inView(
         c,
         () => {
           animate(
             c,
             { opacity: 1, translate: '0px 0px', rotate: 'x 0deg', scale: '1' },
-            { type: spring, stiffness: 110, damping: 17, delay: (i % 2) * 0.12 },
+            { type: spring, stiffness: 110, damping: phone ? 24 : 17, delay: (i % 2) * 0.12 },
           ).then(() => {
             for (const k of ['opacity', 'translate', 'rotate', 'scale']) c.style[k] = ''
           })

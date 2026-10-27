@@ -171,7 +171,7 @@
         .join('\n')
       detail.textContent =
         'Elindult: ' + list(s.started) +
-        '\nTelefonon kihagyva (könnyített mód): ' + list(s.skipped) +
+        '\nÉrintőképernyőn nem értelmezett: ' + list(s.skipped) +
         '\nLefutott, nem volt dolga: ' + list(s.noop) +
         '\nSzekcióra vár: ' + list(s.waiting) +
         '\nSzekció nem található: ' + list(s.notFound) +
