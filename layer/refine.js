@@ -217,3 +217,34 @@ export function servicesGrid() {
   return true
 }
 
+
+// ---------- HERO: a szövegblokk tetejének helye a díszítő-maszkhoz + nézetablak-változások beépített böngészőkben ----------
+// A Messenger/Facebook beépített böngészője (és a mobilböngészők sávjai) a látható területet gyakran csak a
+// visualViewport-on jelzik; a lap visszanavigáláskor (bfcache) és forgatáskor is változhat. Ilyenkor egy
+// „resize” eseményt küldünk, hogy az oldal saját hero-méretezése (fitHeroLogo) és a réteg vásznai újraszámoljanak.
+export function heroFit() {
+  const sticky = $('[data-hero] > div')
+  const copy = sticky && sticky.querySelector('[data-hero-copy]')
+  if (!copy) return false
+  const set = () => sticky.style.setProperty('--dkm-ct', `${copy.offsetTop}px`)
+  set()
+  new ResizeObserver(set).observe(copy)
+  new ResizeObserver(set).observe(sticky)
+  addEventListener('resize', set, { passive: true })
+  let raf = 0
+  let lastH = innerHeight
+  const nudge = () => {
+    if (raf) return
+    raf = requestAnimationFrame(() => {
+      raf = 0
+      const h = window.visualViewport ? Math.round(visualViewport.height) : innerHeight
+      if (Math.abs(h - lastH) < 2) return
+      lastH = h
+      dispatchEvent(new Event('resize'))
+    })
+  }
+  if (window.visualViewport) visualViewport.addEventListener('resize', nudge, { passive: true })
+  addEventListener('pageshow', (e) => e.persisted && dispatchEvent(new Event('resize')))
+  addEventListener('orientationchange', () => setTimeout(() => dispatchEvent(new Event('resize')), 250))
+  return true
+}

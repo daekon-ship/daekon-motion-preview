@@ -13,7 +13,7 @@ import { contact, footer, heroLight, os, reviews, separators, services, story } 
 import { footerStage, heroField, osTech, reviewsDepth, servicesDepth, storyDepth } from './v5.js'
 import { reviewsCompact, reviewsEnter, servicesDeck, storyYears } from './v6.js'
 import { processTimeline } from './timeline.js'
-import { reviewsLayout, servicesGrid, storyThread } from './refine.js'
+import { heroFit, reviewsLayout, servicesGrid, storyThread } from './refine.js'
 import { footerFloor, heroWorld, osNetwork } from './world.js'
 
 // Gyenge eszköz felismerése csak hardveres jelekből (kevés mag/memória, adattakarékos mód) → „lite” mód:
@@ -33,6 +33,7 @@ const MODULES = [
   ['heroField', heroField, '#top > div'],
   ['heroWorld', heroWorld, '#top > div'],
   ['heroLight', heroLight, '#top > div', 'pointer'],
+  ['heroFit', heroFit, '#top [data-hero-copy]'],
   ['navPill', navPill, '.v5-nav'],
   ['separators', separators, 'footer.ft'],
   ['services', services, '#szolgaltatasok .sv7-a'],
@@ -109,6 +110,7 @@ function start() {
         ['reel', () => reel({ still: true }), '#work .rl-a'],
         ['processTimeline', () => processTimeline({ still: true }), '#folyamat .pc-s'],
         ['storyThread', () => storyThread({ still: true }), '#rolam .st8-body'],
+        ['heroFit', heroFit, '#top [data-hero-copy]'],
         ['reviewsLayout', reviewsLayout, '#velemenyek'],
         ['servicesGrid', servicesGrid, '#szolgaltatasok .sv7-a'],
       ]

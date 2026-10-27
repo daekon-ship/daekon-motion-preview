@@ -384,3 +384,61 @@ html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-btn-mail {
     touch-action: pan-x pan-y;
   }
 }
+
+/* ---------- MOBILOS HERO (2026-10-27, Messenger/Facebook beépített böngésző) ----------
+   Ok: az oldal a DAEKON-logó + monitor méretét a fejléc és az alulra rögzített szövegblokk közötti szabad helyből
+   számolja (fitHeroLogo), 160 px alatt el is rejti. A beépített böngészők (Messenger, Facebook) saját sávjai miatt a
+   látható terület 560–700 px – ilyenkor a szövegblokk elvette a helyet: a logó/monitor eltűnt vagy összezsugorodott.
+   Javítás: alacsony nézetablakon tömörebb szövegblokk (ugyanaz a tartalom) → az oldal saját méretezése visszaadja a
+   logónak/monitornak a helyet. A díszítő rétegek (fényív, 3D idomok, fénypadló) a szövegblokk teteje előtt elhalványulnak
+   (--dkm-ct: a szövegblokk teteje px-ben, refine.js heroFit) – a szöveg mögött nem fut vonal. */
+@media (max-width: 899px) {
+  html.dkm-phone body #dc-root#dc-root#dc-root [data-hero] .dkm-field,
+  html.dkm-phone body #dc-root#dc-root#dc-root [data-hero] .dkm-world,
+  html.dkm-phone body #dc-root#dc-root#dc-root [data-hero] .dkm-beams {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(var(--dkm-ct, 55%) - 90px), transparent calc(var(--dkm-ct, 55%) - 10px));
+    mask-image: linear-gradient(to bottom, #000 0, #000 calc(var(--dkm-ct, 55%) - 90px), transparent calc(var(--dkm-ct, 55%) - 10px));
+  }
+}
+
+@media (max-width: 899px) and (max-height: 720px) {
+  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] {
+    gap: 10px !important;
+  }
+  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] h1 {
+    font-size: clamp(21px, 6.2vw, 24px) !important;
+  }
+  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] > div {
+    gap: 12px !important;
+  }
+  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] > div > p {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta,
+  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-row {
+    gap: 8px !important;
+  }
+  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-p {
+    flex: 1 1 100% !important; /* az elsődleges gomb saját sorban, teljes szélességben */
+    min-height: 44px !important;
+  }
+  /* a két másodlagos gomb egy sorban marad (keskeny telefonon sem törik egymás alá) */
+  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-s {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    min-height: 40px !important;
+    padding: 4px 10px !important;
+    white-space: normal !important;
+    text-align: center;
+    line-height: 1.15 !important;
+  }
+}
+
+/* nagyon alacsony nézetablakon (pl. kis iPhone Facebook-böngészőben) az ismétlő megjegyzés kimarad –
+   ugyanez az elsődleges gombon is szerepel: „Ingyenes látványtervet kérek” */
+@media (max-width: 899px) and (max-height: 640px) {
+  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-n {
+    display: none !important;
+  }
+}
