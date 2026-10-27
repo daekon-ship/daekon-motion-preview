@@ -84,15 +84,26 @@ export function servicesDeck() {
       slot.setAttribute('aria-hidden', 'true')
     }
     place()
+    // alacsony képernyőn a kártyahely rejtett (CSS): ilyenkor animáció nélkül cserélünk – rejtett elemen a Motion
+    // commitStyles hívása kivételt dobott („Target element is not rendered”, 1366×768, 1024×768)
+    const shown = slot.getClientRects().length > 0
     for (const old of slot.querySelectorAll('.dkm-sc:not(.is-out)')) {
       old.classList.add('is-out')
-      animate(old, { opacity: 0, transform: 'translateY(-10px)' }, { duration: 0.25 }).then(() => old.remove())
+      if (!shown) old.remove()
+      else animate(old, { opacity: 0, transform: 'translateY(-10px)' }, { duration: 0.25 }).then(() => old.remove(), () => old.remove())
     }
     const c = cardContent(DECKS[i] || DECKS[0])
+    slot.append(c)
+    if (!shown) return
     c.style.opacity = '0'
     c.style.transform = 'translateY(14px)'
-    slot.append(c)
-    animate(c, { opacity: 1, transform: 'translateY(0px)' }, { duration: 0.45, delay: 0.12, ease: [0.22, 1, 0.36, 1] })
+    animate(c, { opacity: 1, transform: 'translateY(0px)' }, { duration: 0.45, delay: 0.12, ease: [0.22, 1, 0.36, 1] }).then(
+      () => {},
+      () => {
+        c.style.opacity = ''
+        c.style.transform = ''
+      },
+    )
   }
 
   // gyors görgetésnél nem cserélgetjük a kártyát minden soron: csak ha az aktív sor ~0,3 mp-ig változatlan
