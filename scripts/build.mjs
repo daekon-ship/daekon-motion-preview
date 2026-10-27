@@ -40,6 +40,8 @@ await build({
 writeFileSync(join(OUT, 'dkm.css'), ['layer/dkm.css', 'layer/sections.css', 'layer/v5.css', 'layer/v6.css', 'layer/compact.css'].map((f) => readFileSync(f, 'utf-8')).join('\n'))
 
 const shim = readFileSync('preview/shim.js', 'utf-8')
+// betöltő: a <body> legelejére, hogy az első képkockától látsszon (csak a főoldalon)
+const intro = readFileSync('layer/intro.html', 'utf-8')
 
 // Az élő oldal gyökér-abszolút útvonalai (/r/…, /assets/…, aloldalak, jogi oldalak, /#horgony) → BASE alá.
 // Csak ezek a pontosan ismert gyökerek változnak; más „/…” karakterlánc (pl. shader-regexek) érintetlen marad.
@@ -79,6 +81,7 @@ for (const file of walk(OUT)) {
       // ?v=<commit>: új verziónál a böngésző nem a gyorsítótárban lévő régi fájlt használja
       (isHome ? `<link rel="stylesheet" href="/dkm.css?v=${V}">\n<script defer src="/dkm.js?v=${V}"></script>\n` : '')
     text = text.replace(/<head>/i, (m) => `${m}\n${head}`)
+    if (isHome) text = text.replace(/<body>/i, (m) => `${m}\n${intro}`)
   }
   text = rewrite(text)
   if (text !== before) {

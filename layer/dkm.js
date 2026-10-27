@@ -55,6 +55,8 @@ const MODULES = [
   ['magnetic', magnetic, 'body', 'pointer'],
 ]
 
+const PHONE = ['reel', 'navPill', 'separators', 'processSignal', 'osCard', 'contact']
+
 function start() {
   // Állapot a diagnosztikához (az előnézeti panel olvassa; élesben csak egy ártalmatlan objektum).
   // started: elindult · noop: lefutott, de nem volt dolga (pl. már a képernyőn volt) · skipped: érintőképernyőn nem értelmezett
@@ -91,10 +93,19 @@ function start() {
   const skip = new URLSearchParams(location.search).get('dkmskip')?.split(',') ?? []
   if (lite) skip.push('heroLight')
   const fine = finePointer()
+  // telefon/érintőképernyő: csak a könnyű, egyszeri effektek (a 3D canvasok, görgetéshez kötött mozgások és végtelen
+  // animációk telefonon akadtak és „csúszkáltak”, ezért ott nem futnak)
+  const phone = !fine || matchMedia('(max-width: 899px)').matches
+  status.phone = phone
+  if (phone) document.documentElement.classList.add('dkm-phone')
   const pending = reduced
     ? [['reel', () => reel({ still: true }), '#work .rl-a']]
     : MODULES.filter(([name, , , req]) => {
         if (skip.includes(name)) return false
+        if (phone && !PHONE.includes(name)) {
+          status.skipped.push(name)
+          return false
+        }
         if (req === 'pointer' && !fine) {
           status.skipped.push(name)
           return false

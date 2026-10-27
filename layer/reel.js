@@ -175,7 +175,7 @@ export function reel({ still }) {
     raf = 0
     cur.x += (tgt.x - cur.x) * 0.08
     cur.y += (tgt.y - cur.y) * 0.08
-    const off = 0.5 - sp
+    const off = fine ? 0.5 - sp : 0 // telefonon nincs görgetési parallaxis (a kártyák a szöveghez képest nem csúsznak)
     for (const c of cards) {
       c.card.style.setProperty('--px', `${(cur.x * 46 * c.d).toFixed(2)}px`)
       c.card.style.setProperty('--py', `${(off * 300 * c.d + cur.y * 30 * c.d).toFixed(2)}px`)
@@ -187,13 +187,14 @@ export function reel({ still }) {
     if (!raf) raf = requestAnimationFrame(frame)
   }
 
-  scroll(
-    (p) => {
-      sp = p
-      if (visible) kick()
-    },
-    { target: sec, offset: ['start end', 'end start'] },
-  )
+  if (fine)
+    scroll(
+      (p) => {
+        sp = p
+        if (visible) kick()
+      },
+      { target: sec, offset: ['start end', 'end start'] },
+    )
   inView(sec, () => {
     visible = true
     kick()
