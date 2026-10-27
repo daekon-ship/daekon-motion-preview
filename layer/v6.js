@@ -1,6 +1,5 @@
 // V6 – nagy, tárgyszerű mozgó elemek a meglévő szekciókban (a dizájn, szöveg, elrendezés változatlan):
-// szolgáltatások: lebegő, egérre/görgetésre mozduló képernyő-kártyák (a showreel mintájára), amelyek az aktív
-// szolgáltatásnál rugóval cserélődnek; folyamat: körbefutó üstökös-jel és kigyúló lépések; történet: görgetésre
+// szolgáltatások: az aktív szolgáltatáshoz illő képernyő-kártya a rétegköteg felirata alatt; folyamat: körbefutó üstökös-jel és kigyúló lépések; történet: görgetésre
 // pörgő 3D évszám (2011 → 2026); vélemények: térbeli belépő.
 import { inView, scroll, spring } from 'motion'
 import { animate } from 'motion/mini'
@@ -29,23 +28,19 @@ const CODE = {
   maint2: ['v1.0 → v1.1', '+ új modul', '~ frissítés', '✓ tesztelve'],
   maint3: ['npm update', 'npm audit'],
 }
-// asztalon két kártya a rétegköteg jobb oldalán: A = álló (telefon), B = fekvő; mobilon csak fekvő kép, kódkártya nélkül
+// asztalon soronként egy kártya a „A rendszer rétegei” felirat alatt, saját helyen – nem fedi a rétegköteget;
+// mobilon nincs kártya (ott a szöveg mellett nincs neki hely)
 const DECKS = [
-  [['img', 'kiosz-m'], ['img', 'kiosz-huseg-d-sm']],
-  [['img', 'gt-m'], ['img', 'nefelejcs-d-sm']],
-  [['img', 'kiosz-m2'], ['img', 'kiosz-d-sm']],
-  [['img', 'kiosz-admin-m'], ['code', 'booking']],
-  [['code', 'auto2'], ['code', 'auto1']],
-  [['code', 'maint2'], ['code', 'maint1']],
-]
-const PEEKS = ['kiosz-huseg-d-sm', 'nefelejcs-d-sm', 'kiosz-d-sm', 'kiosz-fiok', null, null]
-const SLOTS = [
-  { rz: 5, ry: -12, d: 1 },
-  { rz: -3, ry: -8, d: 0.8 },
+  ['img', 'kiosz-huseg-d-sm'],
+  ['img', 'nefelejcs-d-sm'],
+  ['img', 'kiosz-d-sm'],
+  ['img', 'kiosz-fiok'],
+  ['code', 'auto1'],
+  ['code', 'maint1'],
 ]
 
-function cardContent([kind, key], slot) {
-  const c = el('div', `dkm-sc dkm-sc-${slot}`)
+function cardContent([kind, key]) {
+  const c = el('div', 'dkm-sc')
   const f = el('div', 'dkm-sc-f', c)
   if (kind === 'img') {
     const img = el('img', '', f)
@@ -64,85 +59,50 @@ function cardContent([kind, key], slot) {
   return c
 }
 
-const away = (s) => `translate3d(40px, 30px, -160px) rotateY(${s.ry - 30}deg) rotateZ(${s.rz}deg) scale(0.85)`
-const home = (s) => `translate3d(0, 0, 0) rotateY(${s.ry}deg) rotateZ(${s.rz}deg) scale(1)`
-
 export function servicesDeck() {
   const list = $('#szolgaltatasok .sv7-list')
   const rows = list ? [...list.querySelectorAll('.sv7-a')] : []
-  if (!rows.length) return false
   const side = $('#szolgaltatasok .sv8')
+  if (!rows.length || !side) return false
   const activeIndex = () => Math.max(0, rows.findIndex((r) => r.classList.contains('is-on')))
   let cur = -1
+  let slot = null
 
-  // ---- asztali nézet: két lebegő kártya a rétegköteg jobb oldalán (a felirat fölött, a köteggel együtt marad) ----
-  let layer = null
-  const setupDesk = () => {
-    if (layer || !side || !side.getClientRects().length) return
-    side.classList.add('dkm-deck6')
-    layer = el('div', 'dkm-sc-layer dkm-sc-front')
-    layer.setAttribute('aria-hidden', 'true')
-    side.append(layer)
-    if (finePointer() && !lite()) {
-      const area = $('#szolgaltatasok .sv7') || side
-      tilt(layer, { max: 6, area })
-      area.addEventListener(
-        'pointermove',
-        (e) => {
-          const r = area.getBoundingClientRect()
-          side.style.setProperty('--mx', ((e.clientX - r.left) / r.width - 0.5).toFixed(3))
-          side.style.setProperty('--my', ((e.clientY - r.top) / r.height - 0.5).toFixed(3))
-        },
-        { passive: true },
-      )
-    }
+  // abszolút pozíció a felirat alatt: a beszúrt kártya nem tolja el a rétegköteget (a .sv8 tartalma függőlegesen középre igazított)
+  const place = () => {
+    const cap = side.querySelector('.sv8-cap')
+    if (!slot || !cap) return
+    const top = cap.offsetTop + cap.offsetHeight + 22
+    slot.style.top = `${top}px`
+    // a ragadós oszlop a szekció végén megáll: alul helyet hagyunk, hogy a kártya ne lógjon a következő szekcióba
+    side.style.marginBottom = `${Math.max(0, top + slot.offsetHeight - side.offsetHeight + 24)}px`
   }
 
-  const swapDesk = (i) => {
-    if (!layer) return
-    for (const old of layer.querySelectorAll('.dkm-sc:not(.is-out)')) {
+  const swap = (i) => {
+    if (!slot) {
+      slot = el('div', 'dkm-sc-slot', side)
+      slot.setAttribute('aria-hidden', 'true')
+    }
+    place()
+    for (const old of slot.querySelectorAll('.dkm-sc:not(.is-out)')) {
       old.classList.add('is-out')
-      animate(old, { opacity: 0, transform: away(SLOTS[+old.dataset.slot]) }, { duration: 0.3, ease: [0.4, 0, 1, 1] }).then(() => old.remove())
+      animate(old, { opacity: 0, transform: 'translateY(-10px)' }, { duration: 0.25 }).then(() => old.remove())
     }
-    DECKS[i].forEach((item, slot) => {
-      const s = SLOTS[slot]
-      const c = cardContent(item, slot)
-      c.dataset.slot = slot
-      c.style.setProperty('--d', s.d)
-      c.style.opacity = '0'
-      c.style.transform = away(s)
-      layer.append(c)
-      animate(c, { opacity: 1, transform: home(s) }, { type: spring, stiffness: 120, damping: 20, delay: 0.15 + slot * 0.08 })
-    })
+    const c = cardContent(DECKS[i] || DECKS[0])
+    c.style.opacity = '0'
+    c.style.transform = 'translateY(14px)'
+    slot.append(c)
+    animate(c, { opacity: 1, transform: 'translateY(0px)' }, { duration: 0.45, delay: 0.12, ease: [0.22, 1, 0.36, 1] })
   }
 
-  // ---- mobil / tablet: a sor mellé becsúszó képernyő-kártya, amikor a sor aktív ----
-  let peeks = null
-  const setupPeek = () => {
-    if (peeks) return
-    peeks = rows.map((r, i) => {
-      if (!PEEKS[i]) return null
-      // mobilon fekvő kép a sor jobb alsó, üres sarkában – a linkek sora mellett
-      const p = el('div', 'dkm-peek6')
-      p.setAttribute('aria-hidden', 'true')
-      p.append(cardContent(['img', PEEKS[i]], 'p'))
-      r.classList.add('dkm-peek-host')
-      r.prepend(p)
-      return p
-    })
-  }
-
-  // gyors görgetésnél nem cserélgetjük a kártyákat minden soron: csak ha az aktív sor ~0,3 mp-ig változatlan
+  // gyors görgetésnél nem cserélgetjük a kártyát minden soron: csak ha az aktív sor ~0,3 mp-ig változatlan
   let timer = 0
   const apply = () => {
+    if (!side.getClientRects().length) return
     const i = activeIndex()
     if (i === cur) return
     cur = i
-    if (side && side.getClientRects().length) {
-      setupDesk()
-      swapDesk(i)
-    } else setupPeek()
-    if (peeks) peeks.forEach((p, k) => p && p.classList.toggle('is-on', k === i))
+    swap(i)
   }
   const update = () => {
     clearTimeout(timer)
@@ -159,11 +119,8 @@ export function servicesDeck() {
     { margin: '0px 0px 400px 0px' },
   )
   window.addEventListener('resize', () => {
-    const desk = side && side.getClientRects().length
-    if ((desk && !layer) || (!desk && !peeks)) {
-      cur = -1
-      update()
-    }
+    place()
+    update()
   })
   return true
 }

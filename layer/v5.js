@@ -106,30 +106,6 @@ export function servicesDepth() {
       { amount: 0.3 },
     )
 
-  if (finePointer() && !lite()) {
-    for (const r of rows) {
-      const num = r.querySelector('.sv7-num')
-      let raf = 0
-      let last = null
-      r.addEventListener('pointermove', (e) => {
-        last = e
-        if (raf) return
-        raf = requestAnimationFrame(() => {
-          raf = 0
-          const b = r.getBoundingClientRect()
-          const nx = (last.clientX - b.left) / b.width - 0.5
-          const ny = (last.clientY - b.top) / b.height - 0.5
-          if (num) num.style.translate = `${(-nx * 46).toFixed(1)}px ${(-ny * 18).toFixed(1)}px`
-        })
-      })
-      r.addEventListener('pointerleave', () => {
-        if (num) num.style.translate = ''
-      })
-    }
-    const stack = $('#szolgaltatasok .sv8-stack')
-    const area = $('#szolgaltatasok .sv7')
-    if (stack && area) tilt(stack, { max: 6, area })
-  }
   return true
 }
 
