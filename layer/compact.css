@@ -1,6 +1,8 @@
-/* Kompakt tipográfia és térközök – a tulajdonos kérésére (2026-10-26: „minden betű túl nagy, sokkal kompaktabb”).
-   Csak a betűméreteket, sormagasságot és függőleges térközöket szűkíti; színek, betűtípusok, szövegek, elrendezés változatlan.
-   A `.dkm` osztályhoz kötött, így a ?dkm=0 összehasonlítás az eredeti éles állapotot mutatja. */
+/* Kompakt tipográfia és térközök – a tulajdonos kérésére (2026-10-26: „minden betű túl nagy, sokkal kompaktabb”;
+   2026-10-27: „még kicsit kisebbre, legyen kompaktabb”, „a Facebook-értékelések is legyenek kompaktabbak”).
+   Csak betűméret, sormagasság és térköz változik; színek, betűtípusok, szövegek, elrendezés változatlan.
+   Az oldal saját szabályai „html body #dc-root … !important” erősségűek, ezért itt a #dc-root háromszor szerepel
+   (érvényes CSS: ugyanaz az elem; csak a szelektor erősségét növeli). A ?dkm=0 nézet az eredeti állapotot mutatja. */
 
 /* „Munkáim” lista: a főoldalon csak a showreel mutatja a projekteket (a #work szekció a showreelt tartalmazza) */
 .dkm .dkm-work-reel {
@@ -13,82 +15,83 @@
 }
 
 /* ---------- címsorok ---------- */
-.dkm h1.h7 {
-  font-size: clamp(24px, 1.5vw + 9px, 31px) !important;
+html.dkm body #dc-root#dc-root#dc-root h1.h7 {
+  font-size: clamp(24px, 1.2vw + 12px, 30px) !important;
 }
 
-.dkm .v4-h,
-.dkm .ct-h,
-.dkm .os8-h,
-.dkm .pc-h,
-.dkm .fq6-h,
-.dkm .dkm-reel-h {
-  font-size: clamp(21px, 1.3vw + 8px, 28px) !important;
+html.dkm body #dc-root#dc-root#dc-root .v4-h,
+html.dkm body #dc-root#dc-root#dc-root .me-h,
+html.dkm body #dc-root#dc-root#dc-root .ct-h,
+html.dkm body #dc-root#dc-root#dc-root #ai .ct-h,
+html.dkm body #dc-root#dc-root#dc-root .os8-h,
+html.dkm body #dc-root#dc-root#dc-root .pc-h,
+html.dkm body #dc-root#dc-root#dc-root .fq6-h,
+html.dkm body #dc-root#dc-root#dc-root .dkm-reel-h {
+  font-size: clamp(21px, 0.9vw + 13px, 28px) !important;
   line-height: 1.12 !important;
 }
 
-.dkm .dkm-reel-h2 {
-  font-size: clamp(14px, 0.4vw + 9px, 15px) !important;
+html.dkm body #dc-root#dc-root#dc-root .dkm-reel-h2 {
+  font-size: 14px !important;
 }
 
-.dkm .sv7-t {
-  font-size: clamp(16.5px, 0.5vw + 11px, 19px) !important;
+html.dkm body #dc-root#dc-root#dc-root .sv7-t {
+  font-size: clamp(16px, 0.3vw + 12px, 18px) !important;
 }
 
-.dkm .sv7-num {
-  font-size: clamp(22px, 1.4vw + 10px, 32px) !important;
+html.dkm body #dc-root#dc-root#dc-root .sv7-num {
+  font-size: clamp(20px, 1vw + 10px, 28px) !important;
 }
 
-.dkm .sv8-cap-t {
-  font-size: 16px !important;
+html.dkm body #dc-root#dc-root#dc-root .sv8-cap-t {
+  font-size: 15px !important;
 }
 
-.dkm .pc-t,
-.dkm .pc-t * {
-  font-size: clamp(15px, 0.3vw + 11px, 16px) !important;
+html.dkm body #dc-root#dc-root#dc-root .pc-t,
+html.dkm body #dc-root#dc-root#dc-root .pc-t * {
+  font-size: 14.5px !important;
 }
 
-.dkm .st8-year {
-  font-size: clamp(26px, 1.6vw + 14px, 38px) !important;
+html.dkm body #dc-root#dc-root#dc-root .st8-year {
+  font-size: clamp(24px, 1.2vw + 12px, 32px) !important;
 }
 
-.dkm .st8-h {
-  font-size: clamp(16.5px, 0.4vw + 12px, 19px) !important;
+html.dkm body #dc-root#dc-root#dc-root .st8-h {
+  font-size: clamp(15.5px, 0.3vw + 12px, 17.5px) !important;
 }
 
-.dkm .st8-key {
-  font-size: clamp(15px, 0.3vw + 11px, 16.5px) !important;
+html.dkm body #dc-root#dc-root#dc-root .st8-key {
+  font-size: 14px !important;
 }
 
-.dkm .st8-tag {
-  font-size: clamp(14px, 0.3vw + 10px, 15.5px) !important;
+html.dkm body #dc-root#dc-root#dc-root .st8-tag {
+  font-size: 13.5px !important;
 }
 
-.dkm .ct-v {
-  font-size: clamp(16.5px, 0.4vw + 12px, 19px) !important;
+html.dkm body #dc-root#dc-root#dc-root .ct-v {
+  font-size: clamp(15.5px, 0.3vw + 12px, 17px) !important;
 }
 
-.dkm .ft-close-t {
-  font-size: clamp(19px, 0.9vw + 10px, 24px) !important;
+html.dkm body #dc-root#dc-root#dc-root .ft-close-t {
+  font-size: clamp(19px, 0.8vw + 10px, 24px) !important;
 }
 
-.dkm #gyik summary {
-  font-size: clamp(14.5px, 0.2vw + 12px, 15.5px) !important;
+html.dkm body #dc-root#dc-root#dc-root #gyik summary {
+  font-size: 14px !important;
 }
 
 /* ---------- folyószöveg ---------- */
-.dkm .sw-lead,
-.dkm .sv7-d,
-.dkm .os8-p,
-.dkm .me-p,
-.dkm .st8-lead,
-.dkm .st8-body p:not(.st8-key),
-.dkm .rv-card p,
-.dkm #gyik p,
-.dkm #ai p,
-.dkm .pc-d,
-.dkm .pc-d * {
-  font-size: 14px !important;
+html.dkm body #dc-root#dc-root#dc-root .sw-lead,
+html.dkm body #dc-root#dc-root#dc-root .sv7-d,
+html.dkm body #dc-root#dc-root#dc-root .os8-p,
+html.dkm body #dc-root#dc-root#dc-root .me-p,
+html.dkm body #dc-root#dc-root#dc-root .st8-lead,
+html.dkm body #dc-root#dc-root#dc-root .st8-body p:not(.st8-key),
+html.dkm body #dc-root#dc-root#dc-root #gyik p,
+html.dkm body #dc-root#dc-root#dc-root #ai p,
+html.dkm body #dc-root#dc-root#dc-root .pc-d,
+html.dkm body #dc-root#dc-root#dc-root .pc-d * {
+  font-size: 13.5px !important;
   line-height: 1.6 !important;
 }
 
@@ -104,21 +107,94 @@ html.dkm #dc-root .pc-n {
 }
 
 html.dkm #dc-root .ct-sub {
-  font-size: 15px !important;
+  font-size: 14.5px !important;
 }
 
 html.dkm #dc-root .ai-mode {
-  font-size: clamp(15px, 0.3vw + 11px, 16.5px) !important;
+  font-size: clamp(14.5px, 0.3vw + 11px, 16px) !important;
+}
+
+/* ---------- Facebook-értékelések: kisebb betű, szorosabb kártya, a hosszú vélemény 4 sorra csukva ----------
+   (a szöveg szó szerint ugyanaz; „Teljes vélemény” gombbal kinyitható – reviewsCompact, v6.js) */
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-card {
+  padding: 14px 16px 12px !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-text p {
+  font-size: 13.5px !important;
+  line-height: 1.55 !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-card.dkm-clamp:not(.dkm-open) .rv-text p {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4 !important;
+  line-clamp: 4 !important;
+  overflow: hidden !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-card.dkm-clamp .rv-more {
+  display: inline-flex !important;
+  align-items: center;
+  min-height: 32px;
+  font-size: 12.5px;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-card-foot {
+  font-size: 12px !important;
+  padding-top: 6px !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-who b {
+  font-size: 13px !important;
 }
 
 /* ---------- függőleges térközök: szorosabb ritmus ---------- */
-html.dkm #ai .ct-in {
-  padding-top: 44px !important;
+html.dkm body #dc-root#dc-root#dc-root .sv7-a {
+  padding-top: 18px !important;
+  padding-bottom: 18px !important;
 }
 
-@media (min-width: 900px) {
-  html.dkm #velemenyek {
-    padding-top: 40px !important;
-    padding-bottom: 40px !important;
+html.dkm #ai .ct-in {
+  padding-top: 40px !important;
+}
+
+html.dkm body #dc-root#dc-root#dc-root #velemenyek {
+  padding-top: 36px !important;
+  padding-bottom: 36px !important;
+}
+
+@media (max-width: 899px) {
+  html.dkm body #dc-root#dc-root#dc-root .sv7-a {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+  }
+}
+
+/* Telefon: az értékelések egymás mellett, oldalra lapozva (a következő kártya széle kilátszik) – a 8 kártya
+   egymás alatt ~2000 px volt; így a szekció kb. egy kártya magas */
+@media (max-width: 899px) {
+  html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-list {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory !important;
+    /* a sáv a képernyő széléig ér, a kártyák a tartalom bal szélére pattannak */
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+    padding: 0 16px 6px !important;
+    scroll-padding-left: 16px;
+    scrollbar-width: none;
+  }
+  html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-list::-webkit-scrollbar {
+    display: none;
+  }
+  html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-card {
+    flex: 0 0 84% !important;
+    width: 84% !important;
+    scroll-snap-align: start !important;
   }
 }

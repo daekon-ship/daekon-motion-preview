@@ -426,3 +426,82 @@
   width: 100%;
   height: 100%;
 }
+
+/* ================= PONTOS IGAZÍTÁS (2026-10-27, „a csík nem elég pontos, elcsúszik”) =================
+   Így dolgozom: a pontok, a fénycsomag és az üstökösök középpontja pontosan a vonal középvonalán és a lépés
+   pozícióján van (korábban asztalon 7–8 px-szel, mobilon 2–3 px-szel mellette futottak). */
+.dkm-rail .dkm-node {
+  box-sizing: border-box;
+  top: -8.5px;
+  margin-left: -8.5px;
+}
+
+.dkm-rail .dkm-rail-packet {
+  box-sizing: border-box;
+  top: -7.5px;
+  margin-left: -7.5px;
+}
+
+.dkm-rail .dkm-comet {
+  box-sizing: border-box;
+  top: -5.5px;
+  margin-left: -5.5px;
+}
+
+.dkm-rail.is-v::before,
+.dkm-rail.is-v .dkm-rail-fill {
+  left: calc(var(--x, 44px) - 2px);
+  width: 4px;
+}
+
+.dkm-rail.is-v .dkm-node,
+.dkm-rail.is-v .dkm-rail-packet,
+.dkm-rail.is-v .dkm-comet {
+  box-sizing: border-box;
+  left: var(--x, 44px);
+  width: 13px;
+  height: 13px;
+  margin-left: -6.5px;
+}
+
+.dkm-rail.is-v .dkm-node {
+  top: calc(var(--pos) - 6.5px);
+}
+
+.dkm-rail.is-v .dkm-rail-packet {
+  top: calc(var(--a) + (var(--b) - var(--a)) * var(--p) - 6.5px);
+}
+
+.dkm-rail.is-v .dkm-comet {
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  top: calc(var(--a) + (var(--b) - var(--a)) * var(--p) * var(--k) - 4.5px);
+}
+
+/* Rólam idővonal: a kitöltés az utolsó kigyúlt pont közepéig ér (JS: --tf), a pontok a vonal közepén ülnek */
+.dkm-thread-line::after {
+  inset: 0 0 auto 0;
+  height: var(--tf, 0px);
+  transform: none;
+  transition: height 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dkm .dkm-thread .dkm-read::before {
+  box-sizing: border-box;
+  left: -32px; /* vonal: left -26px, 2px széles → közép -25px; pont 14px → -25 - 7 */
+  width: 14px;
+  height: 14px;
+}
+
+@media (max-width: 699px) {
+  .dkm .dkm-thread .dkm-read::before {
+    left: -19px; /* vonal: left -14px → közép -13px; pont 12px → -13 - 6 */
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.dkm-rail.is-v .dkm-rail-packet::after {
+  right: 4px;
+}

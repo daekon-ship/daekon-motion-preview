@@ -11,7 +11,7 @@ import { navPill } from './nav.js'
 import { reel } from './reel.js'
 import { contact, footer, heroLight, os, reviews, separators, services, story } from './sections.js'
 import { footerStage, heroField, osTech, processSignal, reviewsDepth, servicesDepth, storyDepth } from './v5.js'
-import { processBeam, reviewsEnter, servicesDeck, storyYears } from './v6.js'
+import { processBeam, reviewsCompact, reviewsEnter, servicesDeck, storyYears } from './v6.js'
 import { footerFloor, heroWorld, osNetwork } from './world.js'
 
 // Gyenge eszköz felismerése csak hardveres jelekből (kevés mag/memória, adattakarékos mód) → „lite” mód:
@@ -44,6 +44,7 @@ const MODULES = [
   ['reviews', reviews, '#velemenyek', 'pointer'],
   ['reviewsDepth', reviewsDepth, '#velemenyek'],
   ['reviewsEnter', reviewsEnter, '#velemenyek'],
+  ['reviewsCompact', reviewsCompact, '#velemenyek'],
   ['osCard', osCard, '#daekon-os .os8-in'],
   ['os', os, '#daekon-os .os8-in'],
   ['osTech', osTech, '#daekon-os .os8-in'],

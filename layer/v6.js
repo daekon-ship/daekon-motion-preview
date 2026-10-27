@@ -199,3 +199,43 @@ export function reviewsEnter() {
   tick()
   return true
 }
+
+// ---------- VÉLEMÉNYEK: kompakt kártyák – a hosszú vélemény 4 sorra csukva, „Teljes vélemény” gombbal nyitható ----------
+// A szöveg szó szerint változatlan, csak összecsukva jelenik meg. Az oldal saját .rv-more gombját használjuk.
+export function reviewsCompact() {
+  let n = 0
+  const tick = () => {
+    const cards = all('#velemenyek .rv-card')
+    if (!cards.length) return void (++n < 40 && setTimeout(tick, 250))
+    const measure = () => {
+      for (const c of cards) {
+        if (c.classList.contains('dkm-open')) continue
+        const p = c.querySelector('.rv-text p')
+        const btn = c.querySelector('.rv-more')
+        if (!p || !btn) continue
+        c.classList.add('dkm-clamp')
+        if (p.scrollHeight <= p.clientHeight + 2) c.classList.remove('dkm-clamp')
+      }
+    }
+    for (const c of cards) {
+      const btn = c.querySelector('.rv-more')
+      if (!btn) continue
+      // capture: az oldal esetleges saját kezelője ne kapcsolja vissza
+      btn.addEventListener(
+        'click',
+        (e) => {
+          e.stopImmediatePropagation()
+          const open = c.classList.toggle('dkm-open')
+          btn.setAttribute('aria-expanded', String(open))
+          btn.textContent = open ? 'Összecsukás' : 'Teljes vélemény'
+        },
+        true,
+      )
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    if (document.fonts) document.fonts.ready.then(measure)
+  }
+  tick()
+  return true
+}

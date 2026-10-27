@@ -157,18 +157,23 @@ export function processSignal() {
     if (vertical && n0) {
       const right = n0.getBoundingClientRect().right
       const textLeft = t0 ? t0.getBoundingClientRect().left : right + 12
-      rail.style.setProperty('--x', `${((right + textLeft) / 2 - rr.left - 1).toFixed(1)}px`)
+      rail.style.setProperty('--x', `${((right + textLeft) / 2 - rr.left).toFixed(1)}px`)
     }
   }
   place()
   window.addEventListener('resize', place)
   setTimeout(place, 1200) // betűtípus-betöltés utáni végleges méretek
+  new ResizeObserver(() => place()).observe(list) // a lista méretének minden változásakor újraigazít
 
   scroll(
     (p) => {
       rail.style.setProperty('--p', p.toFixed(4))
       nodes.forEach((n, i) => {
-        const on = p >= i / (nodes.length - 1) - 0.001
+        // a pont akkor gyullad ki, amikor a fénycsomag ténylegesen odaér (a lépések nem egyenlő távolságra vannak)
+        const a = parseFloat(rail.style.getPropertyValue('--a')) || 0
+        const b = parseFloat(rail.style.getPropertyValue('--b')) || 1
+        const at = (parseFloat(n.style.getPropertyValue('--pos')) - a) / (b - a || 1)
+        const on = p >= at - 0.002
         if (on && !n.classList.contains('is-on')) {
           n.classList.add('is-on')
           steps[i].classList.add('dkm-hit', 'dkm-on')
