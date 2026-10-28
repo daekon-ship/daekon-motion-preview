@@ -233,7 +233,7 @@ function whenReady(cb) {
   const link = document.querySelector('link[href*="dkm.css"]')
   const cssOk = () => !link || !!link.sheet
   const t0 = performance.now()
-  const late = () => performance.now() - t0 > 4000
+  const late = () => performance.now() - t0 > 4200
   const force = () => {
     if (link && link.rel !== 'stylesheet') link.rel = 'stylesheet'
   }

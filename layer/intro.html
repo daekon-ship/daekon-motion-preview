@@ -1,8 +1,8 @@
 <style>
 /* Betöltő (a tulajdonos kérésére a gt-lakasfelujitas.hu betöltőjének mintájára): sötét függöny, a DAEKON felirat
    alulról becsúszik, alatta lime–lila vonal töltődik ki, majd az alcím; utána a függöny felfelé letörlődik.
-   Csökkentett mozgásnál és ?dkm=0 mellett nem jelenik meg; legkésőbb 3,5 mp után CSS-ből is eltűnik. */
-#dkm-intro{position:fixed;inset:0;z-index:2147482000;background:#050505;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;clip-path:inset(0);transition:clip-path .9s cubic-bezier(.76,0,.24,1);animation:dkm-intro-safety 0s linear 3.5s forwards;pointer-events:none}
+   Csökkentett mozgásnál és ?dkm=0 mellett nem jelenik meg; legkésőbb 5 mp után CSS-ből is eltűnik. */
+#dkm-intro{position:fixed;inset:0;z-index:2147482000;background:#050505;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;clip-path:inset(0);transition:clip-path .9s cubic-bezier(.76,0,.24,1);animation:dkm-intro-safety 0s linear 5s forwards;pointer-events:none}
 #dkm-intro.out{clip-path:inset(0 0 100%)}
 #dkm-intro b{display:block;overflow:hidden;font:600 clamp(22px,2.6vw,30px)/1.15 Manrope,system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:.34em;margin-right:-.34em;color:#F5F5F2}
 #dkm-intro b span{display:inline-block;transform:translateY(110%);animation:dkm-intro-up .9s cubic-bezier(.16,1,.3,1) .12s forwards}
@@ -31,11 +31,12 @@
   var done = false
   // 2026-10-28: nincs mesterséges várakozás. A függöny akkor megy fel, amikor a réteg bekapcsolt (a hero kész, a
   // stílusváltás így nem látszik) – nem vár a teljes oldalbetöltésre (képek) és nincs 1,3 mp-es minimum.
-  // Ha a réteg valamiért nem kapcsolna be, legkésőbb ~3,2 mp-nél akkor is felmegy.
+  // Ha a réteg valamiért nem kapcsolna be, legkésőbb ~4,5 mp-nél akkor is felmegy (biztonsági plafon, nem várakozás:
+  // a korábbi 3,2 mp-es plafonnál lassú telefonon a függöny néha a bekapcsolás ELŐTT ment fel, és a stílusváltás látszott).
   function on() { return document.documentElement.classList.contains('dkm') }
   function out() {
     if (done) return
-    if (!on() && Date.now() - t0 < 3200) return void setTimeout(out, 40)
+    if (!on() && Date.now() - t0 < 4500) return void setTimeout(out, 40)
     done = true
     requestAnimationFrame(function () {
       el.classList.add('out')
