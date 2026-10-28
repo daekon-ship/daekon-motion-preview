@@ -236,11 +236,15 @@ function whenReady(cb) {
   const cssOk = () => !link || !!link.sheet
   const t0 = performance.now()
   const late = () => performance.now() - t0 > 4200
+  // HTML-first (előrenderelt #dc-root): a DOM már a HTML-ben megvan, de a React csak később hidratál. A modulok addig nem
+  // nyúlhatnak hozzá (különben a hidratálás felülírja a változtatásaikat); a sablon a componentDidMount-ban jelez.
+  const pre = !!document.querySelector('#dc-root[data-dc-pre]')
+  const mounted = () => !pre || !!window.__dcMounted
   const force = () => {
     if (link && link.rel !== 'stylesheet') link.rel = 'stylesheet'
   }
   if (reduced || window.__DKM_OFF || !document.getElementById('dkm-intro')) {
-    const wait = () => (cssOk() || late() ? (force(), cb()) : setTimeout(wait, 20))
+    const wait = () => ((cssOk() && mounted()) || late() ? (force(), cb()) : setTimeout(wait, 20))
     return wait()
   }
   // az oldal az onReady-ben inline opacity:1-et ír a hero szavaira – ekkor indul a beúszás
@@ -249,7 +253,7 @@ function whenReady(cb) {
     return !!w && w.style.opacity === '1'
   }
   const check = () => {
-    if ((cssOk() && heroIn()) || late()) {
+    if ((cssOk() && heroIn() && mounted()) || late()) {
       force()
       // egy képkocka a beúszás első rajzolásának, utána külön feladatban a bekapcsolás
       requestAnimationFrame(() => setTimeout(cb, 0))
