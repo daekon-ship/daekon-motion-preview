@@ -43,8 +43,7 @@ const v = encodeURIComponent(COMMIT)
 // a réteg CSS-e nem blokkolja az első rajzolást: a szabályai csak html.dkm alatt hatnak, a réteg pedig csak a
 // stíluslap betöltése után kapcsol be (layer/dkm.js – whenReady).
 // fetchpriority=low: lassú mobilhálózaton ne vegyék el a sávszélességet az oldal saját sablonjától (/r/app-tpl.js)
-let html = src.replace(/<\/head>/i, `<style id="dkm-crit">${crit}</style>
-<link rel="preload" href="/dkm.css?v=${v}" as="style" fetchpriority="low" onload="this.onload=null;this.rel='stylesheet'">\n<script defer src="/dkm.js?v=${v}" fetchpriority="low"></script>\n</head>`)
+let html = src.replace(/<\/head>/i, `<style id="dkm-crit">${crit}</style>\n<link rel="preload" href="/dkm.css?v=${v}" as="style" fetchpriority="low" onload="this.onload=null;this.rel='stylesheet'">\n<script defer src="/dkm.js?v=${v}" fetchpriority="low"></script>\n</head>`)
 html = html.replace(/<body>/i, (m) => `${m}\n${intro}`)
 writeFileSync(join(WEB, 'index.html'), html)
 
@@ -57,8 +56,7 @@ const all = ['index.html', 'dkm.js', 'dkm.css'].map((f) => readFileSync(join(WEB
 for (const bad of ['daekon-motion-preview', 'noindex', 'Diagnosztika', 'Előnézet', 'github.io', '__DKM_COMMIT'])
   if (all.includes(bad)) fail(`előnézeti maradvány: ${bad}`)
 const head = (s) => s.slice(0, s.search(/<\/head>/i))
-const strip = (s) => head(s).replace(/<style id="dkm-crit">[^<]*<\/style>
-<link rel="preload" href="\/dkm\.css[^>]*>\n<script defer src="\/dkm\.js[^>]*><\/script>\n/, '')
+const strip = (s) => head(s).replace(/<style id="dkm-crit">[^<]*<\/style>\n<link rel="preload" href="\/dkm\.css[^>]*>\n<script defer src="\/dkm\.js[^>]*><\/script>\n/, '')
 if (strip(html) !== head(src)) fail('a <head> a réteg két során kívül is megváltozott')
 if (html.match(/<link rel="canonical"/g)?.length !== 1) fail('canonical nem pontosan egy')
 if (!/<meta name="robots" content="index, follow/.test(html)) fail('robots meta nem index, follow')
