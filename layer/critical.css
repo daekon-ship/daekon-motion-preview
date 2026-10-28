@@ -9,3 +9,19 @@
 @media (max-width: 900px) and (orientation: portrait) and (min-height: 640px) {
   html.js body [data-hero] { height: 128svh !important; }
 }
+
+/* A képernyőn kívüli szekciók layoutja/rajzolása halasztva (2026-10-28): az oldal első felcsatolása az egész oldalt
+   (788 elem) egyetlen kikényszerített layoutban számolta (lassított mobilon ~220 ms). Mérve: leghosszabb feladat
+   271 → 184 ms, TBT 505 → 419 ms; a teljes oldalkép (csökkentett mozgás, 360–1440 px) pixelre azonos, a mélylinkek
+   és a görgetés változatlanok. Az „auto” méret a renderelés után megjegyzi a valós magasságot. */
+html.js body #szolgaltatasok,
+html.js body #velemenyek,
+html.js body #folyamat,
+html.js body #rolam,
+html.js body #daekon-os,
+html.js body #gyik,
+html.js body #ai,
+html.js body footer.ft {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
