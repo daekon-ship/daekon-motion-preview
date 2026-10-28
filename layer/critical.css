@@ -1,0 +1,11 @@
+/* Kritikus, a layoutot meghatározó szabályok (2026-10-28) – az index.html fejlécébe kerülnek (scripts/build-prod.mjs).
+   A réteg CSS-e nem blokkoló, és a réteg késleltetve kapcsol be; ezek a magasságok viszont már az első layoutban is
+   kellenek, különben a bekapcsoláskor a hero alatti tartalom elcsúszik (mért CLS asztalon: 0,053). Ugyanezek a
+   szabályok a refine.css-ben is megvannak (html.dkm alatt); itt html.js alatt, a betöltéstől kezdve hatnak. */
+@media (min-width: 1100px) {
+  html.js body [data-hero] { height: 160vh !important; }
+  html.js body [data-enter] { height: 125vh !important; }
+}
+@media (max-width: 900px) and (orientation: portrait) and (min-height: 640px) {
+  html.js body [data-hero] { height: 128svh !important; }
+}
