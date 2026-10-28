@@ -39,8 +39,9 @@ const src = readFileSync('site/index.html', 'utf-8')
 const intro = readFileSync('layer/intro.html', 'utf-8')
 const v = encodeURIComponent(COMMIT)
 // a réteg CSS-e nem blokkolja az első rajzolást: a szabályai csak html.dkm alatt hatnak, a réteg pedig csak a
-// stíluslap betöltése után kapcsol be (layer/dkm.js – whenReady)
-let html = src.replace(/<\/head>/i, `<link rel="preload" href="/dkm.css?v=${v}" as="style" onload="this.onload=null;this.rel='stylesheet'">\n<script defer src="/dkm.js?v=${v}"></script>\n</head>`)
+// stíluslap betöltése után kapcsol be (layer/dkm.js – whenReady).
+// fetchpriority=low: lassú mobilhálózaton ne vegyék el a sávszélességet az oldal saját sablonjától (/r/app-tpl.js)
+let html = src.replace(/<\/head>/i, `<link rel="preload" href="/dkm.css?v=${v}" as="style" fetchpriority="low" onload="this.onload=null;this.rel='stylesheet'">\n<script defer src="/dkm.js?v=${v}" fetchpriority="low"></script>\n</head>`)
 html = html.replace(/<body>/i, (m) => `${m}\n${intro}`)
 writeFileSync(join(WEB, 'index.html'), html)
 
