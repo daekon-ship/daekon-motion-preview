@@ -15,6 +15,9 @@
 @keyframes dkm-intro-safety{to{visibility:hidden}}
 @media (max-width:480px){#dkm-intro small{font-size:9.5px;letter-spacing:.12em}}
 @media (prefers-reduced-motion:reduce){html:not(.dkm-force) #dkm-intro{display:none}}
+/* JS nélkül a betöltő nem takarhat (2026-10-28): a .js osztályt az oldal fejlécének inline szkriptje adja; nélküle a
+   függöny eddig a CSS-es biztonsági időzítőig (5 mp) eltakarta a tartalmat */
+html:not(.js) #dkm-intro{display:none}
 </style>
 <div id="dkm-intro" aria-hidden="true"><b><span>DAEKON</span></b><i></i><small>Weboldalak · Webalkalmazások · Egyedi rendszerek</small></div>
 <script>
