@@ -94,6 +94,7 @@ function start() {
   status.systemReduced = systemReduced
   status.lite = lite
   document.documentElement.classList.add('dkm')
+  status.activeAt = Math.round(performance.now())
   // kifejezett kérésre (?dkmmotion=1) a CSS csökkentett-mozgás szabályai sem kapcsolják ki az animációkat
   if (systemReduced && window.__DKM_FORCE_MOTION) document.documentElement.classList.add('dkm-force')
   if (lite) document.documentElement.classList.add('dkm-lite')
@@ -186,5 +187,40 @@ function start() {
   tick()
 }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start)
-else start()
+// Teljesítmény (2026-10-28): mozgás mellett a réteg az oldal első renderelése és a hero beúszásának elindulása UTÁN
+// kapcsol be. Korábban a html.dkm osztályok már a DOMContentLoaded-nél bekerültek, így a 69 kB-os réteg-CSS az oldal
+// saját első felcsatolásával egy feladatban számolódott (mobilon ~700 ms), és ez a hero beúszását is feltartotta.
+// A váltás a betöltő függönye alatt történik (a betöltő megvárja: layer/intro.html), ezért nem látszik.
+// Csökkentett mozgásnál nincs betöltő: ott a réteg azonnal indul, mint eddig (különben a régi stílus felvillanna).
+function whenReady(cb) {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches && !window.__DKM_FORCE_MOTION
+  // a réteg CSS-e nem blokkoló (preload → stylesheet az index.html-ben); bekapcsolás csak a betöltése után
+  const link = document.querySelector('link[href*="dkm.css"]')
+  const cssOk = () => !link || !!link.sheet
+  const t0 = performance.now()
+  const late = () => performance.now() - t0 > 4000
+  const force = () => {
+    if (link && link.rel !== 'stylesheet') link.rel = 'stylesheet'
+  }
+  if (reduced || window.__DKM_OFF || !document.getElementById('dkm-intro')) {
+    const wait = () => (cssOk() || late() ? (force(), cb()) : setTimeout(wait, 20))
+    return wait()
+  }
+  // az oldal az onReady-ben inline opacity:1-et ír a hero szavaira – ekkor indul a beúszás
+  const heroIn = () => {
+    const w = document.querySelector('[data-hero-copy] [data-word]')
+    return !!w && w.style.opacity === '1'
+  }
+  const check = () => {
+    if ((cssOk() && heroIn()) || late()) {
+      force()
+      // egy képkocka a beúszás első rajzolásának, utána külön feladatban a bekapcsolás
+      requestAnimationFrame(() => setTimeout(cb, 0))
+    } else setTimeout(check, 40)
+  }
+  check()
+}
+
+const boot = () => whenReady(start)
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot)
+else boot()

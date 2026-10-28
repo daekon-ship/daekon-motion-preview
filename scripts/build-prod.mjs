@@ -38,7 +38,9 @@ writeFileSync(join(WEB, 'dkm.css'), CSS.map((f) => readFileSync(f, 'utf-8')).joi
 const src = readFileSync('site/index.html', 'utf-8')
 const intro = readFileSync('layer/intro.html', 'utf-8')
 const v = encodeURIComponent(COMMIT)
-let html = src.replace(/<\/head>/i, `<link rel="stylesheet" href="/dkm.css?v=${v}">\n<script defer src="/dkm.js?v=${v}"></script>\n</head>`)
+// a réteg CSS-e nem blokkolja az első rajzolást: a szabályai csak html.dkm alatt hatnak, a réteg pedig csak a
+// stíluslap betöltése után kapcsol be (layer/dkm.js – whenReady)
+let html = src.replace(/<\/head>/i, `<link rel="preload" href="/dkm.css?v=${v}" as="style" onload="this.onload=null;this.rel='stylesheet'">\n<script defer src="/dkm.js?v=${v}"></script>\n</head>`)
 html = html.replace(/<body>/i, (m) => `${m}\n${intro}`)
 writeFileSync(join(WEB, 'index.html'), html)
 
@@ -51,7 +53,7 @@ const all = ['index.html', 'dkm.js', 'dkm.css'].map((f) => readFileSync(join(WEB
 for (const bad of ['daekon-motion-preview', 'noindex', 'Diagnosztika', 'Előnézet', 'github.io', '__DKM_COMMIT'])
   if (all.includes(bad)) fail(`előnézeti maradvány: ${bad}`)
 const head = (s) => s.slice(0, s.search(/<\/head>/i))
-const strip = (s) => head(s).replace(/<link rel="stylesheet" href="\/dkm\.css[^>]*>\n<script defer src="\/dkm\.js[^>]*><\/script>\n/, '')
+const strip = (s) => head(s).replace(/<link rel="preload" href="\/dkm\.css[^>]*>\n<script defer src="\/dkm\.js[^>]*><\/script>\n/, '')
 if (strip(html) !== head(src)) fail('a <head> a réteg két során kívül is megváltozott')
 if (html.match(/<link rel="canonical"/g)?.length !== 1) fail('canonical nem pontosan egy')
 if (!/<meta name="robots" content="index, follow/.test(html)) fail('robots meta nem index, follow')

@@ -29,8 +29,11 @@
   if (q.get('dkm') === '0' || reduced) return el.remove()
   var t0 = Date.now()
   var done = false
+  // a függöny csak a réteg bekapcsolása után megy fel (a stílusváltás így nem látszik), legkésőbb ~3,2 mp-nél
+  function on() { return document.documentElement.classList.contains('dkm') }
   function out() {
     if (done) return
+    if (!on() && Date.now() - t0 < 3200) return void setTimeout(out, 60)
     done = true
     // legalább ~1,3 mp, hogy a felirat és a vonal végigfusson; utána a függöny felfelé letörlődik
     setTimeout(function () {

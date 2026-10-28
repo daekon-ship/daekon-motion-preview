@@ -79,7 +79,7 @@ for (const file of walk(OUT)) {
       '<meta name="robots" content="noindex, nofollow, noarchive">\n' +
       `<script>window.__DKM_COMMIT=${JSON.stringify(COMMIT)};${shim}</script>\n` +
       // ?v=<commit>: új verziónál a böngésző nem a gyorsítótárban lévő régi fájlt használja
-      (isHome ? `<link rel="stylesheet" href="/dkm.css?v=${V}">\n<script defer src="/dkm.js?v=${V}"></script>\n` : '')
+      (isHome ? `<link rel="preload" href="/dkm.css?v=${V}" as="style" onload="this.onload=null;this.rel='stylesheet'">\n<script defer src="/dkm.js?v=${V}"></script>\n` : '')
     text = text.replace(/<head>/i, (m) => `${m}\n${head}`)
     if (isHome) text = text.replace(/<body>/i, (m) => `${m}\n${intro}`)
   }
