@@ -128,6 +128,8 @@ function start() {
   status.lite = lite
   document.documentElement.classList.add('dkm')
   status.activeAt = Math.round(performance.now())
+  // a betöltő függönye ugyanebben a képkockában induljon, amelyben a réteg stílusa életbe lép
+  if (typeof window.__dkmCurtain === 'function') window.__dkmCurtain()
   keep.fix()
   // kifejezett kérésre (?dkmmotion=1) a CSS csökkentett-mozgás szabályai sem kapcsolják ki az animációkat
   if (systemReduced && window.__DKM_FORCE_MOTION) document.documentElement.classList.add('dkm-force')

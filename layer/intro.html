@@ -43,6 +43,8 @@
       setTimeout(function () { el.remove() }, 950)
     })
   }
+  // a réteg a bekapcsolás pillanatában közvetlenül szól (layer/dkm.js), így nincs lekérdezési késés
+  window.__dkmCurtain = out
   out()
 })()
 </script>
