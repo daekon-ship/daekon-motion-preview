@@ -28,13 +28,14 @@ function isLowEnd() {
 
 // Modulonként: [futtató, a cél-szekció szelektora]. Minden modul csak a SAJÁT szekciójára vár, így egy hiányzó
 // vagy késve megjelenő szekció nem akadályozza a többi indulását.
+// Sorrend: az első képernyő (hero, navigáció) elöl, a lejjebb lévő szekciók utána.
 const MODULES = [
-  ['reel', () => reel({ still: false }), '#work .rl-a'],
+  ['heroFit', heroFit, '#top [data-hero-copy]'],
+  ['navPill', navPill, '.v5-nav'],
   ['heroField', heroField, '#top > div'],
   ['heroWorld', heroWorld, '#top > div'],
   ['heroLight', heroLight, '#top > div', 'pointer'],
-  ['heroFit', heroFit, '#top [data-hero-copy]'],
-  ['navPill', navPill, '.v5-nav'],
+  ['reel', () => reel({ still: false }), '#work .rl-a'],
   ['separators', separators, 'footer.ft'],
   ['services', services, '#szolgaltatasok .sv7-a'],
   ['servicesDepth', servicesDepth, '#szolgaltatasok .sv7-a'],
@@ -82,6 +83,7 @@ function start() {
     errorMessages: [],
     found: {},
     frames: {},
+    timing: {},
   })
   if (window.__DKM_OFF) return
   const systemReduced = matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -131,6 +133,7 @@ function start() {
   status.waiting = pending.map(([n]) => n)
 
   const runOne = ([name, fn]) => {
+    const t = performance.now()
     try {
       const r = fn()
       if (r === false) status.noop.push(name)
@@ -144,6 +147,23 @@ function start() {
       status.errorMessages.push(`${name}: ${e && e.message ? e.message : e}`)
       console.warn('[dkm]', name, e)
     }
+    status.timing[name] = Math.round(performance.now() - t)
+  }
+  // Teljesítmény (2026-10-28): korábban egy 250 ms-os ütemben az összes kész modul EGYETLEN feladatban indult
+  // (mobilon ~660 ms-os blokk, amely a hero beúszását is feltartotta). Most modulonként külön feladat fut,
+  // így a böngésző a modulok között rajzolhat és reagálhat; a sorrend és a modulok működése változatlan.
+  const queue = []
+  let draining = false
+  const yieldNow = () =>
+    window.scheduler && typeof scheduler.yield === 'function' ? scheduler.yield() : new Promise((r) => setTimeout(r, 0))
+  const drain = async () => {
+    if (draining) return
+    draining = true
+    while (queue.length) {
+      runOne(queue.shift())
+      if (queue.length) await yieldNow()
+    }
+    draining = false
   }
   // 250 ms-onként: amelyik modul szekciója már megjelent, az azonnal indul; legfeljebb 20 mp-ig várunk
   let n = 0
@@ -152,9 +172,10 @@ function start() {
       const sel = pending[i][2]
       const ok = !!$(sel)
       status.found[sel] = ok
-      if (ok) runOne(pending.splice(i, 1)[0])
+      if (ok) queue.push(pending.splice(i, 1)[0])
       else i++
     }
+    drain()
     status.waiting = pending.map(([nm]) => nm)
     if (pending.length && ++n < 80) setTimeout(tick, 250)
     else if (pending.length) {

@@ -335,10 +335,34 @@
   transform: translateY(3px);
 }
 
+.dkm-reel-all {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 6px;
+  font: 600 14px/1.2 'Manrope', sans-serif;
+  color: #b9a2ff;
+  text-decoration: underline;
+  text-decoration-color: rgba(185, 162, 255, 0.45);
+  text-underline-offset: 4px;
+  text-shadow: 0 6px 24px rgba(0, 0, 0, 0.9);
+}
+
+.dkm-reel-all:hover {
+  text-decoration-color: #b9a2ff;
+}
+
+.dkm-reel-all:focus-visible {
+  outline: 2px solid #b9a2ff;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
 /* a felirat belépése (a kártyák a JS-ben, rugóval) */
 .dkm .dkm-reel-k,
 .dkm .dkm-reel-h,
-.dkm .dkm-reel-cta {
+.dkm .dkm-reel-cta,
+.dkm .dkm-reel-all {
   opacity: 0;
   transform: translateY(16px);
   transition:
@@ -355,9 +379,14 @@
   transition-delay: 0.24s;
 }
 
+.dkm .dkm-reel-all {
+  transition-delay: 0.34s;
+}
+
 .dkm .dkm-reel-k.is-in,
 .dkm .dkm-reel-h.is-in,
-.dkm .dkm-reel-cta.is-in {
+.dkm .dkm-reel-cta.is-in,
+.dkm .dkm-reel-all.is-in {
   opacity: 1;
   transform: none;
 }
@@ -388,7 +417,8 @@
 @media (prefers-reduced-motion: reduce) {
   .dkm:not(.dkm-force) .dkm-reel-k,
   .dkm:not(.dkm-force) .dkm-reel-h,
-  .dkm:not(.dkm-force) .dkm-reel-cta{
+  .dkm:not(.dkm-force) .dkm-reel-cta,
+  .dkm:not(.dkm-force) .dkm-reel-all {
     opacity: 1;
     transform: none;
     transition: none;

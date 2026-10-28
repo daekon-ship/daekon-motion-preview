@@ -132,7 +132,13 @@ export function reel({ still }) {
   circ.setAttribute('aria-hidden', 'true')
   circ.textContent = '→'
   cta.append(circ)
-  copy.append(k, h, cta)
+  // a kártyák díszítők (aria-hidden, nem fókuszálhatók), a régi lista rejtett, telefonon csak 4 kártya látszik:
+  // ez a link minden szélességen elérhetővé teszi mind a referenciákat (2026-10-28, tulajdonosi kérés)
+  const all = document.createElement('a')
+  all.className = 'dkm-reel-all'
+  all.href = '/referenciak/'
+  all.textContent = 'Összes referencia megtekintése →'
+  copy.append(k, h, cta, all)
   stage.append(copy)
 
   // a tulajdonos kérésére (2026-10-26) a főoldalon csak a showreel mutatja a projekteket: a showreel a #work szekcióba
@@ -158,7 +164,7 @@ export function reel({ still }) {
           c.inner.style.transform = ''
         })
       })
-      for (const el of [k, h, cta]) el.classList.add('is-in')
+      for (const el of [k, h, cta, all]) el.classList.add('is-in')
     },
     { amount: 0.25 },
   )
