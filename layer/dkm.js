@@ -62,6 +62,34 @@ const MODULES = [
   ['magnetic', magnetic, 'body', 'pointer'],
 ]
 
+function scrollKeeper() {
+  let el = null
+  let top = 0
+  let user = false
+  if (scrollY > 0) {
+    const h = decodeURIComponent((location.hash || '').slice(1))
+    el = (h && /^[a-z0-9-]+$/i.test(h) && document.getElementById(h)) || null
+    if (!el) {
+      const hit = document.elementFromPoint(innerWidth / 2, Math.min(140, innerHeight / 3))
+      el = hit && (hit.closest('section, footer, [id]') || hit)
+    }
+    if (el) top = el.getBoundingClientRect().top
+  }
+  const stop = () => (user = true)
+  for (const ev of ['wheel', 'touchstart', 'keydown', 'pointerdown']) addEventListener(ev, stop, { passive: true, once: true })
+  const fix = () => {
+    if (!el || user || !el.isConnected) return
+    requestAnimationFrame(() => {
+      if (user) return
+      const d = el.getBoundingClientRect().top - top
+      if (Math.abs(d) > 2) scrollBy(0, d)
+    })
+  }
+  // a modulok egy része (pl. showreel) a fenti szekciókat is átrendezi: a sor végén és röviddel utána is igazítunk
+  setTimeout(() => (el = null), 6000)
+  return { fix }
+}
+
 function start() {
   // Állapot a diagnosztikához (az előnézeti panel olvassa; élesben csak egy ártalmatlan objektum).
   // started: elindult · noop: lefutott, de nem volt dolga (pl. már a képernyőn volt) · skipped: érintőképernyőn nem értelmezett
@@ -86,6 +114,11 @@ function start() {
     timing: {},
   })
   if (window.__DKM_OFF) return
+  // Görgetés megtartása (2026-10-28): a réteg késleltetett bekapcsolásakor az oldal már odagörgethetett egy szekcióhoz
+  // (mélylink, pl. #ai, vagy visszalépéskor visszaállított pozíció). A réteg stílusai a fenti szekciók magasságát
+  // megváltoztatják, ezért megjegyezzük, melyik elem van a képernyő tetején, és bekapcsolás után oda igazítunk vissza –
+  // de csak, ha a látogató közben nem görgetett/érintett/gépelt.
+  const keep = scrollKeeper()
   const systemReduced = matchMedia('(prefers-reduced-motion: reduce)').matches
   // __DKM_FORCE_MOTION: csak az előnézet állítja be, ha a látogató ott kifejezetten kéri (egy oldalbetöltésre)
   const reduced = systemReduced && !window.__DKM_FORCE_MOTION
@@ -95,6 +128,7 @@ function start() {
   status.lite = lite
   document.documentElement.classList.add('dkm')
   status.activeAt = Math.round(performance.now())
+  keep.fix()
   // kifejezett kérésre (?dkmmotion=1) a CSS csökkentett-mozgás szabályai sem kapcsolják ki az animációkat
   if (systemReduced && window.__DKM_FORCE_MOTION) document.documentElement.classList.add('dkm-force')
   if (lite) document.documentElement.classList.add('dkm-lite')
@@ -165,6 +199,7 @@ function start() {
       if (queue.length) await yieldNow()
     }
     draining = false
+    keep.fix()
   }
   // 250 ms-onként: amelyik modul szekciója már megjelent, az azonnal indul; legfeljebb 20 mp-ig várunk
   let n = 0
