@@ -26,6 +26,13 @@ const V = encodeURIComponent(COMMIT)
 rmSync('out', { recursive: true, force: true })
 mkdirSync(OUT, { recursive: true })
 cpSync('site', OUT, { recursive: true })
+// HTML-first prototípus (csak előnézet, nem éles): /htmlfirst/ – lásd docs/HTMLFIRST-PROTOTYPE.md
+try {
+  cpSync('prototype/htmlfirst/index.html', join(OUT, 'htmlfirst', 'index.html'))
+  cpSync('prototype/htmlfirst/r', join(OUT, 'r'), { recursive: true })
+} catch {
+  /* nincs prototípus */
+}
 
 await build({
   entryPoints: ['layer/dkm.js'],
