@@ -150,11 +150,7 @@ export function footer() {
     },
     { target: ft, offset: ['start end', 'end end'] },
   )
-  const hl = ft.querySelector('.ft-close-t span')
-  if (hl) {
-    hl.classList.add('dkm-shine')
-    onEnter(hl, 'is-on', 0.9)
-  }
+  // 2026-10-29: az „itt kezdődik.” végig egyenletesen lila (a korábbi zöld sávos csillanás kivéve, tulajdonosi kérés)
   const wm = ft.querySelector('.ft-brand-wm')
   if (wm) {
     const strokes = [...wm.querySelectorAll('path, line, polyline')].filter((s) => !s.closest('clipPath, defs'))

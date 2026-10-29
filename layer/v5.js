@@ -166,7 +166,8 @@ export function footerStage() {
   whileVisible(ft, 'is-live')
   const t = ft.querySelector('.ft-close-t')
   if (t) {
-    t.classList.add('dkm-ignite') // a görgetéssel kigyulladó zárómondat váltja a V4-es egyszeri felragyogást
+    // 2026-10-29 (tulajdonosi kérés): a zárómondat színe görgetés közben sem változik – fehér, az „itt kezdődik.” végig lila.
+    // A korábbi görgetéssel kigyulladó (fehér→zöld sáv→halvány) színátmenet egy-egy betűn zölden megállt.
     t.querySelector('.dkm-shine')?.classList.remove('dkm-shine')
   }
   scroll(
