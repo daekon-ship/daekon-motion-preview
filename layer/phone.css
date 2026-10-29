@@ -36,3 +36,12 @@
     height: clamp(620px, 92svh, 860px);
   }
 }
+
+/* DAEKON OS (2026-10-29): telefonon a 3D hálózat a bekezdések mögé kerül – a központi csomópont körül teljes erővel
+   látszik, a szöveg mögött halványan, így a grafika megmarad, a szöveg olvasható */
+@media (max-width: 899px) {
+  html.dkm .dkm-osnet {
+    -webkit-mask-image: radial-gradient(circle at 73% 56%, #000 0, #000 16%, rgba(0, 0, 0, 0.22) 42%, rgba(0, 0, 0, 0.1) 100%);
+    mask-image: radial-gradient(circle at 73% 56%, #000 0, #000 16%, rgba(0, 0, 0, 0.22) 42%, rgba(0, 0, 0, 0.1) 100%);
+  }
+}
