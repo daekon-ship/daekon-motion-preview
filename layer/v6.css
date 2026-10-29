@@ -45,7 +45,7 @@
   left: 82%;
   width: 10%;
   rotate: 30deg;
-  background: linear-gradient(90deg, transparent, rgba(212, 255, 58, 0.08) 50%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(196,181,253, 0.08) 50%, transparent);
   animation-duration: 11s;
   animation-delay: -3s;
 }
@@ -128,7 +128,7 @@
 }
 
 .dkm-code-bar i:first-child {
-  background: #d4ff3a;
+  background: #C4B5FD;
 }
 
 .dkm-code pre {
@@ -172,7 +172,7 @@
 }
 
 .dkm-yr-a.dkm-odo.is-now {
-  -webkit-text-stroke-color: rgba(212, 255, 58, 0.6);
+  -webkit-text-stroke-color: rgba(196,181,253, 0.6);
 }
 
 .dkm-odo-s,

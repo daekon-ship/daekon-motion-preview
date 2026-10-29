@@ -42,7 +42,7 @@
   left: 0;
   width: 28%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #b9a2ff 45%, #d4ff3a 60%, transparent);
+  background: linear-gradient(90deg, transparent, #b9a2ff 45%, #C4B5FD 60%, transparent);
   opacity: 0;
   transform: translateX(-100%);
   pointer-events: none;
@@ -144,7 +144,7 @@
   right: 0;
   top: -1px;
   height: 1px;
-  background: linear-gradient(90deg, #d4ff3a, #b9a2ff 35%, rgba(108, 72, 255, 0.35) 75%, transparent);
+  background: linear-gradient(90deg, #C4B5FD, #b9a2ff 35%, rgba(108, 72, 255, 0.35) 75%, transparent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -181,7 +181,7 @@
   right: 0;
   top: -1px;
   height: 2px;
-  background: linear-gradient(90deg, #d4ff3a, #b9a2ff 40%, #6c48ff);
+  background: linear-gradient(90deg, #C4B5FD, #b9a2ff 40%, #6c48ff);
   box-shadow: 0 0 14px rgba(185, 162, 255, 0.55);
   transform: scaleX(var(--dkm-p, 0));
   transform-origin: left;
@@ -204,8 +204,8 @@
 
 @keyframes dkm-num {
   0% {
-    color: #d4ff3a;
-    text-shadow: 0 0 14px rgba(212, 255, 58, 0.8);
+    color: #C4B5FD;
+    text-shadow: 0 0 14px rgba(196,181,253, 0.8);
   }
   100% {
     color: #b9a2ff;
@@ -229,7 +229,7 @@
   border-radius: 50%;
   background: #f5f5f2;
   box-shadow:
-    0 0 0 3px rgba(212, 255, 58, 0.35),
+    0 0 0 3px rgba(196,181,253, 0.35),
     0 0 18px 4px rgba(185, 162, 255, 0.75);
   pointer-events: none;
 }
@@ -315,7 +315,7 @@
 
 @media (hover: hover) {
   .dkm-os-mods li:hover {
-    border-color: rgba(212, 255, 58, 0.5);
+    border-color: rgba(196,181,253, 0.5);
     color: #f5f5f2;
     translate: 0 -2px;
   }
@@ -338,8 +338,8 @@
     box-shadow: none;
   }
   40% {
-    background: #d4ff3a;
-    box-shadow: 0 0 12px rgba(212, 255, 58, 0.9);
+    background: #C4B5FD;
+    box-shadow: 0 0 12px rgba(196,181,253, 0.9);
   }
   100% {
     background: #b9a2ff;
@@ -357,7 +357,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, transparent 35%, rgba(185, 162, 255, 0.28) 48%, rgba(212, 255, 58, 0.12) 52%, transparent 65%);
+  background: linear-gradient(105deg, transparent 35%, rgba(185, 162, 255, 0.28) 48%, rgba(196,181,253, 0.12) 52%, transparent 65%);
   transform: translateX(-100%);
   pointer-events: none;
 }
@@ -389,7 +389,7 @@
 }
 
 .dkm .dkm-shine {
-  background: linear-gradient(90deg, #b9a2ff 0%, #b9a2ff 40%, #ffffff 50%, #d4ff3a 55%, #b9a2ff 65%, #b9a2ff 100%);
+  background: linear-gradient(90deg, #b9a2ff 0%, #b9a2ff 40%, #ffffff 50%, #C4B5FD 55%, #b9a2ff 65%, #b9a2ff 100%);
   background-size: 300% 100%;
   background-position: 100% 0;
   -webkit-background-clip: text;

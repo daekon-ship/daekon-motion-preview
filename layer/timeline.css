@@ -49,7 +49,7 @@
 
 .dkm-tl-fill {
   width: calc((var(--b) - var(--a)) * var(--p));
-  background: linear-gradient(90deg, #d4ff3a, #b9a2ff 45%, #6c48ff);
+  background: linear-gradient(90deg, #C4B5FD, #b9a2ff 45%, #6c48ff);
   box-shadow:
     0 0 6px rgba(185, 162, 255, 0.75),
     0 0 18px rgba(108, 72, 255, 0.4);
@@ -72,17 +72,17 @@
 }
 
 .dkm-tl-node.is-on {
-  border-color: #d4ff3a;
+  border-color: #C4B5FD;
   background: #b9a2ff;
-  box-shadow: 0 0 8px rgba(212, 255, 58, 0.45);
+  box-shadow: 0 0 8px rgba(196,181,253, 0.45);
 }
 
 /* az éppen elért pont kap erősebb, de visszafogott fényt */
 .dkm-tl-node.is-cur {
   scale: 1.15;
   box-shadow:
-    0 0 0 4px rgba(212, 255, 58, 0.16),
-    0 0 14px rgba(212, 255, 58, 0.7);
+    0 0 0 4px rgba(196,181,253, 0.16),
+    0 0 14px rgba(196,181,253, 0.7);
 }
 
 .dkm-tl-node::after {
@@ -90,7 +90,7 @@
   position: absolute;
   inset: -2px;
   border-radius: 50%;
-  border: 1.5px solid #d4ff3a;
+  border: 1.5px solid #C4B5FD;
   opacity: 0;
 }
 
@@ -118,8 +118,8 @@
   border-radius: 50%;
   background: #fff;
   box-shadow:
-    0 0 0 3px rgba(212, 255, 58, 0.25),
-    0 0 12px 3px rgba(212, 255, 58, 0.45),
+    0 0 0 3px rgba(196,181,253, 0.25),
+    0 0 12px 3px rgba(196,181,253, 0.45),
     0 0 26px 6px rgba(108, 72, 255, 0.3);
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -138,7 +138,7 @@
   margin-top: -1.5px;
   width: min(90px, calc((var(--b) - var(--a)) * var(--p)));
   border-radius: 3px;
-  background: linear-gradient(90deg, transparent, rgba(212, 255, 58, 0.6));
+  background: linear-gradient(90deg, transparent, rgba(196,181,253, 0.6));
 }
 
 /* ---------- üstökös: egyetlen, lassú, finom fény a kirajzolt szakaszon (a fénycsomag előtt elhalványul) ---------- */
@@ -149,7 +149,7 @@
   height: 7px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 8px 2px rgba(212, 255, 58, 0.5);
+  box-shadow: 0 0 8px 2px rgba(196,181,253, 0.5);
   opacity: 0;
 }
 
@@ -166,7 +166,7 @@
   margin-top: -1px;
   width: min(110px, calc((var(--b) - var(--a)) * var(--p) * var(--k)));
   border-radius: 2px;
-  background: linear-gradient(90deg, transparent, rgba(212, 255, 58, 0.55));
+  background: linear-gradient(90deg, transparent, rgba(196,181,253, 0.55));
 }
 
 @keyframes dkm-tl-comet {
@@ -201,7 +201,7 @@
 
 .dkm-tl.is-v .dkm-tl-fill {
   height: calc((var(--b) - var(--a)) * var(--p));
-  background: linear-gradient(180deg, #d4ff3a, #b9a2ff 45%, #6c48ff);
+  background: linear-gradient(180deg, #C4B5FD, #b9a2ff 45%, #6c48ff);
 }
 
 .dkm-tl.is-v .dkm-tl-node {
@@ -224,7 +224,7 @@
   width: 3px;
   margin: 0 0 0 -1.5px;
   height: min(70px, calc((var(--b) - var(--a)) * var(--p)));
-  background: linear-gradient(180deg, transparent, rgba(212, 255, 58, 0.6));
+  background: linear-gradient(180deg, transparent, rgba(196,181,253, 0.6));
 }
 
 .dkm-tl.is-v .dkm-tl-comet {
@@ -240,7 +240,7 @@
   width: 2px;
   margin: 0 0 0 -1px;
   height: min(80px, calc((var(--b) - var(--a)) * var(--p) * var(--k)));
-  background: linear-gradient(180deg, transparent, rgba(212, 255, 58, 0.55));
+  background: linear-gradient(180deg, transparent, rgba(196,181,253, 0.55));
 }
 
 /* ---------- kigyúló lépés-panelek: a kártyák közötti rés feléig érnek (--dkm-gx), nem lógnak egymásra ---------- */
@@ -276,7 +276,7 @@
 
 /* az éppen aktív lépés kerete kap egy leheletnyi lime árnyalatot */
 .dkm .dkm-pc6.dkm-cur::after {
-  border-color: rgba(212, 255, 58, 0.28);
+  border-color: rgba(196,181,253, 0.28);
 }
 
 .dkm .dkm-pc6 .pc-t,
@@ -302,8 +302,8 @@
   }
   35% {
     transform: scale(1.22);
-    color: #d4ff3a;
-    text-shadow: 0 0 12px rgba(212, 255, 58, 0.8);
+    color: #C4B5FD;
+    text-shadow: 0 0 12px rgba(196,181,253, 0.8);
   }
   100% {
     transform: scale(1);

@@ -231,17 +231,24 @@ export function heroFit() {
   new ResizeObserver(set).observe(copy)
   new ResizeObserver(set).observe(sticky)
   addEventListener('resize', set, { passive: true })
-  let raf = 0
-  let lastH = innerHeight
+  // 2026-10-29: Android Chrome-ban görgetés közben a címsor megjelenése/eltűnése folyamatosan ~56–120 px-lel változtatja a
+  // visualViewport magasságát. Korábban erre minden képkockában szintetikus „resize” ment ki, ami a hero újraméretezését
+  // (logó, canvasok – a canvas átméretezése a tartalmát is törli) a görgetés közepén, sorozatban futtatta. Most csak
+  // szélesség-változásnál vagy nagy (>25%) magasság-változásnál szólunk – ez a beépített böngészők kezdeti korrekciója –,
+  // és egy változássorozat végén egyszer. A hero magasságai svh-ban vannak, a címsor ezeket nem érinti.
+  let timer = 0
+  const size = () => (window.visualViewport ? [Math.round(visualViewport.width), Math.round(visualViewport.height)] : [innerWidth, innerHeight])
+  let [lastW, lastH] = size()
   const nudge = () => {
-    if (raf) return
-    raf = requestAnimationFrame(() => {
-      raf = 0
-      const h = window.visualViewport ? Math.round(visualViewport.height) : innerHeight
-      if (Math.abs(h - lastH) < 2) return
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      const [w, h] = size()
+      const big = Math.abs(w - lastW) >= 2 || Math.abs(h - lastH) > lastH * 0.25
+      if (!big) return
+      lastW = w
       lastH = h
       dispatchEvent(new Event('resize'))
-    })
+    }, 150)
   }
   if (window.visualViewport) visualViewport.addEventListener('resize', nudge, { passive: true })
   addEventListener('pageshow', (e) => e.persisted && dispatchEvent(new Event('resize')))
