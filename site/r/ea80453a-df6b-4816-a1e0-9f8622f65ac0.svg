@@ -38,11 +38,11 @@
         <g transform="translate(208 0)"><g clip-path="url(#lb14p)"><rect x="2.5" y="2.5" width="33" height="35" rx="12"></rect></g></g>
         <g transform="translate(260 0)"><g clip-path="url(#lb14p)"><path d="M2.5 40V0"></path><path d="M35.5 0V40"></path><path d="M1 1L37 39"></path></g></g><g transform="translate(330 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V40"></path><path d="M35.5 0V40"></path><path d="M2.5 20H35.5"></path></g></g><g transform="translate(382 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V24A13.5 13.5 0 0 0 16 37.5H22A13.5 13.5 0 0 0 35.5 24V0"></path></g></g>
       </g>
-      <g data-limeglow="1" transform="translate(164 144) scale(1.6)" fill="none" stroke-linejoin="miter" filter="url(#pgb)" opacity=".2"><rect x="314" y="32" width="6" height="6" fill="#D4FF3A" stroke="none"></rect><g transform="translate(52 0)"><rect x="9" y="21" width="20" height="5" fill="#D4FF3A" stroke="#D4FF3A" stroke-width="3"></rect></g><g transform="translate(156 0)"><path d="M38 0.5L14 20L38 39.5" stroke="#D4FF3A" stroke-width="8"></path></g></g><g data-limeglow="1" transform="translate(164 144) scale(1.6)" fill="none" stroke-linejoin="miter" filter="url(#pgw)" opacity=".35"><rect x="314" y="32" width="6" height="6" fill="#D4FF3A" stroke="none"></rect><g transform="translate(52 0)"><rect x="9" y="21" width="20" height="5" fill="#D4FF3A" stroke="#D4FF3A" stroke-width="1.5"></rect></g><g transform="translate(156 0)"><path d="M38 0.5L14 20L38 39.5" stroke="#D4FF3A" stroke-width="6.5"></path></g></g><g data-outline="1" transform="translate(164 144) scale(1.6)" fill="none" stroke="#D8CCFF" stroke-width="5.55" stroke-linejoin="miter" stroke-miterlimit="10">
+      <g data-limeglow="1" transform="translate(164 144) scale(1.6)" fill="none" stroke-linejoin="miter" filter="url(#pgb)" opacity=".2"><rect x="314" y="32" width="6" height="6" fill="#C4B5FD" stroke="none"></rect><g transform="translate(52 0)"><rect x="9" y="21" width="20" height="5" fill="#C4B5FD" stroke="#C4B5FD" stroke-width="3"></rect></g><g transform="translate(156 0)"><path d="M38 0.5L14 20L38 39.5" stroke="#C4B5FD" stroke-width="8"></path></g></g><g data-limeglow="1" transform="translate(164 144) scale(1.6)" fill="none" stroke-linejoin="miter" filter="url(#pgw)" opacity=".35"><rect x="314" y="32" width="6" height="6" fill="#C4B5FD" stroke="none"></rect><g transform="translate(52 0)"><rect x="9" y="21" width="20" height="5" fill="#C4B5FD" stroke="#C4B5FD" stroke-width="1.5"></rect></g><g transform="translate(156 0)"><path d="M38 0.5L14 20L38 39.5" stroke="#C4B5FD" stroke-width="6.5"></path></g></g><g data-outline="1" transform="translate(164 144) scale(1.6)" fill="none" stroke="#D8CCFF" stroke-width="5.55" stroke-linejoin="miter" stroke-miterlimit="10">
         <g clip-path="url(#lb14p)"><path d="M2.5 2.5H22A13.5 13.5 0 0 1 35.5 16V24A13.5 13.5 0 0 1 22 37.5H2.5Z"></path></g>
         <g transform="translate(52 0)"><g clip-path="url(#lb14p)"><path d="M2.5 40V16A13.5 13.5 0 0 1 16 2.5H22A13.5 13.5 0 0 1 35.5 16V40"></path></g></g>
         <g transform="translate(104 0)"><g clip-path="url(#lb14p)"><path d="M38 2.5H2.5V37.5H38"></path><path d="M2.5 20H31"></path></g></g>
-        <g transform="translate(156 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V40"></path><path d="M38 0.5L14 20L38 39.5" stroke="#D4FF3A"></path></g></g>
+        <g transform="translate(156 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V40"></path><path d="M38 0.5L14 20L38 39.5" stroke="#C4B5FD"></path></g></g>
         <g transform="translate(208 0)"><g clip-path="url(#lb14p)"><rect x="2.5" y="2.5" width="33" height="35" rx="12"></rect></g></g>
         <g transform="translate(260 0)"><g clip-path="url(#lb14p)"><path d="M2.5 40V0"></path><path d="M35.5 0V40"></path><path d="M1 1L37 39"></path></g></g><g transform="translate(330 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V40"></path><path d="M35.5 0V40"></path><path d="M2.5 20H35.5"></path></g></g><g transform="translate(382 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V24A13.5 13.5 0 0 0 16 37.5H22A13.5 13.5 0 0 0 35.5 24V0"></path></g></g>
       </g>
@@ -54,11 +54,11 @@
         <g transform="translate(208 0)"><g clip-path="url(#lb14p)"><rect x="2.5" y="2.5" width="33" height="35" rx="12"></rect></g></g>
         <g transform="translate(260 0)"><g clip-path="url(#lb14p)"><path d="M2.5 40V0"></path><path d="M35.5 0V40"></path><path d="M1 1L37 39"></path></g></g><g transform="translate(330 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V40"></path><path d="M35.5 0V40"></path><path d="M2.5 20H35.5"></path></g></g><g transform="translate(382 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V24A13.5 13.5 0 0 0 16 37.5H22A13.5 13.5 0 0 0 35.5 24V0"></path></g></g>
       </g>
-      <g transform="translate(164 144) scale(1.6)" fill="none" stroke="url(#wm14p)" stroke-width="5" stroke-linejoin="miter" stroke-miterlimit="10"><rect x="314" y="32" width="6" height="6" fill="#D4FF3A" stroke="none"></rect>
+      <g transform="translate(164 144) scale(1.6)" fill="none" stroke="url(#wm14p)" stroke-width="5" stroke-linejoin="miter" stroke-miterlimit="10"><rect x="314" y="32" width="6" height="6" fill="#C4B5FD" stroke="none"></rect>
         <g clip-path="url(#lb14p)"><path d="M2.5 2.5H22A13.5 13.5 0 0 1 35.5 16V24A13.5 13.5 0 0 1 22 37.5H2.5Z"></path></g>
-        <g transform="translate(52 0)"><g clip-path="url(#lb14p)"><path d="M2.5 40V16A13.5 13.5 0 0 1 16 2.5H22A13.5 13.5 0 0 1 35.5 16V40"></path><rect x="9" y="21" width="20" height="5" fill="#D4FF3A" stroke="none"></rect></g></g>
+        <g transform="translate(52 0)"><g clip-path="url(#lb14p)"><path d="M2.5 40V16A13.5 13.5 0 0 1 16 2.5H22A13.5 13.5 0 0 1 35.5 16V40"></path><rect x="9" y="21" width="20" height="5" fill="#C4B5FD" stroke="none"></rect></g></g>
         <g transform="translate(104 0)"><g clip-path="url(#lb14p)"><path d="M38 2.5H2.5V37.5H38"></path><path d="M2.5 20H31"></path></g></g>
-        <g transform="translate(156 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V40"></path><path d="M38 0.5L14 20L38 39.5" stroke="#D4FF3A"></path></g></g>
+        <g transform="translate(156 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V40"></path><path d="M38 0.5L14 20L38 39.5" stroke="#C4B5FD"></path></g></g>
         <g transform="translate(208 0)"><g clip-path="url(#lb14p)"><rect x="2.5" y="2.5" width="33" height="35" rx="12"></rect></g></g>
         <g transform="translate(260 0)"><g clip-path="url(#lb14p)"><path d="M2.5 40V0"></path><path d="M35.5 0V40"></path><path d="M1 1L37 39"></path></g></g><g transform="translate(330 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V40"></path><path d="M35.5 0V40"></path><path d="M2.5 20H35.5"></path></g></g><g transform="translate(382 0)"><g clip-path="url(#lb14p)"><path d="M2.5 0V24A13.5 13.5 0 0 0 16 37.5H22A13.5 13.5 0 0 0 35.5 24V0"></path></g></g>
       </g>
@@ -76,28 +76,28 @@
         <rect x="229" y="296" width="542" height="346" rx="16" fill="url(#body14p)"></rect>
         <rect x="229.5" y="296.5" width="541" height="345" rx="15.5" fill="none" stroke="#FFFFFF" stroke-opacity=".16"></rect>
         <rect x="238" y="305" width="524" height="328" rx="8" fill="url(#scr14p)"></rect>
-        <rect x="238" y="305" width="524" height="328" rx="8" fill="#D4FF3A" opacity=".025"></rect>
+        <rect x="238" y="305" width="524" height="328" rx="8" fill="#C4B5FD" opacity=".025"></rect>
         <g font-family="Geist Mono, monospace">
           <circle cx="260" cy="324" r="4" fill="#2E2E33"></circle><circle cx="275" cy="324" r="4" fill="#2E2E33"></circle><circle cx="290" cy="324" r="4" fill="#2E2E33"></circle>
           <text x="316" y="328" font-size="11" fill="#9A9A96" letter-spacing=".5">daekon.ts</text>
-          <rect x="310" y="336" width="72" height="1.5" fill="#D4FF3A"></rect>
-          <text x="740" y="328" font-size="10" fill="#D4FF3A" text-anchor="end" letter-spacing="1.2">● LIVE</text>
+          <rect x="310" y="336" width="72" height="1.5" fill="#C4B5FD"></rect>
+          <text x="740" y="328" font-size="10" fill="#C4B5FD" text-anchor="end" letter-spacing="1.2">● LIVE</text>
           <rect x="238" y="337" width="524" height="1" fill="#1A1A1D"></rect>
-          <rect x="238" y="564" width="524" height="25" fill="#D4FF3A" opacity=".055"></rect>
-          <rect x="238" y="564" width="2" height="25" fill="#D4FF3A"></rect>
+          <rect x="238" y="564" width="524" height="25" fill="#C4B5FD" opacity=".055"></rect>
+          <rect x="238" y="564" width="2" height="25" fill="#C4B5FD"></rect>
           <g font-size="15" style="white-space:pre">
-            <g fill="#3E3E43" text-anchor="end"><text x="280" y="372">1</text><text x="280" y="398">2</text><text x="280" y="424">3</text><text x="280" y="450">4</text><text x="280" y="476">5</text><text x="280" y="502">6</text><text x="280" y="528">7</text><text x="280" y="554">8</text><text x="280" y="581" fill="#D4FF3A">9</text></g>
-            <text x="300" y="372"><tspan fill="#D4FF3A">import</tspan><tspan fill="#7A7A76"> { </tspan><tspan fill="#F5F5F2">design</tspan><tspan fill="#7A7A76">, </tspan><tspan fill="#F5F5F2">launch</tspan><tspan fill="#7A7A76"> } </tspan><tspan fill="#D4FF3A">from</tspan><tspan fill="#B9B9B4"> '@daekon/core'</tspan></text>
-            <text x="300" y="424"><tspan fill="#D4FF3A">const</tspan><tspan fill="#F5F5F2"> projekt</tspan><tspan fill="#7A7A76"> = </tspan><tspan fill="#F5F5F2">design</tspan><tspan fill="#7A7A76">({</tspan></text>
+            <g fill="#3E3E43" text-anchor="end"><text x="280" y="372">1</text><text x="280" y="398">2</text><text x="280" y="424">3</text><text x="280" y="450">4</text><text x="280" y="476">5</text><text x="280" y="502">6</text><text x="280" y="528">7</text><text x="280" y="554">8</text><text x="280" y="581" fill="#C4B5FD">9</text></g>
+            <text x="300" y="372"><tspan fill="#C4B5FD">import</tspan><tspan fill="#7A7A76"> { </tspan><tspan fill="#F5F5F2">design</tspan><tspan fill="#7A7A76">, </tspan><tspan fill="#F5F5F2">launch</tspan><tspan fill="#7A7A76"> } </tspan><tspan fill="#C4B5FD">from</tspan><tspan fill="#B9B9B4"> '@daekon/core'</tspan></text>
+            <text x="300" y="424"><tspan fill="#C4B5FD">const</tspan><tspan fill="#F5F5F2"> projekt</tspan><tspan fill="#7A7A76"> = </tspan><tspan fill="#F5F5F2">design</tspan><tspan fill="#7A7A76">({</tspan></text>
             <text x="318" y="450"><tspan fill="#9A9A96">type:</tspan><tspan x="412" fill="#B9B9B4">'egyedi'</tspan><tspan fill="#7A7A76">,</tspan></text>
             <text x="318" y="476"><tspan fill="#9A9A96">stack:</tspan><tspan x="412" fill="#7A7A76">[</tspan><tspan fill="#B9B9B4">'next'</tspan><tspan fill="#7A7A76">, </tspan><tspan fill="#B9B9B4">'react'</tspan><tspan fill="#7A7A76">, </tspan><tspan fill="#B9B9B4">'node'</tspan><tspan fill="#7A7A76">],</tspan></text>
-            <text x="318" y="502"><tspan fill="#9A9A96">speed:</tspan><tspan x="412" fill="#D4FF3A">100</tspan><tspan fill="#7A7A76">,</tspan></text>
-            <text x="318" y="528"><tspan fill="#9A9A96">quality:</tspan><tspan x="412" fill="#D4FF3A">100</tspan><tspan fill="#7A7A76">,</tspan></text><text x="300" y="554"><tspan fill="#7A7A76">})</tspan></text>
-            <text x="300" y="581"><tspan fill="#D4FF3A">await</tspan><tspan fill="#F5F5F2"> launch</tspan><tspan fill="#7A7A76">(</tspan><tspan fill="#F5F5F2">projekt</tspan><tspan fill="#7A7A76">)</tspan></text>
-            <rect x="499" y="568" width="8" height="17" fill="#D4FF3A"></rect>
+            <text x="318" y="502"><tspan fill="#9A9A96">speed:</tspan><tspan x="412" fill="#C4B5FD">100</tspan><tspan fill="#7A7A76">,</tspan></text>
+            <text x="318" y="528"><tspan fill="#9A9A96">quality:</tspan><tspan x="412" fill="#C4B5FD">100</tspan><tspan fill="#7A7A76">,</tspan></text><text x="300" y="554"><tspan fill="#7A7A76">})</tspan></text>
+            <text x="300" y="581"><tspan fill="#C4B5FD">await</tspan><tspan fill="#F5F5F2"> launch</tspan><tspan fill="#7A7A76">(</tspan><tspan fill="#F5F5F2">projekt</tspan><tspan fill="#7A7A76">)</tspan></text>
+            <rect x="499" y="568" width="8" height="17" fill="#C4B5FD"></rect>
           </g>
           <rect x="238" y="604" width="524" height="1" fill="#1A1A1D"></rect>
-          <text x="258" y="622" font-size="10" fill="#D4FF3A" letter-spacing="1.2">● DEPLOY OK</text>
+          <text x="258" y="622" font-size="10" fill="#C4B5FD" letter-spacing="1.2">● DEPLOY OK</text>
           <text x="742" y="622" font-size="10" fill="#5E5E59" text-anchor="end" letter-spacing="1.2">MAIN · TS · 100/100</text>
         </g>
         <path d="M238 313A8 8 0 0 1 246 305H560L380 633H246A8 8 0 0 1 238 625Z" fill="url(#glare14p)"></path>
@@ -113,7 +113,7 @@
 
       <rect x="114" y="817.5" width="92" height="1" fill="url(#hair14p)"></rect>
       <rect x="794" y="817.5" width="92" height="1" fill="url(#hair14p)" transform="rotate(180 840 818)"></rect>
-      <rect x="218.5" y="815" width="5" height="6" fill="#D4FF3A"></rect><rect x="776.5" y="815" width="5" height="6" fill="#D4FF3A"></rect><text x="504.3" y="827" text-anchor="middle" font-family="Geist, sans-serif" font-weight="500" font-size="21" letter-spacing="8.6" fill="#DADAD5">EGYEDI SZOFTVERFEJLESZTÉS</text>
+      <rect x="218.5" y="815" width="5" height="6" fill="#C4B5FD"></rect><rect x="776.5" y="815" width="5" height="6" fill="#C4B5FD"></rect><text x="504.3" y="827" text-anchor="middle" font-family="Geist, sans-serif" font-weight="500" font-size="21" letter-spacing="8.6" fill="#DADAD5">EGYEDI SZOFTVERFEJLESZTÉS</text>
       
       <rect width="1000" height="1000" filter="url(#grain14p)" opacity=".05"></rect>
     </svg>
