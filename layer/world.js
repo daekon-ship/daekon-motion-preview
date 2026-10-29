@@ -6,8 +6,7 @@
 import { $, finePointer, isStatic } from './util.js'
 
 const LILAC = [185, 162, 255]
-// 2026-10-29: a korábbi lime kiemelés világos levendulára cserélve (fekete–lila arculat); a név maradt
-const LIME = [196, 181, 253]
+const LIME = [212, 255, 58]
 const VIOLET = [108, 72, 255]
 const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a.toFixed(3)})`
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v))

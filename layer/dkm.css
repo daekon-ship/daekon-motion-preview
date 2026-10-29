@@ -58,7 +58,7 @@
   position: absolute;
   inset: -1px;
   z-index: -1;
-  background: linear-gradient(105deg, transparent 35%, rgba(185, 162, 255, 0.16) 48%, rgba(196,181,253, 0.06) 52%, transparent 65%);
+  background: linear-gradient(105deg, transparent 35%, rgba(185, 162, 255, 0.16) 48%, rgba(212, 255, 58, 0.06) 52%, transparent 65%);
   transform: translateX(-100%);
   pointer-events: none;
 }
@@ -105,7 +105,7 @@
   bottom: -10%;
   width: clamp(120px, 14vw, 220px);
   transform: translateX(-50%) translateY(calc(var(--bp) * 60px));
-  background: radial-gradient(50% 50% at 50% 50%, rgba(185, 162, 255, 0.16), rgba(196,181,253, 0.04) 55%, transparent 75%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(185, 162, 255, 0.16), rgba(212, 255, 58, 0.04) 55%, transparent 75%);
   pointer-events: none;
   will-change: transform;
 }

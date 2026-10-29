@@ -1,7 +1,7 @@
 // Közös segédek a DAEKON motion layerhez.
 export const EASE = [0.16, 1, 0.3, 1]
 export const LILAC = '#B9A2FF'
-export const LIME = '#C4B5FD'
+export const LIME = '#D4FF3A'
 
 // Az oldalon a dc-runtime rejtett (<x-dc>, display:none) sablonpéldánya is ott van ugyanazokkal az azonosítókkal:
 // mindig a ténylegesen megjelenített példányt keressük.
