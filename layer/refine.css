@@ -54,7 +54,7 @@ html.dkm body #dc-root#dc-root#dc-root .sw-head {
 
 @media (max-width: 900px) and (orientation: portrait) and (min-height: 640px) {
   html.dkm body [data-hero] {
-    height: 128svh !important;
+    height: calc(128 * var(--dksvh, 1svh)) !important;
   }
 }
 
@@ -65,7 +65,7 @@ html.dkm body #dc-root#dc-root#dc-root .dkm-reel-stage {
 
 @supports (height: 1svh) {
   html.dkm.dkm-phone body #dc-root#dc-root#dc-root .dkm-reel-stage {
-    height: clamp(460px, 70svh, 580px);
+    height: clamp(460px, calc(70 * var(--dksvh, 1svh)), 580px);
   }
 }
 
@@ -335,7 +335,7 @@ html.dkm body #dc-root#dc-root#dc-root #ai .ct-head {
 /* telefon: az átvezetés („PROJEKTEK”) itt nem ragadós jelenet, csak egy rövid kép – alacsonyabb */
 @media (max-width: 899px) {
   html.dkm body #dc-root#dc-root#dc-root [data-enter-sticky] {
-    height: clamp(320px, 46svh, 420px) !important;
+    height: clamp(320px, calc(46 * var(--dksvh, 1svh)), 420px) !important;
   }
 }
 

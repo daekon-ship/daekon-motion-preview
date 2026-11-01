@@ -33,7 +33,7 @@
 
 @supports (height: 1svh) {
   .dkm-phone .dkm-reel-stage {
-    height: clamp(620px, 92svh, 860px);
+    height: clamp(620px, calc(92 * var(--dksvh, 1svh)), 860px);
   }
 }
 

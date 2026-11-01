@@ -7,7 +7,7 @@
   html.js body [data-enter] { height: calc(125 * var(--dkvh, 1vh)) !important; }
 }
 @media (max-width: 900px) and (orientation: portrait) and (min-height: 640px) {
-  html.js body [data-hero] { height: 128svh !important; }
+  html.js body [data-hero] { height: calc(128 * var(--dksvh, 1svh)) !important; }
 }
 
 /* A képernyőn kívüli szekciók layoutja/rajzolása halasztva (2026-10-28): az oldal első felcsatolása az egész oldalt
