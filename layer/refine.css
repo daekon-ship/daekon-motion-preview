@@ -392,30 +392,34 @@ html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-btn-mail {
   }
 }
 
-@media (max-width: 899px) and (max-height: 720px) {
-  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] {
+/* 2026-11-01: a magasságfüggő tömörítés a BETÖLTÉSKORI (rögzített) magassághoz kötött osztályokon fut (html.dk-h720 /
+   html.dk-h640, a sablon lockHero/fitHeroLogo állítja), nem max-height media queryn: a beépített böngészők (Facebook)
+   és a mobil címsor görgetés közben 50–100 px-lel változtatja a nézetablakot, ami a határon átbillentette a hero
+   szövegblokkját (visszagörgetéskor ugrált). */
+@media (max-width: 899px) {
+  html.dkm.dk-h720 body #dc-root#dc-root#dc-root [data-hero-copy] {
     gap: 10px !important;
   }
-  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] h1 {
+  html.dkm.dk-h720 body #dc-root#dc-root#dc-root [data-hero-copy] h1 {
     font-size: clamp(21px, 6.2vw, 24px) !important;
   }
-  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] > div {
+  html.dkm.dk-h720 body #dc-root#dc-root#dc-root [data-hero-copy] > div {
     gap: 12px !important;
   }
-  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] > div > p {
+  html.dkm.dk-h720 body #dc-root#dc-root#dc-root [data-hero-copy] > div > p {
     font-size: 13px !important;
     line-height: 1.5 !important;
   }
-  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta,
-  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-row {
+  html.dkm.dk-h720 body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta,
+  html.dkm.dk-h720 body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-row {
     gap: 8px !important;
   }
-  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-p {
+  html.dkm.dk-h720 body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-p {
     flex: 1 1 100% !important; /* az elsődleges gomb saját sorban, teljes szélességben */
     min-height: 44px !important;
   }
   /* a két másodlagos gomb egy sorban marad (keskeny telefonon sem törik egymás alá) */
-  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-s {
+  html.dkm.dk-h720 body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-s {
     flex: 1 1 0 !important;
     min-width: 0 !important;
     min-height: 40px !important;
@@ -428,8 +432,8 @@ html.dkm body #dc-root#dc-root#dc-root #velemenyek .rv-btn-mail {
 
 /* nagyon alacsony nézetablakon (pl. kis iPhone Facebook-böngészőben) az ismétlő megjegyzés kimarad –
    ugyanez az elsődleges gombon is szerepel: „Ingyenes látványtervet kérek” */
-@media (max-width: 899px) and (max-height: 640px) {
-  html.dkm body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-n {
+@media (max-width: 899px) {
+  html.dkm.dk-h640 body #dc-root#dc-root#dc-root [data-hero-copy] .h-cta-n {
     display: none !important;
   }
 }
