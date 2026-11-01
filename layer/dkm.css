@@ -93,7 +93,7 @@
 
 .dkm-reel-stage {
   position: relative;
-  height: clamp(620px, 92vh, 860px);
+  height: clamp(620px, calc(92 * var(--dkvh, 1vh)), 860px);
   perspective: 1200px;
 }
 
